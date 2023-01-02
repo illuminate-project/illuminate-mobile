@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class PictureContainer extends StatefulWidget with PreferredSizeWidget {
-  const PictureContainer({super.key});
+  final XFile? selectedImage;
+  final Function changePicture;
+
+  PictureContainer(this.selectedImage, this.changePicture, {super.key});
 
   @override
   State<PictureContainer> createState() => _PictureContainerState();
@@ -14,14 +17,10 @@ class PictureContainer extends StatefulWidget with PreferredSizeWidget {
 }
 
 class _PictureContainerState extends State<PictureContainer> {
-  XFile? _selectedImage;
-
   void _getImage() async {
     XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
-    setState(() {
-      _selectedImage = image;
-    });
+    widget.changePicture(image);
   }
 
   @override
@@ -39,9 +38,9 @@ class _PictureContainerState extends State<PictureContainer> {
             ),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: _selectedImage != null
+          child: widget.selectedImage != null
               ? Image.file(
-                  File(_selectedImage!.path),
+                  File(widget.selectedImage!.path),
                   width: double.infinity,
                   height: double.infinity,
                 )
@@ -63,7 +62,7 @@ class _PictureContainerState extends State<PictureContainer> {
                   ],
                 )),
       onTap: () {
-        if (_selectedImage == null) {
+        if (widget.selectedImage == null) {
           _getImage();
         }
       },

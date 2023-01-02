@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class TopAppBar extends StatefulWidget with PreferredSizeWidget {
-  const TopAppBar({super.key});
+  final Function changePicture;
+  const TopAppBar(
+    this.changePicture, {
+    super.key,
+  });
 
   @override
   State<TopAppBar> createState() => _TopAppBarState();
@@ -23,7 +27,7 @@ class _TopAppBarState extends State<TopAppBar> {
           IconButton(
             icon: const Icon(Icons.dangerous_outlined),
             color: const Color.fromARGB(255, 255, 140, 140),
-            onPressed: () => doNothing(),
+            onPressed: () => widget.changePicture(null),
           ),
           IconButton(
             icon: const Icon(Icons.undo),
