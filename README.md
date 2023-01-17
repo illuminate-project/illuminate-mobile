@@ -52,3 +52,65 @@ Future<void> postData() async {
   }
 }
 ```
+
+## DPT Model
+
+This is a DPT model called DenseDepth and it's already hosted on RunwayML. Can use this as backup in case we can't get Omnidata setup*
+
+### Query the Model
+```dart
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+final inputs = {
+  "image": <base 64 image>
+};
+
+final url = 'https://densedepth-1e8c4305.hosted-models.runwayml.cloud/v1/query';
+final token = 'Bearer X/yZ/TJhio305LHtIg80Cg==';
+
+final response = await http.post(url, headers: {
+  "Accept": "application/json",
+  "Authorization": token,
+  "Content-Type": "application/json",
+}, body: json.encode(inputs));
+
+final outputs = json.decode(response.body);
+final depthImage = outputs['depth_image'];
+// use the outputs in your project
+```
+
+### get input/output specs
+
+```dart
+final response = await http.get(url, headers: {
+  "Accept": "application/json",
+  "Authorization": token,
+  "Content-Type": "application/json",
+});
+
+final info = json.decode(response.body);
+final description = info['description'];
+final name = info['name'];
+final inputs = info['inputs'];
+final outputs = info['outputs'];
+// use the info in your project
+```
+
+### Get Metadata + Status
+
+```dart
+fetch("https://densedepth-1e8c4305.hosted-models.runwayml.cloud/v1/", {
+  method: "GET",
+  headers: {
+    "Accept": "application/json",
+    "Authorization": "Bearer X/yZ/TJhio305LHtIg80Cg==",
+    "Content-Type": "application/json",
+  }
+})
+.then(response => response.json())
+.then(metadata => {
+  const { status, queryRoute, dataRoute, errorRoute } = metadata;
+  // use the metadata + status in your project
+});
+```
