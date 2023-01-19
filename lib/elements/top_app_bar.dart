@@ -30,12 +30,7 @@ class _TopAppBarState extends State<TopAppBar> {
             onPressed: () => widget.changePicture(null),
           ),
           IconButton(
-            icon: const Icon(Icons.undo),
-            onPressed: () => doNothing(),
-          ),
-          IconButton(
-            icon: const Icon(Icons.redo),
-            color: const Color.fromARGB(255, 144, 144, 144),
+            icon: const Icon(Icons.dark_mode_outlined),
             onPressed: () => doNothing(),
           ),
           IconButton(

@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:test_application/elements/picture_container.dart';
 import 'elements/top_app_bar.dart';
 import 'elements/bottom_nav.dart';
+import 'screens/screen_selector.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,10 +14,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   XFile? _selectedImage;
+  int _selectedScreen = 0;
 
   void _setImage(image) {
     setState(() {
       _selectedImage = image;
+    });
+  }
+
+  void _setScreen(int index) {
+    setState(() {
+      _selectedScreen = index;
     });
   }
 
@@ -26,9 +34,17 @@ class _HomePageState extends State<HomePage> {
       appBar: TopAppBar(_setImage),
       backgroundColor: const Color.fromARGB(255, 31, 31, 31),
       body: Center(
-        child: PictureContainer(_selectedImage, _setImage),
+        child: Column(
+          children: [
+            PictureContainer(_selectedImage, _setImage),
+            ScreenSelector(
+              selectedScreen: _selectedScreen,
+            )
+          ],
+        ),
       ),
-      bottomNavigationBar: const BottomNav(),
+      bottomNavigationBar:
+          BottomNav(selectedScreen: _selectedScreen, changeScreen: _setScreen),
     );
   }
 }
