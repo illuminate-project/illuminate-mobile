@@ -11,7 +11,23 @@ class LightScreen extends StatefulWidget {
 }
 
 class _LightScreenState extends State<LightScreen> {
-  void doNothing(color) {}
+  List<Color> gradientColor = [
+    Colors.red,
+    Colors.orange,
+    Colors.yellow,
+    Colors.green,
+    Colors.blue,
+    Colors.indigo,
+    Colors.purple,
+    const Color.fromARGB(255, 252, 0, 168)
+  ];
+
+  void changeColor(color) {
+    setState(() {
+      gradientColor = [color, color];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     void showColorPicker() {
@@ -19,33 +35,55 @@ class _LightScreenState extends State<LightScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text("Pick a color"),
+              title: const Text('Select a color'),
               content: SingleChildScrollView(
                 child: ColorPicker(
-                  pickerColor: const Color(0xff443a49),
+                  pickerColor: const Color.fromARGB(255, 255, 255, 255),
                   paletteType: PaletteType.hueWheel,
-                  onColorChanged: (Color value) {
-                    doNothing(value);
+                  onColorChanged: (Color color) {
+                    changeColor(color);
                   },
                 ),
               ),
+              actions: [
+                TextButton(
+                    onPressed: () => {Navigator.pop(context)},
+                    child: const Text(
+                      'Close',
+                      style: TextStyle(fontSize: 18),
+                    ))
+              ],
             );
           });
     }
 
-    return Row(children: [
-      IconButton(
-          iconSize: 85,
-          onPressed: (() => showColorPicker()),
-          icon: const Icon(
-              color: Color.fromARGB(255, 1, 1, 1), Icons.color_lens_outlined)),
-      Column(
-        children: const [
-          MovableSlider(label: 'Intensity'),
-          MovableSlider(label: 'Distance'),
-          MovableSlider(label: 'Radius'),
-        ],
-      )
-    ]);
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          const SizedBox(
+            width: 15,
+          ),
+          GestureDetector(
+            child: Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: SweepGradient(colors: gradientColor)),
+            ),
+            onTap: () => showColorPicker(),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Column(
+            children: const [
+              MovableSlider(label: 'Intensity'),
+              MovableSlider(label: 'Distance'),
+              MovableSlider(label: 'Radius'),
+            ],
+          )
+        ]);
   }
 }
