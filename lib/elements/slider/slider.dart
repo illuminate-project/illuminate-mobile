@@ -19,13 +19,17 @@ class MovableSlider extends StatefulWidget {
 }
 
 class _MovableSliderState extends State<MovableSlider> {
+  double marginValue() {
+    return widget.type == 3 ? 12.75 : 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.max,
       children: [
-        SliderLabel(label: widget.label),
+        Container(
+            margin: EdgeInsets.only(right: marginValue()),
+            child: SliderLabel(label: widget.label)),
         SliderBar(
           selectedValue: widget.selectedValue,
           setSliderValue: widget.setSliderValue,

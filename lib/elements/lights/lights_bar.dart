@@ -42,24 +42,26 @@ class _LightsBarState extends State<LightsBar> {
       scrollDirection: Axis.horizontal,
       child: Row(children: [
         Row(children: widget.lightsButtons),
-        TextButton(
-            onPressed: () {
-              addLightButton();
-            },
-            child: Row(children: const [
-              Icon(
-                Icons.add_circle_outline,
-                size: 15,
-                color: Color.fromARGB(255, 131, 131, 131),
-              ),
-              SizedBox(
-                width: 1,
-              ),
-              Text(
-                'Add Light',
-                style: TextStyle(color: Color.fromARGB(255, 131, 131, 131)),
-              )
-            ]))
+        SizedBox(
+            height: 32.5,
+            child: TextButton(
+                onPressed: () {
+                  addLightButton();
+                },
+                child: Row(children: const [
+                  Icon(
+                    Icons.add_circle_outline,
+                    size: 15,
+                    color: Color.fromARGB(255, 131, 131, 131),
+                  ),
+                  SizedBox(
+                    width: 1,
+                  ),
+                  Text(
+                    'Add Light',
+                    style: TextStyle(color: Color.fromARGB(255, 131, 131, 131)),
+                  )
+                ])))
       ]),
     );
   }

@@ -41,23 +41,26 @@ class _LightButtonState extends State<LightButton> {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      style: TextButton.styleFrom(backgroundColor: changeColor()),
-      onPressed: () {
-        selectLight();
-      },
-      child: Row(children: [
-        Icon(
-          Icons.lightbulb_outline,
-          size: 15,
-          color: changeTextColor(),
-        ),
-        const SizedBox(
-          width: 1,
-        ),
-        Text('Light ${widget.lightIndex + 1}',
-            style: TextStyle(color: changeTextColor())),
-      ]),
-    );
+    return Container(
+        margin: const EdgeInsets.only(right: 10),
+        height: 32.5,
+        child: TextButton(
+          style: TextButton.styleFrom(backgroundColor: changeColor()),
+          onPressed: () {
+            selectLight();
+          },
+          child: Row(children: [
+            Icon(
+              Icons.lightbulb_outline,
+              size: 15,
+              color: changeTextColor(),
+            ),
+            const SizedBox(
+              width: 1,
+            ),
+            Text('Light ${widget.lightIndex + 1}',
+                style: TextStyle(color: changeTextColor())),
+          ]),
+        ));
   }
 }

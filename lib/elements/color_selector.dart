@@ -43,8 +43,8 @@ class _ColorSelectorState extends State<ColorSelector> {
 
     return GestureDetector(
       child: Container(
-        width: 80,
-        height: 80,
+        width: 70,
+        height: 70,
         decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: SweepGradient(colors: widget.colorWheelColor)),

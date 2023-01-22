@@ -28,9 +28,9 @@ class _PictureContainerState extends State<PictureContainer> {
     return GestureDetector(
       child: Container(
           width: double.infinity,
-          height: 350,
+          height: 377,
           margin: const EdgeInsets.only(
-              left: 30.0, right: 30.0, top: 30.0, bottom: 0.0),
+              left: 30, right: 30, top: 12.5, bottom: 0.0),
           decoration: BoxDecoration(
             color: const Color.fromARGB(217, 217, 217, 217),
             border: Border.all(
@@ -49,7 +49,7 @@ class _PictureContainerState extends State<PictureContainer> {
                   children: const [
                     Icon(
                       Icons.add_photo_alternate_outlined,
-                      size: 100,
+                      size: 125,
                     ),
                     SizedBox(
                       height: 10,

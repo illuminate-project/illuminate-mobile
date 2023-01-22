@@ -205,6 +205,7 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           PictureContainer(_selectedImage, _setImage),
+          const SizedBox(height: 2.5),
           LightsBar(
             setLight: _setLight,
             setScreen: _setScreen,
@@ -212,6 +213,7 @@ class _HomePageState extends State<HomePage> {
             lightsButtons: lightsButtons,
             selectedLight: _selectedLight,
           ),
+          // const SizedBox(height: 7.5),
           ScreenSelector(
             selectedScreen: _selectedScreen,
             selectedLight: _selectedLight,

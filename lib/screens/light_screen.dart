@@ -28,7 +28,7 @@ class _LightScreenState extends State<LightScreen> {
   @override
   Widget build(BuildContext context) {
     return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         mainAxisSize: MainAxisSize.max,
         children: [
           const SizedBox(
@@ -41,6 +41,7 @@ class _LightScreenState extends State<LightScreen> {
             width: 10,
           ),
           Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               MovableSlider(
                   label: 'Intensity',
@@ -60,10 +61,11 @@ class _LightScreenState extends State<LightScreen> {
             ],
           ),
           IconButton(
-            alignment: Alignment.topRight,
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.only(right: 10),
             iconSize: 35,
             onPressed: () => widget.removeLight(),
-            icon: const Icon(Icons.delete_forever),
+            icon: const Icon(Icons.delete),
             color: const Color.fromARGB(255, 255, 255, 255),
           )
         ]);
