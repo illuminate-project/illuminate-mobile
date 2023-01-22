@@ -1,62 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:test_application/elements/color_selector.dart';
 import 'package:test_application/elements/slider/slider.dart';
 
 class LightScreen extends StatefulWidget {
-  const LightScreen({super.key});
+  final double intensity;
+  final double distance;
+  final double radius;
+  final Function setSliderValue;
+  final List<Color> colorWheelColor;
+  final Function changeColor;
+  final Function removeLight;
+  const LightScreen(
+      {super.key,
+      required this.setSliderValue,
+      required this.intensity,
+      required this.distance,
+      required this.radius,
+      required this.colorWheelColor,
+      required this.changeColor,
+      required this.removeLight});
 
   @override
   State<LightScreen> createState() => _LightScreenState();
 }
 
 class _LightScreenState extends State<LightScreen> {
-  List<Color> gradientColor = [
-    Colors.red,
-    Colors.orange,
-    Colors.yellow,
-    Colors.green,
-    Colors.blue,
-    Colors.indigo,
-    Colors.purple,
-    const Color.fromARGB(255, 252, 0, 168)
-  ];
-
-  void changeColor(color) {
-    setState(() {
-      gradientColor = [color, color];
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    void showColorPicker() {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Select a color'),
-              content: SingleChildScrollView(
-                child: ColorPicker(
-                  pickerColor: const Color.fromARGB(255, 255, 255, 255),
-                  paletteType: PaletteType.hueWheel,
-                  onColorChanged: (Color color) {
-                    changeColor(color);
-                  },
-                ),
-              ),
-              actions: [
-                TextButton(
-                    onPressed: () => {Navigator.pop(context)},
-                    child: const Text(
-                      'Close',
-                      style: TextStyle(fontSize: 18),
-                    ))
-              ],
-            );
-          });
-    }
-
     return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
@@ -64,25 +34,37 @@ class _LightScreenState extends State<LightScreen> {
           const SizedBox(
             width: 15,
           ),
-          GestureDetector(
-            child: Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: SweepGradient(colors: gradientColor)),
-            ),
-            onTap: () => showColorPicker(),
-          ),
+          ColorSelector(
+              colorWheelColor: widget.colorWheelColor,
+              changeColor: widget.changeColor),
           const SizedBox(
             width: 10,
           ),
           Column(
-            children: const [
-              MovableSlider(label: 'Intensity'),
-              MovableSlider(label: 'Distance'),
-              MovableSlider(label: 'Radius'),
+            children: [
+              MovableSlider(
+                  label: 'Intensity',
+                  selectedValue: widget.intensity,
+                  setSliderValue: widget.setSliderValue,
+                  type: 1),
+              MovableSlider(
+                  label: 'Distance',
+                  selectedValue: widget.distance,
+                  setSliderValue: widget.setSliderValue,
+                  type: 2),
+              MovableSlider(
+                  label: 'Radius',
+                  selectedValue: widget.radius,
+                  setSliderValue: widget.setSliderValue,
+                  type: 3),
             ],
+          ),
+          IconButton(
+            alignment: Alignment.topRight,
+            iconSize: 35,
+            onPressed: () => widget.removeLight(),
+            icon: const Icon(Icons.delete_forever),
+            color: const Color.fromARGB(255, 255, 255, 255),
           )
         ]);
   }

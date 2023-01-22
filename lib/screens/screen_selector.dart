@@ -6,7 +6,15 @@ import 'package:test_application/screens/light_screen.dart';
 
 class ScreenSelector extends StatefulWidget {
   final int selectedScreen;
-  const ScreenSelector({super.key, required this.selectedScreen});
+  final int selectedLight;
+  final List<LightScreen> lightScreens;
+
+  const ScreenSelector({
+    super.key,
+    required this.selectedScreen,
+    required this.selectedLight,
+    required this.lightScreens,
+  });
 
   @override
   State<ScreenSelector> createState() => _ScreenSelectorState();
@@ -17,7 +25,11 @@ class _ScreenSelectorState extends State<ScreenSelector> {
     switch (value) {
       case 0:
         {
-          return const LightScreen();
+          if (widget.lightScreens.isNotEmpty) {
+            return widget.lightScreens[widget.selectedLight];
+          } else {
+            return const Text("ADD LIGHTS SCREEN");
+          }
         }
       case 1:
         {
@@ -32,7 +44,7 @@ class _ScreenSelectorState extends State<ScreenSelector> {
           return const FilterScreen();
         }
       default:
-        return const LightScreen();
+        return const Text("ADD LIGHTS SCREEN");
     }
   }
 
