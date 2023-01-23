@@ -22,14 +22,14 @@ class _HomePageState extends State<HomePage> {
   List<LightScreen> lightScreens = [];
   List<LightButton> lightsButtons = [];
   List<Color> rainbowColor = [
-    Colors.red,
-    Colors.orange,
-    Colors.yellow,
-    Colors.green,
-    Colors.blue,
-    Colors.indigo,
+    const Color.fromARGB(255, 252, 0, 92),
     Colors.purple,
-    const Color.fromARGB(255, 252, 0, 168)
+    Colors.indigo,
+    Colors.blue,
+    Colors.green,
+    Colors.yellow,
+    Colors.orange,
+    Colors.red,
   ];
 
   @override

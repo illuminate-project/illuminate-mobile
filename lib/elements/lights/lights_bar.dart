@@ -52,14 +52,14 @@ class _LightsBarState extends State<LightsBar> {
                   Icon(
                     Icons.add_circle_outline,
                     size: 15,
-                    color: Color.fromARGB(255, 131, 131, 131),
+                    color: Color.fromARGB(255, 217, 217, 217),
                   ),
                   SizedBox(
                     width: 1,
                   ),
                   Text(
                     'Add Light',
-                    style: TextStyle(color: Color.fromARGB(255, 131, 131, 131)),
+                    style: TextStyle(color: Color.fromARGB(255, 217, 217, 217)),
                   )
                 ])))
       ]),

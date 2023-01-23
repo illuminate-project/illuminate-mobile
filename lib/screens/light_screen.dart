@@ -65,8 +65,8 @@ class _LightScreenState extends State<LightScreen> {
             padding: const EdgeInsets.only(right: 10),
             iconSize: 35,
             onPressed: () => widget.removeLight(),
-            icon: const Icon(Icons.delete),
-            color: const Color.fromARGB(255, 255, 255, 255),
+            icon: const Icon(Icons.delete_forever),
+            color: const Color.fromARGB(255, 217, 217, 217),
           )
         ]);
   }

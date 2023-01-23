@@ -15,7 +15,7 @@ class _SliderLabelState extends State<SliderLabel> {
     return Text(
       widget.label,
       style: GoogleFonts.inter(
-          color: const Color.fromARGB(255, 131, 131, 131),
+          color: const Color.fromARGB(255, 217, 217, 217),
           fontWeight: FontWeight.bold),
     );
   }

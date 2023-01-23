@@ -22,7 +22,9 @@ class _ColorSelectorState extends State<ColorSelector> {
               title: const Text('Select a Color'),
               content: SingleChildScrollView(
                 child: ColorPicker(
-                  pickerColor: const Color.fromARGB(255, 255, 255, 255),
+                  pickerColor: widget.colorWheelColor.length != 2
+                      ? Colors.white
+                      : widget.colorWheelColor[0],
                   paletteType: PaletteType.hueWheel,
                   onColorChanged: (Color color) {
                     widget.changeColor(color);
