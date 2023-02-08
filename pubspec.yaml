@@ -38,6 +38,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts: ^3.0.1
   flutter_colorpicker: ^1.0.3
+  image: ^4.0.13
+  vector_math: ^2.1.2
+  cross_file_image: ^1.0.0
 
 dev_dependencies:
   flutter_test:

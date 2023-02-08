@@ -6,36 +6,22 @@ class LightsBar extends StatefulWidget {
   final Function setLight;
   final Function setScreen;
   final Function addLightScreen;
+  final Function addLightButton;
   final int selectedLight;
-  const LightsBar({
-    super.key,
-    required this.setLight,
-    required this.setScreen,
-    required this.addLightScreen,
-    required this.lightsButtons,
-    required this.selectedLight,
-  });
+  const LightsBar(
+      {super.key,
+      required this.setLight,
+      required this.setScreen,
+      required this.addLightScreen,
+      required this.lightsButtons,
+      required this.selectedLight,
+      required this.addLightButton});
 
   @override
   State<LightsBar> createState() => _LightsBarState();
 }
 
 class _LightsBarState extends State<LightsBar> {
-  void addLightButton() {
-    setState(() {
-      widget.lightsButtons.add(LightButton(
-        lightIndex: widget.lightsButtons.length,
-        setScreen: widget.setScreen,
-        setLight: widget.setLight,
-        selectedLight: widget.selectedLight,
-      ));
-
-      widget.addLightScreen();
-      widget.setLight(widget.lightsButtons.length - 1);
-      widget.setScreen(0);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -46,7 +32,7 @@ class _LightsBarState extends State<LightsBar> {
             height: 32.5,
             child: TextButton(
                 onPressed: () {
-                  addLightButton();
+                  widget.addLightButton();
                 },
                 child: Row(children: const [
                   Icon(

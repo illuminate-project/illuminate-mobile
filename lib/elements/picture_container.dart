@@ -18,9 +18,10 @@ class PictureContainer extends StatefulWidget with PreferredSizeWidget {
 
 class _PictureContainerState extends State<PictureContainer> {
   void _getImage() async {
-    XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    // XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
-    widget.changePicture(image);
+    // widget.changePicture(image);
+    widget.changePicture(XFile('assets/images/depth.png'));
   }
 
   @override
@@ -41,24 +42,26 @@ class _PictureContainerState extends State<PictureContainer> {
           child: widget.selectedImage != null
               ? Image.file(
                   File(widget.selectedImage!.path),
-                  width: double.infinity,
-                  height: double.infinity,
+                  fit: BoxFit.cover,
                 )
               : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(
+                  children: [
+                    const Icon(
                       Icons.add_photo_alternate_outlined,
                       size: 125,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Text(
+                    const Text(
                       'Add Image',
                       style:
                           TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     ),
+                    IconButton(
+                        onPressed: () => {_getImage()},
+                        icon: const Icon(Icons.add)),
                   ],
                 )),
       onTap: () {
