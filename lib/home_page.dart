@@ -212,6 +212,9 @@ class _HomePageState extends State<HomePage> {
           //Probably have something here like
           //await for normal map then dispaly and start another timer for 3 seconds then show
           //depth map, after 3 seconds of depth map, if 3d mesh isnt ready just repeat until its ready
+
+          //Side note it could be cool to add a blurred image into this for like 0.5 seconds
+          //for a way to have a transition effect
           () => {
                 _setImage(XFile('assets/images/logo.png')),
                 Timer(
