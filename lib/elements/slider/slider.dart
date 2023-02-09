@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:test_application/elements/slider/slider_bar.dart';
-import 'package:test_application/elements/slider/slider_label.dart';
+import 'package:illuminate/elements/slider/slider_bar.dart';
+import 'package:illuminate/elements/slider/slider_label.dart';
 
 class MovableSlider extends StatefulWidget {
   final String label;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:test_application/elements/color_selector.dart';
-import 'package:test_application/elements/slider/slider.dart';
+import 'package:illuminate/elements/color_selector.dart';
+import 'package:illuminate/elements/slider/slider.dart';
 
 class LightScreen extends StatefulWidget {
   final double intensity;

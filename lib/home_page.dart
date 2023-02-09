@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:test_application/screens/start_screen.dart';
+import 'package:illuminate/screens/start_screen.dart';
 import 'elements/lights/lights_bar.dart';
 import 'elements/picture_container.dart';
 import 'screens/light_screen.dart';

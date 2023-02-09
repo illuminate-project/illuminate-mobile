@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_application/elements/lights/light_button.dart';
+import 'package:illuminate/elements/lights/light_button.dart';
 
 class LightsBar extends StatefulWidget {
   final List<LightButton> lightsButtons;

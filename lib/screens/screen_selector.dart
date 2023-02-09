@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:test_application/screens/ambience_screen.dart';
-import 'package:test_application/screens/background_screen.dart';
-import 'package:test_application/screens/filter_screen.dart';
-import 'package:test_application/screens/light_screen.dart';
+import 'package:illuminate/screens/ambience_screen.dart';
+import 'package:illuminate/screens/background_screen.dart';
+import 'package:illuminate/screens/filter_screen.dart';
+import 'package:illuminate/screens/light_screen.dart';
 
 class ScreenSelector extends StatefulWidget {
   final int selectedScreen;
