@@ -5,9 +5,12 @@ import 'package:image_picker/image_picker.dart';
 
 class PictureContainer extends StatefulWidget with PreferredSizeWidget {
   final XFile? selectedImage;
+  final Function changeOriginalImage;
   final Function changePicture;
 
-  PictureContainer(this.selectedImage, this.changePicture, {super.key});
+  PictureContainer(
+      this.selectedImage, this.changePicture, this.changeOriginalImage,
+      {super.key});
 
   @override
   State<PictureContainer> createState() => _PictureContainerState();
@@ -18,10 +21,13 @@ class PictureContainer extends StatefulWidget with PreferredSizeWidget {
 
 class _PictureContainerState extends State<PictureContainer> {
   void _getImage() async {
-    // XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
-    // widget.changePicture(image);
-    widget.changePicture(XFile('assets/images/depth.png'));
+    if (image != null) {
+      widget.changePicture(image);
+      widget.changeOriginalImage(image);
+      //widget.changePicture(XFile('assets/images/depth.png'));
+    }
   }
 
   @override
@@ -29,7 +35,7 @@ class _PictureContainerState extends State<PictureContainer> {
     return GestureDetector(
       child: Container(
           width: double.infinity,
-          height: 377,
+          height: 350,
           margin: const EdgeInsets.only(
               left: 30, right: 30, top: 12.5, bottom: 0.0),
           decoration: BoxDecoration(
@@ -59,9 +65,9 @@ class _PictureContainerState extends State<PictureContainer> {
                       style:
                           TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     ),
-                    IconButton(
-                        onPressed: () => {_getImage()},
-                        icon: const Icon(Icons.add)),
+                    // IconButton(
+                    //     onPressed: () => {_getImage()},
+                    //     icon: const Icon(Icons.add)),
                   ],
                 )),
       onTap: () {

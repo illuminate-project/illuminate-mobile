@@ -20,6 +20,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   XFile? _selectedImage;
+  XFile? _originalImage;
   int _selectedScreen = 0;
   int _selectedLight = 0;
   bool _showLoadingBar = false;
@@ -78,7 +79,7 @@ class _HomePageState extends State<HomePage> {
         _setScreen(0);
       } else {
         lightsButtons.removeLast();
-        _setScreen(1);
+        _setScreen(0);
       }
     });
   }
@@ -174,6 +175,18 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _setLoadingBar(show) {
+    setState(() {
+      _showLoadingBar = show;
+    });
+  }
+
+  void _setOriginalImage(image) {
+    setState(() {
+      _originalImage = image;
+    });
+  }
+
   void _setImage(image) {
     setState(() {
       _selectedImage = image;
@@ -182,6 +195,8 @@ class _HomePageState extends State<HomePage> {
         lightsButtons.removeRange(0, lightsButtons.length);
       } else {
         if (lightScreens.isEmpty) {
+          _setLoadingBar(true);
+          Timer(const Duration(seconds: 3), () => {_setLoadingBar(false)});
           _addLight();
         }
       }
@@ -203,29 +218,29 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void _pickImage(image) {
-    setState(() {
-      _showLoadingBar = true;
-      _setImage(image);
-      Timer(
-          const Duration(seconds: 3),
-          //Probably have something here like
-          //await for normal map then dispaly and start another timer for 3 seconds then show
-          //depth map, after 3 seconds of depth map, if 3d mesh isnt ready just repeat until its ready
+  // void _pickImage(image) {
+  //   setState(() {
+  //     _showLoadingBar = true;
+  //     _setImage(image);
+  //     Timer(
+  //         const Duration(seconds: 3),
+  //         //Probably have something here like
+  //         //await for normal map then dispaly and start another timer for 3 seconds then show
+  //         //depth map, after 3 seconds of depth map, if 3d mesh isnt ready just repeat until its ready
 
-          //Side note it could be cool to add a blurred image into this for like 0.5 seconds
-          //for a way to have a transition effect
-          () => {
-                _setImage(XFile('assets/images/logo.png')),
-                Timer(
-                    const Duration(seconds: 3),
-                    () => {
-                          _setImage(XFile('assets/images/normal.png')),
-                          _showLoadingBar = false
-                        })
-              });
-    });
-  }
+  //         //Side note it could be cool to add a blurred image into this for like 0.5 seconds
+  //         //for a way to have a transition effect
+  //         () => {
+  //               _setImage(XFile('assets/images/logo.png')),
+  //               Timer(
+  //                   const Duration(seconds: 3),
+  //                   () => {
+  //                         _setImage(XFile('assets/images/normal.png')),
+  //                         _showLoadingBar = false
+  //                       })
+  //             });
+  //   });
+  // }
 
   void _setScreen(int index) {
     setState(() {
@@ -251,15 +266,19 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopAppBar(_setImage),
+      appBar: TopAppBar(_setImage, _selectedImage),
       backgroundColor: const Color.fromARGB(255, 31, 31, 31),
       body: Column(
         children: [
-          PictureContainer(_selectedImage, _pickImage),
+          PictureContainer(_selectedImage, _setImage, _setOriginalImage),
           const SizedBox(height: 2.5),
           //Probably will change this to when 3d mesh isnt null later
           _showLoadingBar == true
-              ? const SizedBox(width: 345, child: LinearProgressIndicator())
+              ? Column(children: [
+                  SizedBox(height: 1),
+                  SizedBox(width: 345, child: LinearProgressIndicator()),
+                  SizedBox(height: 5)
+                ])
               : Container(),
           //Probably will change this to when 3d mesh isnt null later
           _selectedImage == null
@@ -282,8 +301,11 @@ class _HomePageState extends State<HomePage> {
                 ])
         ],
       ),
-      bottomNavigationBar:
-          BottomNav(selectedScreen: _selectedScreen, changeScreen: _setScreen),
+      bottomNavigationBar: BottomNav(
+        selectedScreen: _selectedScreen,
+        changeScreen: _setScreen,
+        selectedImage: _selectedImage,
+      ),
     );
   }
 }

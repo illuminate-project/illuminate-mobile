@@ -44,7 +44,7 @@ class _ScreenSelectorState extends State<ScreenSelector> {
           return const FilterScreen();
         }
       default:
-        return const Text("ADD LIGHTS SCREEN");
+        return const Text("ADD LIGHTS SCREEN2");
     }
   }
 

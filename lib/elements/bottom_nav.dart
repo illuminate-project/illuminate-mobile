@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class BottomNav extends StatefulWidget {
   final Function changeScreen;
   final int selectedScreen;
+  final XFile? selectedImage;
 
   const BottomNav({
     super.key,
     required this.selectedScreen,
     required this.changeScreen,
+    required this.selectedImage,
   });
 
   @override
@@ -20,7 +23,9 @@ class _BottomNavState extends State<BottomNav> {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       backgroundColor: const Color.fromARGB(255, 31, 31, 31),
-      selectedItemColor: const Color.fromARGB(255, 227, 174, 111),
+      selectedItemColor: widget.selectedImage != null
+          ? const Color.fromARGB(255, 227, 174, 111)
+          : const Color.fromARGB(255, 131, 131, 131).withOpacity(.75),
       unselectedItemColor:
           const Color.fromARGB(255, 131, 131, 131).withOpacity(.75),
       selectedFontSize: 12,
