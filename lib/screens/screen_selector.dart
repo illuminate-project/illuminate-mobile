@@ -28,7 +28,7 @@ class _ScreenSelectorState extends State<ScreenSelector> {
           if (widget.lightScreens.isNotEmpty) {
             return widget.lightScreens[widget.selectedLight];
           } else {
-            return const Text("ADD LIGHTS SCREEN");
+            return Container();
           }
         }
       case 1:
@@ -44,7 +44,7 @@ class _ScreenSelectorState extends State<ScreenSelector> {
           return const FilterScreen();
         }
       default:
-        return const Text("ADD LIGHTS SCREEN2");
+        return Container();
     }
   }
 

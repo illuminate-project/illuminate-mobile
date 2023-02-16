@@ -64,17 +64,19 @@ class _TopAppBarState extends State<TopAppBar> {
           ),
           IconButton(
             icon: const Icon(Icons.dark_mode_outlined),
+            color: Color.fromARGB(255, 255, 255, 255),
             onPressed: () => doNothing(),
           ),
           IconButton(
               icon: const Icon(Icons.remove_red_eye_outlined),
+              color: Color.fromARGB(255, 255, 255, 255),
               onPressed: () => doNothing()),
           IconButton(
             icon: const Icon(Icons.check_circle_outline),
             color: const Color.fromARGB(255, 227, 174, 111),
             onPressed: () => {
               if (widget.selectedImage != null)
-                {showModal('Save this photo to your camera roll ?', 2)}
+                {showModal('Save this photo to your photos ?', 2)}
             },
           )
         ],

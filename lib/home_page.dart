@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:illuminate/elements/upload_picture.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:illuminate/screens/start_screen.dart';
 import 'elements/lights/lights_bar.dart';
@@ -266,13 +267,19 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopAppBar(_setImage, _selectedImage),
+      appBar:
+          _selectedImage != null ? TopAppBar(_setImage, _selectedImage) : null,
       backgroundColor: const Color.fromARGB(255, 31, 31, 31),
       body: Column(
         children: [
-          PictureContainer(_selectedImage, _setImage, _setOriginalImage),
+          _selectedImage != null
+              ? PictureContainer(_selectedImage, _setImage, _setOriginalImage)
+              : StartScreen(
+                  selectedImage: _selectedImage,
+                  changeOriginalImage: _setOriginalImage,
+                  changePicture: _setImage,
+                ),
           const SizedBox(height: 2.5),
-          //Probably will change this to when 3d mesh isnt null later
           _showLoadingBar == true
               ? Column(children: [
                   SizedBox(height: 1),
@@ -282,7 +289,7 @@ class _HomePageState extends State<HomePage> {
               : Container(),
           //Probably will change this to when 3d mesh isnt null later
           _selectedImage == null
-              ? const StartScreen()
+              ? const Text('Start Screen')
               : Column(children: [
                   LightsBar(
                     setLight: _setLight,
@@ -292,7 +299,6 @@ class _HomePageState extends State<HomePage> {
                     selectedLight: _selectedLight,
                     addLightButton: _addLight,
                   ),
-                  // const SizedBox(height: 7.5),
                   ScreenSelector(
                     selectedScreen: _selectedScreen,
                     selectedLight: _selectedLight,
