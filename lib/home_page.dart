@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:illuminate/elements/upload_picture.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:illuminate/screens/start_screen.dart';
 import 'elements/lights/lights_bar.dart';
@@ -25,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   int _selectedScreen = 0;
   int _selectedLight = 0;
   bool _showLoadingBar = false;
+  bool _3DMesh = false;
   List<LightScreen> lightScreens = [];
   List<LightButton> lightsButtons = [];
   List<Color> rainbowColor = [
@@ -194,14 +194,22 @@ class _HomePageState extends State<HomePage> {
       if (image == null) {
         lightScreens.removeRange(0, lightScreens.length);
         lightsButtons.removeRange(0, lightsButtons.length);
+        _setMesh(false);
       } else {
-        if (lightScreens.isEmpty) {
-          _setLoadingBar(true);
-          Timer(const Duration(seconds: 3), () => {_setLoadingBar(false)});
+        _setLoadingBar(true);
+        Timer(
+          const Duration(seconds: 3),
+          () => {_setLoadingBar(false), _setMesh(true)},
+        );
+        if (lightsButtons.isEmpty) {
           _addLight();
         }
       }
     });
+  }
+
+  void _setMesh(mesh) {
+    _3DMesh = mesh;
   }
 
   void _addLight() {
@@ -288,8 +296,8 @@ class _HomePageState extends State<HomePage> {
                 ])
               : Container(),
           //Probably will change this to when 3d mesh isnt null later
-          _selectedImage == null
-              ? const Text('Start Screen')
+          _3DMesh == false
+              ? Container()
               : Column(children: [
                   LightsBar(
                     setLight: _setLight,

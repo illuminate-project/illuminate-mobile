@@ -66,7 +66,7 @@ class _UploadPictureState extends State<UploadPicture> {
                   style: GoogleFonts.inter(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
-                      fontSize: 18.25),
+                      fontSize: 18.5),
                 ))
           ],
         ));

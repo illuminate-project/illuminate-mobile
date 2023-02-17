@@ -19,10 +19,11 @@ class TopAppBar extends StatefulWidget with PreferredSizeWidget {
 }
 
 class _TopAppBarState extends State<TopAppBar> {
-  void doNothing() {}
-
-  Future<void> saveImage() async {
-    await GallerySaver.saveImage(widget.selectedImage!.path);
+  String message = 'Image Saved';
+  Future<bool> saveImage() async {
+    await GallerySaver.saveImage(widget.selectedImage!.path)
+        .catchError((error, stackTrace) => false);
+    return true;
   }
 
   @override
@@ -32,15 +33,30 @@ class _TopAppBarState extends State<TopAppBar> {
         context: context,
         builder: (BuildContext context) => AlertDialog(
           title: Text(title),
+          insetPadding: EdgeInsets.only(bottom: 150),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context, 'Cancel'),
               child: const Text('Cancel'),
             ),
             TextButton(
-              onPressed: () => {
+              onPressed: () async => {
                 Navigator.pop(context, 'Yes'),
-                if (type == 1) {widget.changePicture(null)} else {saveImage()}
+                if (type == 1)
+                  {widget.changePicture(null)}
+                else
+                  {
+                    ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+                      content: Text(await saveImage() == true
+                          ? 'Image Saved!'
+                          : 'Failed to Save Image'),
+                      behavior: SnackBarBehavior.floating,
+                      margin: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).size.height - 193,
+                          right: 31.5,
+                          left: 31.5),
+                    ))
+                  }
               },
               child: const Text('Yes'),
             ),
@@ -55,30 +71,24 @@ class _TopAppBarState extends State<TopAppBar> {
         alignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-            icon: const Icon(Icons.dangerous_outlined),
-            color: const Color.fromARGB(255, 255, 140, 140),
-            onPressed: () => {
-              if (widget.selectedImage != null)
-                {showModal('Are you sure you want to remove this photo?', 1)}
-            },
-          ),
+              icon: const Icon(Icons.cancel_outlined),
+              color: const Color.fromARGB(255, 255, 140, 140),
+              onPressed: () => showModal('Remove Photo?', 1)),
           IconButton(
             icon: const Icon(Icons.dark_mode_outlined),
             color: Color.fromARGB(255, 255, 255, 255),
-            onPressed: () => doNothing(),
+            onPressed: () => {},
           ),
           IconButton(
-              icon: const Icon(Icons.remove_red_eye_outlined),
-              color: Color.fromARGB(255, 255, 255, 255),
-              onPressed: () => doNothing()),
+            icon: const Icon(Icons.remove_red_eye_outlined),
+            color: Color.fromARGB(255, 255, 255, 255),
+            onPressed: () => {},
+          ),
           IconButton(
             icon: const Icon(Icons.check_circle_outline),
             color: const Color.fromARGB(255, 227, 174, 111),
-            onPressed: () => {
-              if (widget.selectedImage != null)
-                {showModal('Save this photo to your photos ?', 2)}
-            },
-          )
+            onPressed: () => showModal('Save to Camera Roll?', 2),
+          ),
         ],
       ),
     );
