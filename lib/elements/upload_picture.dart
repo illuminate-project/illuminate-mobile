@@ -17,8 +17,13 @@ class UploadPicture extends StatefulWidget {
 }
 
 class _UploadPictureState extends State<UploadPicture> {
-  void _getImage() async {
-    XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
+  void _getImage(int type) async {
+    XFile? image;
+    if (type == 1) {
+      image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    } else {
+      image = await ImagePicker().pickImage(source: ImageSource.camera);
+    }
 
     if (image != null) {
       widget.changePicture(image);
@@ -31,7 +36,7 @@ class _UploadPictureState extends State<UploadPicture> {
   Widget build(BuildContext context) {
     return Container(
         width: double.infinity,
-        height: 200,
+        height: 285,
         margin: const EdgeInsets.only(left: 40, right: 40, top: 0, bottom: 0),
         decoration: BoxDecoration(
           color: Color.fromARGB(255, 56, 56, 56),
@@ -50,9 +55,9 @@ class _UploadPictureState extends State<UploadPicture> {
                     fontSize: 20,
                   )),
             ),
-            SizedBox(height: 40),
+            SizedBox(height: 30),
             ElevatedButton(
-                onPressed: () => {_getImage()},
+                onPressed: () => {_getImage(1)},
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(270, 55),
                   backgroundColor: Color.fromARGB(255, 255, 220, 128),
@@ -62,6 +67,24 @@ class _UploadPictureState extends State<UploadPicture> {
                 ),
                 child: Text(
                   'Import Photo',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.inter(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.5),
+                )),
+            SizedBox(height: 30),
+            ElevatedButton(
+                onPressed: () => {_getImage(2)},
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(270, 55),
+                  backgroundColor: Color.fromARGB(255, 255, 220, 128),
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(15.0),
+                  ),
+                ),
+                child: Text(
+                  'Take Photo',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.inter(
                       color: Colors.black,

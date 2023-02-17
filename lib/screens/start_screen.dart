@@ -30,7 +30,7 @@ class _StartScreenState extends State<StartScreen> {
                     fit: BoxFit.fitHeight),
               ),
             )),
-        SizedBox(height: 75),
+        SizedBox(height: 55),
         UploadPicture(
           selectedImage: widget.selectedImage,
           changeOriginalImage: widget.changeOriginalImage,

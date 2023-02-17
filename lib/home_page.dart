@@ -192,9 +192,9 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _selectedImage = image;
       if (image == null) {
+        _setMesh(false);
         lightScreens.removeRange(0, lightScreens.length);
         lightsButtons.removeRange(0, lightsButtons.length);
-        _setMesh(false);
       } else {
         _setLoadingBar(true);
         Timer(
@@ -315,11 +315,12 @@ class _HomePageState extends State<HomePage> {
                 ])
         ],
       ),
-      bottomNavigationBar: BottomNav(
-        selectedScreen: _selectedScreen,
-        changeScreen: _setScreen,
-        selectedImage: _selectedImage,
-      ),
+      bottomNavigationBar: _selectedImage != null
+          ? BottomNav(
+              selectedScreen: _selectedScreen,
+              changeScreen: _setScreen,
+            )
+          : null,
     );
   }
 }
