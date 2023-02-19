@@ -1,4 +1,5 @@
-// Personal implementation less based on boilerplate example code from the package's Github repo. THIS DOES NOT WORK RIGHT NOW, MISSING A LOT OF CODE TO WORK
+// THIS DOES NOT WORK RIGHT NOW, MISSING A LOT OF CODE TO WORK
+// Personal implementation less based on boilerplate example code from the package's Github repo.
 // import 'dart:async';
 
 // import 'package:flutter/foundation.dart';
