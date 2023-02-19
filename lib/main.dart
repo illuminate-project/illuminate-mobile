@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:prototype_app/picture_container.dart';
+import 'package:prototype_app/testscene.dart';
+import 'package:three_dart/three_dart.dart';
+import 'package:prototype_app/webgl_loader_obj.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,11 +44,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 31, 31, 31),
-      body: Center(
-        child: PictureContainer(_selectedImage, _setImage),
-      ),
-    );
+    return WebGlLoaderObj();
   }
 }
