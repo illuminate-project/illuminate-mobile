@@ -118,3 +118,6 @@ fetch("https://densedepth-1e8c4305.hosted-models.runwayml.cloud/v1/", {
 
 # 3D Stuff
 Might be helpful: https://www.reddit.com/r/flutterhelp/comments/wb6sep/flutter_threejs/
+
+# Javascript 3D Model Development
+https://huggingface.co/spaces/johnrobinsn/MidasDepthEstimation
