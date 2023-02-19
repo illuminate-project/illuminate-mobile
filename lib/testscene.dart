@@ -1,10 +1,10 @@
 // Personal implementation less based on boilerplate example code from the package's Github repo. THIS DOES NOT WORK RIGHT NOW, MISSING A LOT OF CODE TO WORK
-import 'dart:async';
+// import 'dart:async';
 
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_gl/flutter_gl.dart';
+// import 'package:flutter_gl/flutter_gl.dart';
 import 'package:three_dart/three_dart.dart' as three;
 import 'package:three_dart_jsm/three_dart_jsm.dart' as three_jsm;
 
@@ -15,27 +15,27 @@ class testscene extends StatefulWidget {
 class _MyAppState extends State<testscene> {
   @override
   setup() {
-    three.Camera camera = new three.PerspectiveCamera(40, 1, 0.1, 10);
+    three.Camera camera = three.PerspectiveCamera(40, 1, 0.1, 10);
     camera.position.z = 3;
 
-    late three.Scene scene = new three.Scene();
+    late three.Scene scene = three.Scene();
     camera.lookAt(scene.position);
 
     scene.background = three.Color(1.0, 1.0, 1.0);
-    scene.add(new three.AmbientLight(0x222244, null));
+    scene.add(three.AmbientLight(0x222244, null));
 
-    var geometryCylinder = new three.CylinderGeometry(0.5, 0.5, 1, 32);
-    var materialCylinder = new three.MeshPhongMaterial({"color": 0xff0000});
+    var geometryCylinder = three.CylinderGeometry(0.5, 0.5, 1, 32);
+    var materialCylinder = three.MeshPhongMaterial({"color": 0xff0000});
 
-    late three.Mesh mesh = new three.Mesh(geometryCylinder, materialCylinder);
+    late three.Mesh mesh = three.Mesh(geometryCylinder, materialCylinder);
     scene.add(mesh);
   }
 
   initPage() async {
     final mqd = MediaQuery.of(context);
     Size? screenSize = mqd.size;
-    double width = screenSize!.width;
-    double height = screenSize!.height;
+    double width = screenSize.width;
+    double height = screenSize.height;
     three.Camera camera = three.PerspectiveCamera(45, width / height, 1, 2000);
     camera.position.z = 250;
 
