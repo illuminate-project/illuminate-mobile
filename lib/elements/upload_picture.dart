@@ -66,7 +66,7 @@ class _UploadPictureState extends State<UploadPicture> {
                   ),
                 ),
                 child: Text(
-                  'Import Photo',
+                  'Upload Photo',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.inter(
                       color: Colors.black,

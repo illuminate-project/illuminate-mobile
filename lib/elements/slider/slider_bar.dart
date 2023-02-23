@@ -15,7 +15,6 @@ class SliderBar extends StatefulWidget {
 }
 
 class _SliderBarState extends State<SliderBar> {
-  void doNothing() {}
   @override
   Widget build(BuildContext context) {
     return Slider(
