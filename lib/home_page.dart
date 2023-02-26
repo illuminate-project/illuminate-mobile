@@ -23,6 +23,7 @@ class _HomePageState extends State<HomePage> {
   XFile? _originalImage;
   int _selectedScreen = 0;
   int _selectedLight = 0;
+  double _ambience = 0;
   bool _showLoadingBar = false;
   bool _3DMesh = false;
   List<LightScreen> lightScreens = [];
@@ -37,6 +38,8 @@ class _HomePageState extends State<HomePage> {
     Colors.orange,
     Colors.red,
   ];
+
+  List<Color> _ambienceColor = [Colors.white, Colors.white];
 
   @override
   void initState() {
@@ -102,6 +105,12 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _changeAmbienceColor(color) {
+    setState(() {
+      _ambienceColor = [color, color];
+    });
+  }
+
   void _setSliderValue(double value, int type) {
     switch (type) {
       case 1:
@@ -158,6 +167,13 @@ class _HomePageState extends State<HomePage> {
           });
           break;
         }
+      case 4:
+        {
+          setState(() {
+            _ambience = value;
+          });
+          break;
+        }
       default:
     }
   }
@@ -195,6 +211,8 @@ class _HomePageState extends State<HomePage> {
         _setMesh(false);
         lightScreens.removeRange(0, lightScreens.length);
         lightsButtons.removeRange(0, lightsButtons.length);
+        _ambienceColor = [Colors.white, Colors.white];
+        _ambience = 0;
       } else {
         _setLoadingBar(true);
         Timer(
@@ -311,6 +329,13 @@ class _HomePageState extends State<HomePage> {
                     selectedScreen: _selectedScreen,
                     selectedLight: _selectedLight,
                     lightScreens: lightScreens,
+                    originalImage: _originalImage,
+                    setSelectedImage: _setImage,
+                    selectedValue: _ambience,
+                    setSliderValue: _setSliderValue,
+                    type: 4,
+                    ambienceColor: _ambienceColor,
+                    changeAmbienceColor: _changeAmbienceColor,
                   ),
                 ])
         ],
