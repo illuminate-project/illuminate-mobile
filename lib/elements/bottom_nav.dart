@@ -36,10 +36,10 @@ class _BottomNavState extends State<BottomNav> {
           label: 'Ambience',
           icon: Icon(Icons.wb_sunny_outlined),
         ),
-        BottomNavigationBarItem(
-          label: 'Background',
-          icon: Icon(Icons.filter),
-        ),
+        // BottomNavigationBarItem(
+        //   label: 'Background',
+        //   icon: Icon(Icons.filter),
+        // ),
         BottomNavigationBarItem(
           label: 'Filter',
           icon: Icon(Icons.filter_b_and_w),

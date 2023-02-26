@@ -60,10 +60,6 @@ class _ScreenSelectorState extends State<ScreenSelector> {
         }
       case 2:
         {
-          return const BackgroundScreen();
-        }
-      case 3:
-        {
           return FilterScreen(
             originalImage: widget.originalImage,
             setSelectedImage: widget.setSelectedImage,

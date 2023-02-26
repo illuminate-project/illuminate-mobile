@@ -71,7 +71,7 @@ class _FilterScreenState extends State<FilterScreen> {
             ),
           ),
           child: Text(
-            'Apply Filter',
+            'Select Filter',
             textAlign: TextAlign.center,
             style: GoogleFonts.inter(
                 color: Colors.black,

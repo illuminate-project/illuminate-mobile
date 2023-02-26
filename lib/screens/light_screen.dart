@@ -27,44 +27,47 @@ class LightScreen extends StatefulWidget {
 class _LightScreenState extends State<LightScreen> {
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      const SizedBox(
-        width: 15,
-      ),
-      ColorSelector(
-          colorWheelColor: widget.colorWheelColor,
-          changeColor: widget.changeColor),
-      const SizedBox(
-        width: 10,
-      ),
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          MovableSlider(
-              label: 'Intensity',
-              selectedValue: widget.intensity,
-              setSliderValue: widget.setSliderValue,
-              type: 1),
-          MovableSlider(
-              label: 'Distance',
-              selectedValue: widget.distance,
-              setSliderValue: widget.setSliderValue,
-              type: 2),
-          MovableSlider(
-              label: 'Radius',
-              selectedValue: widget.radius,
-              setSliderValue: widget.setSliderValue,
-              type: 3),
-        ],
-      ),
-      IconButton(
-        alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.only(right: 10),
-        iconSize: 35,
-        onPressed: () => widget.removeLight(),
-        icon: const Icon(Icons.delete_forever),
-        color: const Color.fromARGB(255, 217, 217, 217),
-      )
+    return Column(children: [
+      SizedBox(height: 12),
+      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        const SizedBox(
+          width: 15,
+        ),
+        ColorSelector(
+            colorWheelColor: widget.colorWheelColor,
+            changeColor: widget.changeColor),
+        const SizedBox(
+          width: 10,
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            MovableSlider(
+                label: 'Intensity',
+                selectedValue: widget.intensity,
+                setSliderValue: widget.setSliderValue,
+                type: 1),
+            MovableSlider(
+                label: 'Distance',
+                selectedValue: widget.distance,
+                setSliderValue: widget.setSliderValue,
+                type: 2),
+            MovableSlider(
+                label: 'Radius',
+                selectedValue: widget.radius,
+                setSliderValue: widget.setSliderValue,
+                type: 3),
+          ],
+        ),
+        IconButton(
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.only(right: 10),
+          iconSize: 35,
+          onPressed: () => widget.removeLight(),
+          icon: const Icon(Icons.delete_forever),
+          color: const Color.fromARGB(255, 217, 217, 217),
+        )
+      ])
     ]);
   }
 }
