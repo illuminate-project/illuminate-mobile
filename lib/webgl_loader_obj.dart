@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gl/flutter_gl.dart';
+// for some reason I had to remove this line to prevent a compilation error
+// import 'package:three_dart/three3d/three.dart';
 import 'package:three_dart/three_dart.dart' as three;
 import 'package:three_dart_jsm/three_dart_jsm.dart' as three_jsm;
 
@@ -193,15 +195,144 @@ class _MyAppState extends State<WebGlLoaderObj> {
     // scene
 
     scene = three.Scene();
+    
+    // ambient light settings
+    // bool ambientLightOn = true;
+    var ambientLightColor = 0xffffff;
+    var ambientLightIntensity = 0.8;
+    var ambientLight = three.AmbientLight(ambientLightColor, ambientLightIntensity);
 
-    var ambientLight = three.AmbientLight(0xcccccc, 0.4);
+    // we kinda need an ambient light to be on at all times or else we can't see anything
+    // but the functionality to turn it off is here anyway if we need it for whatever reason
+    // if (ambientLightOn == false)
+    // {
+      // ambientLight = three.AmbientLight(0xffffff, 0);
+    // }
+
     scene.add(ambientLight);
 
-    var pointLight = three.PointLight(0xffffff, 0.8);
-    camera.add(pointLight);
+    // directional light settings
+    bool directionalLightOn = true;
+    var directionalLightColor = 0xfdcf60;
+    var directionalLightIntensity = 0.9;
+    var directionalLight = three.DirectionalLight(directionalLightColor, directionalLightIntensity);
+
+    if (directionalLightOn == false)
+    {
+      directionalLight = three.DirectionalLight(0x000000, 0);
+    }
+
+    // directional light targeting
+    // how this works is the light direction points at the origin and starts from the position set here
+    // if we want to make the light come from the opposite direction, we can use negative values
+    // not sure how we can make this more intuitive for the user in the app though
+    double fromX = -60;
+    double fromY = -10;
+    double fromZ = -100;
+    directionalLight.position.set(fromX, fromY, fromZ);
+
+    scene.add(directionalLight);
+
+    // point light 1 settings
+    bool pointLight1On = false;
+    var pointLight1Color = 0xFF2D00;
+    double pointLight1Intensity = 0.8;
+    var pointLight1 = three.PointLight(pointLight1Color, pointLight1Intensity);
+
+    if (pointLight1On == false)
+    {
+      pointLight1 = three.PointLight(0x000000, 0);
+    }
+
+    // point light 1 position
+    double pointLight1X = 10.0;
+    double pointLight1Y = 10.0;
+    double pointlight1Z = 4.0;
+    
+    pointLight1.position.set(pointLight1X, pointLight1Y, pointlight1Z);
+    camera.add(pointLight1);
+
+    // point light 2 settings
+    bool pointLight2On = false;
+    var pointLight2Color = 0xFF2D00;
+    double pointLight2Intensity = 1.0;
+    var pointLight2 = three.PointLight(pointLight2Color, pointLight2Intensity);
+
+    if (pointLight2On == false)
+    {
+      pointLight2 = three.PointLight(0x000000, 0);
+    }
+
+    // point light 2 position
+    double pointLight2X = -10.0;
+    double pointLight2Y = -10.0;
+    double pointlight2Z = 4.0;
+
+    pointLight2.position.set(pointLight2X, pointLight2Y, pointlight2Z);
+    camera.add(pointLight2);
+
+    // point light 3 settings
+    bool pointLight3On = false;
+    var pointLight3Color = 0xFF2D00;
+    double pointLight3Intensity = 1.0;
+    var pointLight3 = three.PointLight(pointLight3Color, pointLight3Intensity);
+
+    if (pointLight3On == false)
+    {
+      pointLight3 = three.PointLight(0x000000, 0);
+    }
+
+    // point light 3 position
+    double pointLight3X = -10.0;
+    double pointLight3Y = -10.0;
+    double pointlight3Z = 4.0;
+
+    pointLight3.position.set(pointLight3X, pointLight3Y, pointlight3Z);
+    camera.add(pointLight3);
+
+    // point light 4 settings
+    bool pointLight4On = false;
+    var pointLight4Color = 0xFF2D00;
+    double pointLight4Intensity = 1.0;
+    var pointLight4 = three.PointLight(pointLight4Color, pointLight4Intensity);
+
+    if (pointLight4On == false)
+    {
+      pointLight4 = three.PointLight(0x000000, 0);
+    }
+
+    // point light 4 position
+    double pointLight4X = -10.0;
+    double pointLight4Y = -10.0;
+    double pointlight4Z = 4.0;
+
+    pointLight2.position.set(pointLight4X, pointLight4Y, pointlight4Z);
+    camera.add(pointLight4);
+
+    // point light 5 settings
+    bool pointLight5On = false;
+    var pointLight5Color = 0xFF2D00;
+    double pointLight5Intensity = 1.0;
+    var pointLight5 = three.PointLight(pointLight5Color, pointLight5Intensity);
+
+    if (pointLight5On == false)
+    {
+      pointLight5 = three.PointLight(0x000000, 0);
+    }
+
+    // point light 5 position
+    double pointLight5X = -10.0;
+    double pointLight5Y = -10.0;
+    double pointlight5Z = 4.0;
+
+    pointLight5.position.set(pointLight5X, pointLight5Y, pointlight5Z);
+    camera.add(pointLight5);
+    
+    // camera
     scene.add(camera);
 
     // texture
+    // UV mapping is currently bugged, working on a fix
 
     var textureLoader = three.TextureLoader(null);
     textureLoader.flipY = true;
@@ -215,6 +346,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
     var loader = three_jsm.OBJLoader(null);
     object = await loader.loadAsync('squirtle.obj');
+
 
     object.traverse((child) {
       if (child is three.Mesh) {
