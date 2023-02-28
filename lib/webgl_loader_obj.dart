@@ -189,11 +189,17 @@ class _MyAppState extends State<WebGlLoaderObj> {
   }
 
   initPage() async {
-    camera = three.PerspectiveCamera(45, (width / height), 1, 2000);
-    camera.position.z = 20;
+    // camera settings
+    double cameraFOV = 45;
+    camera = three.PerspectiveCamera(cameraFOV, (width / height), 1, 1000);
+    double cameraX = 0;
+    double cameraY = 2;
+    double cameraZ = 10;
+    camera.position.x = cameraX;
+    camera.position.y = cameraY;
+    camera.position.z = cameraZ;
 
     // scene
-
     scene = three.Scene();
     
     // ambient light settings
@@ -228,15 +234,15 @@ class _MyAppState extends State<WebGlLoaderObj> {
     // not sure how we can make this more intuitive for the user in the app though
     double fromX = -60;
     double fromY = -10;
-    double fromZ = -100;
+    double fromZ = 100;
     directionalLight.position.set(fromX, fromY, fromZ);
 
     scene.add(directionalLight);
 
     // point light 1 settings
     bool pointLight1On = false;
-    var pointLight1Color = 0xFF2D00;
-    double pointLight1Intensity = 0.8;
+    var pointLight1Color = 0xe59f3e;
+    double pointLight1Intensity = 0.6;
     var pointLight1 = three.PointLight(pointLight1Color, pointLight1Intensity);
 
     if (pointLight1On == false)
@@ -245,9 +251,9 @@ class _MyAppState extends State<WebGlLoaderObj> {
     }
 
     // point light 1 position
-    double pointLight1X = 10.0;
-    double pointLight1Y = 10.0;
-    double pointlight1Z = 4.0;
+    double pointLight1X = 50.0;
+    double pointLight1Y = 20.0;
+    double pointlight1Z = 6.0;
     
     pointLight1.position.set(pointLight1X, pointLight1Y, pointlight1Z);
     camera.add(pointLight1);
@@ -331,8 +337,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     // camera
     scene.add(camera);
 
-    // texture
-    // UV mapping is currently bugged, working on a fix
+    // textures
 
     var textureLoader = three.TextureLoader(null);
     textureLoader.flipY = true;
