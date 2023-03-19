@@ -341,7 +341,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
     var textureLoader = three.TextureLoader(null);
     textureLoader.flipY = true;
-    texture = await textureLoader.loadAsync('squirtle_texture.png', null);
+    texture = await textureLoader.loadAsync('assets/squirtle_texture.png', null);
 
     texture.magFilter = three.LinearFilter;
     texture.minFilter = three.LinearMipmapLinearFilter;
@@ -350,7 +350,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     texture.flipY = true; // this flipY is only for web
 
     var loader = three_jsm.OBJLoader(null);
-    object = await loader.loadAsync('squirtle.obj');
+    object = await loader.loadAsync('assets/squirtle.obj');
 
 
     object.traverse((child) {
