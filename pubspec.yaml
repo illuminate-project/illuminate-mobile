@@ -45,6 +45,10 @@ dependencies:
   gallery_saver: ^2.3.2
   blur: ^3.1.0
   photofilters: ^3.0.1
+  http: ^0.13.5
+  dio: ^4.0.6
+  three_dart: ^0.0.16
+  three_dart_jsm: ^0.0.10
 
 dev_dependencies:
   flutter_test:

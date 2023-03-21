@@ -34,9 +34,8 @@ class _PictureContainerState extends State<PictureContainer> {
           ),
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Image.file(
-          File(widget.selectedImage!.path),
-          fit: BoxFit.cover,
+        child: Image.asset(
+          'images/depth.png',
         ));
   }
 }

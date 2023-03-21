@@ -10,6 +10,7 @@ import 'elements/lights/light_button.dart';
 import 'elements/top_app_bar.dart';
 import 'elements/bottom_nav.dart';
 import 'screens/screen_selector.dart';
+import 'webgl_loader_obj.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -299,7 +300,10 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           _selectedImage != null
-              ? PictureContainer(_selectedImage, _setImage, _setOriginalImage)
+              ? Container(
+                  child: SizedBox(height: 400, child: WebGlLoaderObj()),
+                  color: Color.fromARGB(255, 255, 0, 0),
+                ) //PictureContainer(_selectedImage, _setImage, _setOriginalImage)
               : StartScreen(
                   selectedImage: _selectedImage,
                   changeOriginalImage: _setOriginalImage,
