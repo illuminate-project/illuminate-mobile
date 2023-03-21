@@ -193,8 +193,8 @@ class _MyAppState extends State<WebGlLoaderObj> {
     double cameraFOV = 45;
     camera = three.PerspectiveCamera(cameraFOV, (width / height), 1, 1000);
     double cameraX = 0;
-    double cameraY = 2;
-    double cameraZ = 10;
+    double cameraY = 0;
+    double cameraZ = 15;
     camera.position.x = cameraX;
     camera.position.y = cameraY;
     camera.position.z = cameraZ;
