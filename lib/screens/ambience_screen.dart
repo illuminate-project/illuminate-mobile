@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:illuminate/elements/color_selector.dart';
 import 'package:illuminate/elements/slider/slider_bar.dart';
 import 'package:illuminate/elements/slider/slider_label.dart';

@@ -1,7 +1,10 @@
 import 'dart:async';
-
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:illuminate/screens/start_screen.dart';
 import 'elements/lights/lights_bar.dart';
 import 'elements/picture_container.dart';
@@ -16,10 +19,10 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   XFile? _selectedImage;
   XFile? _originalImage;
   int _selectedScreen = 0;
@@ -291,6 +294,28 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  ScreenshotController screenshotController = ScreenshotController();
+  File? screenshotImage;
+  Uint8List? testImage;
+  int iterator = 0;
+
+  Future<bool> newSave(File currImage) async {
+    await GallerySaver.saveImage(currImage.path)
+        .catchError((error, stackTrace) => false);
+    return true;
+  }
+
+  Uint8List? sceneCapture() {
+    screenshotController.capture().then((image) {
+      //Capture Done
+      testImage = image;
+      iterator++;
+      return image;
+    }).catchError((onError) {
+      print(onError);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -300,10 +325,11 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           _selectedImage != null
-              ? Container(
-                  child: SizedBox(height: 400, child: WebGlLoaderObj()),
-                  color: Color.fromARGB(255, 255, 0, 0),
-                ) //PictureContainer(_selectedImage, _setImage, _setOriginalImage)
+              ? Screenshot(
+                  controller: screenshotController,
+                  child: Container(
+                      child: SizedBox(height: 400, child: WebGlLoaderObj())))
+              //PictureContainer(_selectedImage, _setImage, _setOriginalImage)
               : StartScreen(
                   selectedImage: _selectedImage,
                   changeOriginalImage: _setOriginalImage,
@@ -344,6 +370,11 @@ class _HomePageState extends State<HomePage> {
                 ])
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            sceneCapture();
+          },
+          child: const Icon(Icons.navigation)),
       bottomNavigationBar: _selectedImage != null
           ? BottomNav(
               selectedScreen: _selectedScreen,

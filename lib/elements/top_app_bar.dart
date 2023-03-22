@@ -1,6 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:flutter/material.dart';
+import '../home_page.dart';
 
 class TopAppBar extends StatefulWidget with PreferredSizeWidget {
   final Function changePicture;
@@ -19,12 +23,15 @@ class TopAppBar extends StatefulWidget with PreferredSizeWidget {
 }
 
 class _TopAppBarState extends State<TopAppBar> {
-  String message = 'Image Saved';
   Future<bool> saveImage() async {
+    print(testImage);
     await GallerySaver.saveImage(widget.selectedImage!.path)
         .catchError((error, stackTrace) => false);
     return true;
   }
+
+  File? screenshotImage;
+  Uint8List? testImage;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +94,10 @@ class _TopAppBarState extends State<TopAppBar> {
           IconButton(
             icon: const Icon(Icons.check_circle_outline),
             color: const Color.fromARGB(255, 227, 174, 111),
-            onPressed: () => showModal('Save to Camera Roll?', 2),
+            onPressed: () => {
+              testImage = HomePageState().sceneCapture(),
+              showModal('Save to Camera Roll?', 2)
+            },
           ),
         ],
       ),
