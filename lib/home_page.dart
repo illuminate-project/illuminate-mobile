@@ -22,7 +22,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => HomePageState();
 }
 
-class HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> with ChangeNotifier{
   XFile? _selectedImage;
   XFile? _originalImage;
   int _selectedScreen = 0;

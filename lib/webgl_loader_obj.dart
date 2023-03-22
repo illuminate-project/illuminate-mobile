@@ -6,10 +6,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gl/flutter_gl.dart';
+import 'package:illuminate/screens/light_screen.dart';
+import 'package:provider/provider.dart';
 // for some reason I had to remove this line to prevent a compilation error
 // import 'package:three_dart/three3d/three.dart';
 import 'package:three_dart/three_dart.dart' as three;
 import 'package:three_dart_jsm/three_dart_jsm.dart' as three_jsm;
+
+import 'home_page.dart';
 
 class WebGlLoaderObj extends StatefulWidget {
   const WebGlLoaderObj({Key? key}) : super(key: key);
@@ -50,6 +54,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
   @override
   void initState() {
     super.initState();
+    
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -94,6 +99,10 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
   @override
   Widget build(BuildContext context) {
+    
+    var homePageState = Provider.of<HomePageState>(context, listen: false);
+    List<LightScreen> lightScreens = homePageState.lightScreens;
+    
     return Scaffold(
       body: Builder(
         builder: (BuildContext context) {
@@ -219,7 +228,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     scene.add(ambientLight);
 
     // directional light settings
-    bool directionalLightOn = true;
+    bool directionalLightOn = false;
     var directionalLightColor = 0xfdcf60;
     var directionalLightIntensity = 0.9;
     var directionalLight = three.DirectionalLight(
@@ -241,7 +250,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     scene.add(directionalLight);
 
     // point light 1 settings
-    bool pointLight1On = false;
+    bool pointLight1On = true;
     var pointLight1Color = 0xe59f3e;
     double pointLight1Intensity = 0.6;
     var pointLight1 = three.PointLight(pointLight1Color, pointLight1Intensity);
