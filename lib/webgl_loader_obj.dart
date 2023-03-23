@@ -169,7 +169,6 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
     final gl = three3dRender.gl;
 
-    // camera.add(pointLight1);
     renderer!.render(scene, camera);
 
     int t1 = DateTime.now().millisecondsSinceEpoch;
@@ -290,7 +289,6 @@ class _MyAppState extends State<WebGlLoaderObj> {
       pointLight1Intensity = lightScreens[0].intensity;
       pointLight1X = lightScreens[0].distance;
       pointLight1Y = lightScreens[0].radius;
-      print(pointLight1Intensity);
       pointLight1 = three.PointLight(pointLight1Color, pointLight1Intensity);
     }
 
@@ -319,7 +317,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     double pointLight2Y = 20.0;
     double pointlight2Z = 6.0;
 
-    if (lightScreens.length >= 2)
+    if (lightScreens.length >= 2 && lightScreens[1] != null)
     {
       pointLight2On = true;
       pointLight2Intensity = lightScreens[1].intensity;
@@ -344,57 +342,108 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
     // point light 3 settings
     bool pointLight3On = false;
-    var pointLight3Color = 0xFF2D00;
-    double pointLight3Intensity = 1.0;
-    var pointLight3 = three.PointLight(pointLight3Color, pointLight3Intensity);
-
-    if (pointLight3On == false) {
-      pointLight3 = three.PointLight(0x000000, 0);
-    }
+    var pointLight3Color = 0xe59f3e;
+    double pointLight3Intensity = 0.0;
+    var pointLight3 = three.PointLight(0x000000, 0);
+    print(pointLight3Intensity);
 
     // point light 3 position
-    double pointLight3X = -10.0;
-    double pointLight3Y = -10.0;
-    double pointlight3Z = 4.0;
+    double pointLight3X = 50.0;
+    double pointLight3Y = 20.0;
+    double pointlight3Z = 6.0;
 
+    if (lightScreens.length >= 3 && lightScreens[2] != null)
+    {
+      pointLight3On = true;
+      pointLight3Intensity = lightScreens[2].intensity;
+      pointLight3X = lightScreens[2].distance;
+      pointLight3Y = lightScreens[2].radius;
+      print(pointLight3Intensity);
+      pointLight3 = three.PointLight(pointLight3Color, pointLight3Intensity);
+    }
+
+    else
+    {
+      pointLight3 = three.PointLight(0x000000, 0);
+    }
+    
     pointLight3.position.set(pointLight3X, pointLight3Y, pointlight3Z);
     camera.add(pointLight3);
 
-    // point light 4 settings
-    bool pointLight4On = false;
-    var pointLight4Color = 0xFF2D00;
-    double pointLight4Intensity = 1.0;
-    var pointLight4 = three.PointLight(pointLight4Color, pointLight4Intensity);
-
-    if (pointLight4On == false) {
-      pointLight4 = three.PointLight(0x000000, 0);
+    if (lightScreens.length < 3)
+    {
+      camera.remove(pointLight3);
     }
 
-    // point light 4 position
-    double pointLight4X = -10.0;
-    double pointLight4Y = -10.0;
-    double pointlight4Z = 4.0;
+    // point light 4 settings
+    bool pointLight4On = false;
+    var pointLight4Color = 0xe59f3e;
+    double pointLight4Intensity = 0.0;
+    var pointLight4 = three.PointLight(0x000000, 0);
+    print(pointLight4Intensity);
 
-    pointLight2.position.set(pointLight4X, pointLight4Y, pointlight4Z);
+    // point light 4 position
+    double pointLight4X = 50.0;
+    double pointLight4Y = 20.0;
+    double pointlight4Z = 6.0;
+
+    if (lightScreens.length >= 4 && lightScreens[3] != null)
+    {
+      pointLight4On = true;
+      pointLight4Intensity = lightScreens[3].intensity;
+      pointLight4X = lightScreens[3].distance;
+      pointLight4Y = lightScreens[3].radius;
+      print(pointLight4Intensity);
+      pointLight4 = three.PointLight(pointLight4Color, pointLight4Intensity);
+    }
+
+    else
+    {
+      pointLight4 = three.PointLight(0x000000, 0);
+    }
+    
+    pointLight4.position.set(pointLight4X, pointLight4Y, pointlight4Z);
     camera.add(pointLight4);
+
+    if (lightScreens.length < 4)
+    {
+      camera.remove(pointLight4);
+    }
 
     // point light 5 settings
     bool pointLight5On = false;
-    var pointLight5Color = 0xFF2D00;
-    double pointLight5Intensity = 1.0;
-    var pointLight5 = three.PointLight(pointLight5Color, pointLight5Intensity);
-
-    if (pointLight5On == false) {
-      pointLight5 = three.PointLight(0x000000, 0);
-    }
+    var pointLight5Color = 0xe59f3e;
+    double pointLight5Intensity = 0.0;
+    var pointLight5 = three.PointLight(0x000000, 0);
+    print(pointLight5Intensity);
 
     // point light 5 position
-    double pointLight5X = -10.0;
-    double pointLight5Y = -10.0;
-    double pointlight5Z = 4.0;
+    double pointLight5X = 50.0;
+    double pointLight5Y = 20.0;
+    double pointlight5Z = 6.0;
 
+    if (lightScreens.length >= 5 && lightScreens[4] != null)
+    {
+      pointLight5On = true;
+      pointLight5Intensity = lightScreens[4].intensity;
+      pointLight5X = lightScreens[4].distance;
+      pointLight5Y = lightScreens[4].radius;
+      print(pointLight5Intensity);
+      pointLight5 = three.PointLight(pointLight5Color, pointLight5Intensity);
+    }
+
+    else
+    {
+      pointLight5 = three.PointLight(0x000000, 0);
+    }
+    
     pointLight5.position.set(pointLight5X, pointLight5Y, pointlight5Z);
     camera.add(pointLight5);
+
+    if (lightScreens.length < 5)
+    {
+      camera.remove(pointLight5);
+    }
 
     // camera
     scene.add(camera);
