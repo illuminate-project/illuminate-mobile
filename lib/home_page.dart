@@ -14,6 +14,7 @@ import 'elements/top_app_bar.dart';
 import 'elements/bottom_nav.dart';
 import 'screens/screen_selector.dart';
 import 'webgl_loader_obj.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -297,8 +298,9 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
   }
 
   ScreenshotController screenshotController = ScreenshotController();
-  File? screenshotImage;
-  Uint8List? testImage;
+
+  Uint8List? screenshotImage;
+  
   int iterator = 0;
 
   Future<bool> newSave(File currImage) async {
@@ -310,12 +312,32 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
   Uint8List? sceneCapture() {
     screenshotController.capture().then((image) {
       //Capture Done
-      testImage = image;
+      screenshotImage = image;
       iterator++;
+      setState(() {
+        
+      });
       return image;
     }).catchError((onError) {
       print(onError);
     });
+  }
+
+  Widget downloadFAB() {
+    if (_selectedImage != null) {
+      FloatingActionButton(
+            onPressed: () async {
+              sceneCapture();
+              File temp = File.fromRawPath(screenshotImage!);
+              GallerySaver.saveImage(temp.path)
+                .catchError((error, stackTrace) => false);
+            },
+            child: const Icon(Icons.download));
+    }
+    else {
+      return Container();
+    }
+    return Container();
   }
 
   @override
@@ -346,6 +368,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
                 ])
               : Container(),
           //Probably will change this to when 3d mesh isnt null later
+          //iterator > 0 ? Container(child:Image.memory(screenshotImage!)) : Container(),
           _3DMesh == false
               ? Container()
               : Column(children: [
@@ -373,10 +396,12 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
         ],
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            sceneCapture();
-          },
-          child: const Icon(Icons.navigation)),
+            onPressed: () {
+              sceneCapture();
+              print(screenshotImage);
+              ImageGallerySaver.saveImage(screenshotImage!);
+            },
+            child: const Icon(Icons.download)),
       bottomNavigationBar: _selectedImage != null
           ? BottomNav(
               selectedScreen: _selectedScreen,

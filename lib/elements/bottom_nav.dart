@@ -40,10 +40,10 @@ class _BottomNavState extends State<BottomNav> {
         //   label: 'Background',
         //   icon: Icon(Icons.filter),
         // ),
-        BottomNavigationBarItem(
+        /*BottomNavigationBarItem(
           label: 'Filter',
           icon: Icon(Icons.filter_b_and_w),
-        ),
+        ),*/
       ],
       currentIndex: widget.selectedScreen,
     );
