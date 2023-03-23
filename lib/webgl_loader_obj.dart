@@ -14,15 +14,18 @@ import 'package:three_dart/three_dart.dart' as three;
 import 'package:three_dart_jsm/three_dart_jsm.dart' as three_jsm;
 
 import 'home_page.dart';
+import 'screens/light_screen.dart';
 
 class WebGlLoaderObj extends StatefulWidget {
-  const WebGlLoaderObj({Key? key}) : super(key: key);
+  final List<LightScreen> lightScreens;
+  final List<Color> ambienceColor;
+  const WebGlLoaderObj(this.ambienceColor, this.lightScreens, {super.key});
 
   @override
   State<WebGlLoaderObj> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<WebGlLoaderObj> {
+class _MyAppState extends State<WebGlLoaderObj> { 
   late FlutterGlPlugin three3dRender;
   three.WebGLRenderer? renderer;
 
@@ -53,12 +56,22 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
   @override
   void initState() {
+    // initSize(context, widget.lightScreens);
     super.initState();
     
+    // initPage(widget.lightScreens);
+    // WidgetsBinding.instance.addPostFrameCallback((_) => initSize(context, widget.lightScreens));
   }
 
+   @override
+    void didChangeDependencies() {
+      super.didChangeDependencies();
+      print('hi');
+      }
+
   // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
+  Future<void> initPlatformState(lightScreens) async {
+    print('initPlatformState called');
     width = screenSize!.width;
     height = screenSize!.height;
 
@@ -80,34 +93,60 @@ class _MyAppState extends State<WebGlLoaderObj> {
     Future.delayed(const Duration(milliseconds: 100), () async {
       await three3dRender.prepareContext();
 
-      initScene();
+      initScene(lightScreens);
     });
   }
 
-  initSize(BuildContext context) {
+  initSize(BuildContext context, lightScreens) {
+    print('initSize called');
+    
     if (screenSize != null) {
+      print('screenSize != null');
+      initPage(lightScreens);
+      // render();
       return;
     }
 
     final mqd = MediaQuery.of(context);
-
+    
     screenSize = mqd.size;
+    
     dpr = mqd.devicePixelRatio;
 
-    initPlatformState();
+    initPlatformState(lightScreens);
   }
+
+  /* setState(() {
+      lightScreens.insert(
+          _selectedLight,
+          LightScreen(
+            setSliderValue: _setSliderValue,
+            intensity: lightScreens[_selectedLight].intensity,
+            distance: lightScreens[_selectedLight].distance,
+            radius: lightScreens[_selectedLight].radius,
+            colorWheelColor: [color, color],
+            changeColor: _changeColor,
+            removeLight: _removeLight,
+          ));
+      lightScreens.removeAt(_selectedLight + 1);
+    }); */
 
   @override
   Widget build(BuildContext context) {
     
-    var homePageState = Provider.of<HomePageState>(context, listen: false);
-    List<LightScreen> lightScreens = homePageState.lightScreens;
-    
+    // var homePageState = Provider.of<HomePageState>(context, listen: false);
+    // List<LightScreen> lightScreens = homePageState.lightScreens;
+    // initSize(context, widget.lightScreens);       
     return Scaffold(
       body: Builder(
         builder: (BuildContext context) {
-          initSize(context);
-          return SingleChildScrollView(child: _build(context));
+          // initSize(context, widget.lightScreens);         
+          // print(widget.lightScreens[0].intensity);
+          initSize(context, widget.lightScreens);
+          // initPlatformState(widget.lightScreens);
+          return SingleChildScrollView(child: _build(context, widget.lightScreens));
+          // Text(widget.lightScreens[0].intensity.toString());
+          // return Text('Hello');
         },
       ),
       /* floatingActionButton: FloatingActionButton(
@@ -119,11 +158,13 @@ class _MyAppState extends State<WebGlLoaderObj> {
     );
   }
 
-  Widget _build(BuildContext context) {
+  Widget _build(BuildContext context, lightScreens) {
+    // initSize(context, lightScreens);
     return Column(
       children: [
         Stack(
           children: [
+            Text('Hello'),
             Container(
                 width: width,
                 height: height,
@@ -151,6 +192,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
     final gl = three3dRender.gl;
 
+    // camera.add(pointLight1);
     renderer!.render(scene, camera);
 
     int t1 = DateTime.now().millisecondsSinceEpoch;
@@ -169,7 +211,8 @@ class _MyAppState extends State<WebGlLoaderObj> {
     }
   }
 
-  initRenderer() {
+  initRenderer(lightScreens) {
+    print('initRenderer called');
     Map<String, dynamic> options = {
       "width": width,
       "height": height,
@@ -192,13 +235,18 @@ class _MyAppState extends State<WebGlLoaderObj> {
     }
   }
 
-  initScene() {
-    initRenderer();
-    initPage();
+  initScene(lightScreens) {
+    print('initScene called');
+    print(widget.lightScreens);
+    print(widget.lightScreens.length);
+    initRenderer(lightScreens);
+    initPage(lightScreens);
   }
 
-  initPage() async {
+  initPage(lightScreens) async {
+    print('initPage called');
     // camera settings
+    print(lightScreens[0].intensity);
     double cameraFOV = 45;
     camera = three.PerspectiveCamera(cameraFOV, (width / height), 1, 1000);
     double cameraX = 0;
@@ -227,8 +275,9 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
     scene.add(ambientLight);
 
+    // TO DO: Add in directional light functionality when the UI stuff exists
     // directional light settings
-    bool directionalLightOn = false;
+    /* bool directionalLightOn = false;
     var directionalLightColor = 0xfdcf60;
     var directionalLightIntensity = 0.9;
     var directionalLight = three.DirectionalLight(
@@ -247,15 +296,25 @@ class _MyAppState extends State<WebGlLoaderObj> {
     double fromZ = 100;
     directionalLight.position.set(fromX, fromY, fromZ);
 
-    scene.add(directionalLight);
+    scene.add(directionalLight); */
 
     // point light 1 settings
-    bool pointLight1On = true;
+    bool pointLight1On = false;
     var pointLight1Color = 0xe59f3e;
-    double pointLight1Intensity = 0.6;
-    var pointLight1 = three.PointLight(pointLight1Color, pointLight1Intensity);
+    double pointLight1Intensity = 0.0;
+    var pointLight1 = three.PointLight(0x000000, 0);
+    print(pointLight1Intensity);
 
-    if (pointLight1On == false) {
+    if (lightScreens.length >= 1)
+    {
+      pointLight1On = true;
+      pointLight1Intensity = lightScreens[0].intensity;
+      print(pointLight1Intensity);
+      pointLight1 = three.PointLight(pointLight1Color, pointLight1Intensity);
+    }
+
+    else
+    {
       pointLight1 = three.PointLight(0x000000, 0);
     }
 

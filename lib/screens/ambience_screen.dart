@@ -38,6 +38,7 @@ class _AmbienceScreenState extends State<AmbienceScreen> {
           selectedValue: widget.selectedValue,
           setSliderValue: widget.setSliderValue,
           type: widget.type,
+          maxSliderValue: 2.0,
         )
       ])
     ]);

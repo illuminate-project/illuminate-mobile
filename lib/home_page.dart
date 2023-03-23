@@ -27,7 +27,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
   XFile? _originalImage;
   int _selectedScreen = 0;
   int _selectedLight = 0;
-  double _ambience = 0;
+  double ambience = 0;
   bool _showLoadingBar = false;
   bool _3DMesh = false;
   List<LightScreen> lightScreens = [];
@@ -43,7 +43,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
     Colors.red,
   ];
 
-  List<Color> _ambienceColor = [Colors.white, Colors.white];
+  List<Color> ambienceColor = [Colors.white, Colors.white];
 
   @override
   void initState() {
@@ -52,7 +52,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
       LightScreen(
         setSliderValue: _setSliderValue,
         distance: 0,
-        intensity: 0,
+        intensity: 1.0,
         radius: 0,
         colorWheelColor: rainbowColor,
         changeColor: _changeColor,
@@ -68,6 +68,8 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
         selectedLight: 0,
       )
     ];
+
+    print(lightScreens);
   }
 
   void _removeLight() {
@@ -111,7 +113,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
 
   void _changeAmbienceColor(color) {
     setState(() {
-      _ambienceColor = [color, color];
+      ambienceColor = [color, color];
     });
   }
 
@@ -174,7 +176,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
       case 4:
         {
           setState(() {
-            _ambience = value;
+            ambience = value;
           });
           break;
         }
@@ -215,8 +217,8 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
         _setMesh(false);
         lightScreens.removeRange(0, lightScreens.length);
         lightsButtons.removeRange(0, lightsButtons.length);
-        _ambienceColor = [Colors.white, Colors.white];
-        _ambience = 0;
+        ambienceColor = [Colors.white, Colors.white];
+        ambience = 0;
       } else {
         _setLoadingBar(true);
         Timer(
@@ -328,7 +330,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
               ? Screenshot(
                   controller: screenshotController,
                   child: Container(
-                      child: SizedBox(height: 400, child: WebGlLoaderObj())))
+                      child: SizedBox(height: 400, child: WebGlLoaderObj(ambienceColor, lightScreens))))
               //PictureContainer(_selectedImage, _setImage, _setOriginalImage)
               : StartScreen(
                   selectedImage: _selectedImage,
@@ -361,10 +363,10 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
                     lightScreens: lightScreens,
                     originalImage: _originalImage,
                     setSelectedImage: _setImage,
-                    selectedValue: _ambience,
+                    selectedValue: ambience,
                     setSliderValue: _setSliderValue,
                     type: 4,
-                    ambienceColor: _ambienceColor,
+                    ambienceColor: ambienceColor,
                     changeAmbienceColor: _changeAmbienceColor,
                   ),
                 ])
