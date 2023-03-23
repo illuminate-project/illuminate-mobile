@@ -29,8 +29,6 @@ class _TopAppBarState extends State<TopAppBar> {
         .catchError((error, stackTrace) => false);
     return true;
   }
-
-  File? screenshotImage;
   Uint8List? testImage;
 
   @override
