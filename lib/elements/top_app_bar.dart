@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -23,13 +24,8 @@ class TopAppBar extends StatefulWidget with PreferredSizeWidget {
 }
 
 class _TopAppBarState extends State<TopAppBar> {
-  Future<bool> saveImage() async {
-    print(testImage);
-    await GallerySaver.saveImage(widget.selectedImage!.path)
-        .catchError((error, stackTrace) => false);
-    return true;
-  }
-  Uint8List? testImage;
+  
+  HomePageState imageInstance = HomePageState();
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +47,10 @@ class _TopAppBarState extends State<TopAppBar> {
                   {widget.changePicture(null)}
                 else
                   {
+                    imageInstance.sceneCapture(),
+                    imageInstance.saveImage(),
                     ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
-                      content: Text(await saveImage() == true
-                          ? 'Image Saved!'
-                          : 'Failed to Save Image'),
+                      content: Text('Image Saved!'),
                       behavior: SnackBarBehavior.floating,
                       margin: EdgeInsets.only(
                           bottom: MediaQuery.of(context).size.height - 193,
@@ -69,7 +65,6 @@ class _TopAppBarState extends State<TopAppBar> {
         ),
       );
     }
-
     return AppBar(
       backgroundColor: const Color.fromARGB(255, 31, 31, 31),
       title: ButtonBar(
@@ -93,8 +88,9 @@ class _TopAppBarState extends State<TopAppBar> {
             icon: const Icon(Icons.check_circle_outline),
             color: const Color.fromARGB(255, 227, 174, 111),
             onPressed: () => {
-              testImage = HomePageState().sceneCapture(),
-              showModal('Save to Camera Roll?', 2)
+              imageInstance.sceneCapture(),
+              imageInstance.saveImage(),
+              //showModal('Save to Camera Roll?', 2)
             },
           ),
         ],
