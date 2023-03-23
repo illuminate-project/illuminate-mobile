@@ -23,6 +23,10 @@ class _MovableSliderState extends State<MovableSlider> {
     return widget.type == 3 ? 12.75 : 0;
   }
 
+  double getMaxSliderValue() {
+    return widget.type == 1 ? 2.0 : 20;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -34,6 +38,7 @@ class _MovableSliderState extends State<MovableSlider> {
           selectedValue: widget.selectedValue,
           setSliderValue: widget.setSliderValue,
           type: widget.type,
+          maxSliderValue: getMaxSliderValue(),
         )
       ],
     );
