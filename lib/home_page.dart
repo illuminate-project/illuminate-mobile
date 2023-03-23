@@ -351,7 +351,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:
-          _selectedImage != null ? TopAppBar(_setImage, _selectedImage) : null,
+          _selectedImage != null ? TopAppBar(_setImage, sceneCapture, saveImage, _selectedImage) : null,
       backgroundColor: const Color.fromARGB(255, 31, 31, 31),
       body: Column(
         children: [
@@ -387,7 +387,9 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
                     selectedLight: _selectedLight,
                     addLightButton: _addLight,
                   ),
-                  ScreenSelector(
+                  Transform.scale(
+                    scale: 0.95,
+                    child: ScreenSelector(
                     selectedScreen: _selectedScreen,
                     selectedLight: _selectedLight,
                     lightScreens: lightScreens,
@@ -398,7 +400,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
                     type: 4,
                     ambienceColor: ambienceColor,
                     changeAmbienceColor: _changeAmbienceColor,
-                  ),
+                  ),)
                 ])
         ],
       ),
@@ -406,7 +408,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
             onPressed: () {
               sceneCapture();
               print(screenshotImage);
-              //saveImage();
+              saveImage();
             },
             child: const Icon(Icons.download)),
       bottomNavigationBar: _selectedImage != null

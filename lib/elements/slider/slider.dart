@@ -34,12 +34,15 @@ class _MovableSliderState extends State<MovableSlider> {
         Container(
             margin: EdgeInsets.only(right: marginValue()),
             child: SliderLabel(label: widget.label)),
-        SliderBar(
-          selectedValue: widget.selectedValue,
-          setSliderValue: widget.setSliderValue,
-          type: widget.type,
-          maxSliderValue: getMaxSliderValue(),
-        )
+        Container(
+          width: 181,
+          child: SliderBar(
+            selectedValue: widget.selectedValue,
+            setSliderValue: widget.setSliderValue,
+            type: widget.type,
+            maxSliderValue: getMaxSliderValue(),
+          )
+        ),
       ],
     );
   }

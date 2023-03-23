@@ -9,9 +9,13 @@ import '../home_page.dart';
 
 class TopAppBar extends StatefulWidget with PreferredSizeWidget {
   final Function changePicture;
+  final Function sceneCapture;
+  final Function saveImage;
   final XFile? selectedImage;
   const TopAppBar(
     this.changePicture,
+    this.sceneCapture,
+    this.saveImage,
     this.selectedImage, {
     super.key,
   });
@@ -88,8 +92,8 @@ class _TopAppBarState extends State<TopAppBar> {
             icon: const Icon(Icons.check_circle_outline),
             color: const Color.fromARGB(255, 227, 174, 111),
             onPressed: () => {
-              imageInstance.sceneCapture(),
-              imageInstance.saveImage(),
+              widget.sceneCapture(),
+              widget.saveImage(),
               //showModal('Save to Camera Roll?', 2)
             },
           ),

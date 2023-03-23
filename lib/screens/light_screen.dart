@@ -30,14 +30,11 @@ class _LightScreenState extends State<LightScreen> {
     return Column(children: [
       SizedBox(height: 12),
       Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        const SizedBox(
-          width: 15,
-        ),
         ColorSelector(
             colorWheelColor: widget.colorWheelColor,
             changeColor: widget.changeColor),
         const SizedBox(
-          width: 10,
+          width: 15,
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,

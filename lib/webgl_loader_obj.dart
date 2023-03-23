@@ -102,6 +102,9 @@ class _MyAppState extends State<WebGlLoaderObj> {
     
     if (screenSize != null) {
       print('screenSize != null');
+
+      print('MORE NOTICIAABLE');
+      
       initPage(lightScreens);
       // render();
       return;
