@@ -16,11 +16,14 @@ import 'screens/screen_selector.dart';
 import 'webgl_loader_obj.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 
+Uint8List? screenshotImage;
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
   State<HomePage> createState() => HomePageState();
+
 }
 
 class HomePageState extends State<HomePage> with ChangeNotifier{
@@ -71,6 +74,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
     ];
 
     print(lightScreens);
+
   }
 
   void _removeLight() {
@@ -298,8 +302,6 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
   }
 
   ScreenshotController screenshotController = ScreenshotController();
-
-  Uint8List? screenshotImage;
   
   int iterator = 0;
 
@@ -321,6 +323,11 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
     }).catchError((onError) {
       print(onError);
     });
+    return null;
+  }
+
+  saveImage() {
+    ImageGallerySaver.saveImage(screenshotImage!);
   }
 
   Widget downloadFAB() {
@@ -344,7 +351,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:
-          _selectedImage != null ? TopAppBar(_setImage, _selectedImage) : null,
+          _selectedImage != null ? TopAppBar(_setImage, sceneCapture, saveImage, _selectedImage) : null,
       backgroundColor: const Color.fromARGB(255, 31, 31, 31),
       body: Column(
         children: [
@@ -380,7 +387,9 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
                     selectedLight: _selectedLight,
                     addLightButton: _addLight,
                   ),
-                  ScreenSelector(
+                  Transform.scale(
+                    scale: 0.95,
+                    child: ScreenSelector(
                     selectedScreen: _selectedScreen,
                     selectedLight: _selectedLight,
                     lightScreens: lightScreens,
@@ -391,7 +400,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
                     type: 4,
                     ambienceColor: ambienceColor,
                     changeAmbienceColor: _changeAmbienceColor,
-                  ),
+                  ),)
                 ])
         ],
       ),
@@ -399,7 +408,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
             onPressed: () {
               sceneCapture();
               print(screenshotImage);
-              ImageGallerySaver.saveImage(screenshotImage!);
+              saveImage();
             },
             child: const Icon(Icons.download)),
       bottomNavigationBar: _selectedImage != null
