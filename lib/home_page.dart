@@ -359,7 +359,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
               ? Screenshot(
                   controller: screenshotController,
                   child: Container(
-                      child: SizedBox(height: 400, child: WebGlLoaderObj(ambienceColor, lightScreens))))
+                      child: SizedBox(height: 400, child: WebGlLoaderObj(ambienceColor, lightScreens, ambience))))
               //PictureContainer(_selectedImage, _setImage, _setOriginalImage)
               : StartScreen(
                   selectedImage: _selectedImage,

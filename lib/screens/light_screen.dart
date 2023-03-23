@@ -29,33 +29,36 @@ class _LightScreenState extends State<LightScreen> {
   Widget build(BuildContext context) {
     return Column(children: [
       SizedBox(height: 12),
-      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        ColorSelector(
+      Row(mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Transform.scale(scale: 0.8,
+          child: ColorSelector(
             colorWheelColor: widget.colorWheelColor,
             changeColor: widget.changeColor),
+        ),
         const SizedBox(
           width: 15,
         ),
         Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            MovableSlider(
-                label: 'Intensity',
-                selectedValue: widget.intensity,
-                setSliderValue: widget.setSliderValue,
-                type: 1),
-            MovableSlider(
-                label: 'Distance',
-                selectedValue: widget.distance,
-                setSliderValue: widget.setSliderValue,
-                type: 2),
-            MovableSlider(
-                label: 'Radius',
-                selectedValue: widget.radius,
-                setSliderValue: widget.setSliderValue,
-                type: 3),
-          ],
-        ),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              MovableSlider(
+                  label: 'Intensity',
+                  selectedValue: widget.intensity,
+                  setSliderValue: widget.setSliderValue,
+                  type: 1),
+              MovableSlider(
+                  label: 'Horizontal',
+                  selectedValue: widget.distance,
+                  setSliderValue: widget.setSliderValue,
+                  type: 2),
+              MovableSlider(
+                  label: 'Vertical',
+                  selectedValue: widget.radius,
+                  setSliderValue: widget.setSliderValue,
+                  type: 3),
+            ],
+          ),
         IconButton(
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.only(right: 10),
