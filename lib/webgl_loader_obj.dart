@@ -476,6 +476,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     // mesh = three.Mesh(plane, three.MeshPhongMaterial({"map": texture}));
     // scene.add(mesh);
 
+
     animate();
   }
 
