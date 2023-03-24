@@ -23,15 +23,14 @@ class HomePage extends StatefulWidget {
 
   @override
   State<HomePage> createState() => HomePageState();
-
 }
 
-class HomePageState extends State<HomePage> with ChangeNotifier{
+class HomePageState extends State<HomePage> with ChangeNotifier {
   XFile? _selectedImage;
   XFile? _originalImage;
   int _selectedScreen = 0;
   int _selectedLight = 0;
-  double ambience = 0;
+  double ambience = 1;
   bool _showLoadingBar = false;
   bool _3DMesh = false;
   List<LightScreen> lightScreens = [];
@@ -76,7 +75,6 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
     ];
 
     print(lightScreens);
-
   }
 
   void _removeLight() {
@@ -103,7 +101,39 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
 
   void _hideLight() {
     setState(() {
-      
+      if (lightScreens[_selectedLight].isLightOn) {
+        lightScreens.insert(
+            _selectedLight,
+            LightScreen(
+              setSliderValue: _setSliderValue,
+              intensity: lightScreens[_selectedLight].intensity,
+              distance: lightScreens[_selectedLight].distance,
+              radius: lightScreens[_selectedLight].radius,
+              colorWheelColor: lightScreens[_selectedLight].colorWheelColor,
+              changeColor: _changeColor,
+              removeLight: _removeLight,
+              hideLight: _hideLight,
+              isLightOn: false,
+            ));
+        lightScreens.removeAt(_selectedLight + 1);
+        print(lightScreens[_selectedLight].isLightOn);
+      } else {
+        lightScreens.insert(
+            _selectedLight,
+            LightScreen(
+              setSliderValue: _setSliderValue,
+              intensity: lightScreens[_selectedLight].intensity,
+              distance: lightScreens[_selectedLight].distance,
+              radius: lightScreens[_selectedLight].radius,
+              colorWheelColor: lightScreens[_selectedLight].colorWheelColor,
+              changeColor: _changeColor,
+              removeLight: _removeLight,
+              hideLight: _hideLight,
+              isLightOn: true,
+            ));
+        lightScreens.removeAt(_selectedLight + 1);
+        print(lightScreens[_selectedLight].isLightOn);
+      }
     });
   }
 
@@ -320,7 +350,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
   }
 
   ScreenshotController screenshotController = ScreenshotController();
-  
+
   int iterator = 0;
 
   Future<bool> newSave(File currImage) async {
@@ -334,9 +364,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
       //Capture Done
       screenshotImage = image;
       iterator++;
-      setState(() {
-        
-      });
+      setState(() {});
       return image;
     }).catchError((onError) {
       print(onError);
@@ -351,15 +379,14 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
   Widget downloadFAB() {
     if (_selectedImage != null) {
       FloatingActionButton(
-            onPressed: () async {
-              sceneCapture();
-              File temp = File.fromRawPath(screenshotImage!);
-              GallerySaver.saveImage(temp.path)
+          onPressed: () async {
+            sceneCapture();
+            File temp = File.fromRawPath(screenshotImage!);
+            GallerySaver.saveImage(temp.path)
                 .catchError((error, stackTrace) => false);
-            },
-            child: const Icon(Icons.download));
-    }
-    else {
+          },
+          child: const Icon(Icons.download));
+    } else {
       return Container();
     }
     return Container();
@@ -368,8 +395,9 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          _selectedImage != null ? TopAppBar(_setImage, sceneCapture, saveImage, _selectedImage) : null,
+      appBar: _selectedImage != null
+          ? TopAppBar(_setImage, sceneCapture, saveImage, _selectedImage)
+          : null,
       backgroundColor: const Color.fromARGB(255, 31, 31, 31),
       body: Column(
         children: [
@@ -377,7 +405,10 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
               ? Screenshot(
                   controller: screenshotController,
                   child: Container(
-                      child: SizedBox(height: 400, child: WebGlLoaderObj(ambienceColor, lightScreens, ambience))))
+                      child: SizedBox(
+                          height: 400,
+                          child: WebGlLoaderObj(
+                              ambienceColor, lightScreens, ambience))))
               //PictureContainer(_selectedImage, _setImage, _setOriginalImage)
               : StartScreen(
                   selectedImage: _selectedImage,
@@ -408,17 +439,18 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
                   Transform.scale(
                     scale: 0.95,
                     child: ScreenSelector(
-                    selectedScreen: _selectedScreen,
-                    selectedLight: _selectedLight,
-                    lightScreens: lightScreens,
-                    originalImage: _originalImage,
-                    setSelectedImage: _setImage,
-                    selectedValue: ambience,
-                    setSliderValue: _setSliderValue,
-                    type: 4,
-                    ambienceColor: ambienceColor,
-                    changeAmbienceColor: _changeAmbienceColor,
-                  ),)
+                      selectedScreen: _selectedScreen,
+                      selectedLight: _selectedLight,
+                      lightScreens: lightScreens,
+                      originalImage: _originalImage,
+                      setSelectedImage: _setImage,
+                      selectedValue: ambience,
+                      setSliderValue: _setSliderValue,
+                      type: 4,
+                      ambienceColor: ambienceColor,
+                      changeAmbienceColor: _changeAmbienceColor,
+                    ),
+                  )
                 ])
         ],
       ),

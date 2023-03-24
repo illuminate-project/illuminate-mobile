@@ -20,13 +20,14 @@ class WebGlLoaderObj extends StatefulWidget {
   final List<LightScreen> lightScreens;
   final List<Color> ambienceColor;
   final double ambience;
-  const WebGlLoaderObj(this.ambienceColor, this.lightScreens, this.ambience, {super.key});
+  const WebGlLoaderObj(this.ambienceColor, this.lightScreens, this.ambience,
+      {super.key});
 
   @override
   State<WebGlLoaderObj> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<WebGlLoaderObj> { 
+class _MyAppState extends State<WebGlLoaderObj> {
   late FlutterGlPlugin three3dRender;
   three.WebGLRenderer? renderer;
 
@@ -59,15 +60,15 @@ class _MyAppState extends State<WebGlLoaderObj> {
   void initState() {
     // initSize(context, widget.lightScreens);
     super.initState();
-    
+
     // initPage(widget.lightScreens);
     // WidgetsBinding.instance.addPostFrameCallback((_) => initSize(context, widget.lightScreens));
   }
 
-   @override
-    void didChangeDependencies() {
-      super.didChangeDependencies();
-      }
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState(lightScreens, ambience, ambienceColor) async {
@@ -96,7 +97,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     });
   }
 
-  initSize(BuildContext context, lightScreens, ambience, ambienceColor) {   
+  initSize(BuildContext context, lightScreens, ambience, ambienceColor) {
     if (screenSize != null) {
       initPage(lightScreens, ambience, ambienceColor);
       // render();
@@ -104,21 +105,24 @@ class _MyAppState extends State<WebGlLoaderObj> {
     }
 
     final mqd = MediaQuery.of(context);
-    
+
     screenSize = mqd.size;
-    
+
     dpr = mqd.devicePixelRatio;
 
     initPlatformState(lightScreens, ambience, ambienceColor);
   }
 
   @override
-  Widget build(BuildContext context) {    
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Builder(
         builder: (BuildContext context) {
-          initSize(context, widget.lightScreens, widget.ambience, widget.ambienceColor);
-          return SingleChildScrollView(child: _build(context, widget.lightScreens, widget.ambience, widget.ambienceColor));
+          initSize(context, widget.lightScreens, widget.ambience,
+              widget.ambienceColor);
+          return SingleChildScrollView(
+              child: _build(context, widget.lightScreens, widget.ambience,
+                  widget.ambienceColor));
         },
       ),
       /* floatingActionButton: FloatingActionButton(
@@ -287,26 +291,22 @@ class _MyAppState extends State<WebGlLoaderObj> {
     double pointLight1Y = 20.0;
     double pointlight1Z = 6.0;
 
-    if (lightScreens.length >= 1 && lightScreens[0] != null)
-    {
+    if (lightScreens.length >= 1 && lightScreens[0] != null) {
       pointLight1On = true;
-      pointLight1Intensity = lightScreens[0].intensity;
+      pointLight1Intensity =
+          lightScreens[0].isLightOn ? lightScreens[0].intensity : 0.0;
       pointLight1Color = ARGBtoHex(lightScreens[0].colorWheelColor[0]);
       pointLight1X = lightScreens[0].distance;
       pointLight1Y = lightScreens[0].radius;
       pointLight1 = three.PointLight(pointLight1Color, pointLight1Intensity);
-    }
-
-    else
-    {
+    } else {
       pointLight1 = three.PointLight(0x000000, 0.0);
     }
 
     pointLight1.position.set(pointLight1X, pointLight1Y, pointlight1Z);
     camera.add(pointLight1);
 
-    if (lightScreens.length < 1 || lightScreens[0] == null)
-    {
+    if (lightScreens.length < 1 || lightScreens[0] == null) {
       camera.remove(pointLight1);
     }
 
@@ -321,26 +321,23 @@ class _MyAppState extends State<WebGlLoaderObj> {
     double pointLight2Y = 20.0;
     double pointlight2Z = 6.0;
 
-    if (lightScreens.length >= 2 && lightScreens[1] != null)
-    {
+    if (lightScreens.length >= 2 && lightScreens[1] != null) {
       pointLight2On = true;
-      pointLight2Intensity = lightScreens[1].intensity;
+      pointLight2Intensity =
+          lightScreens[1].isLightOn ? lightScreens[1].intensity : 0.0;
+      ;
       pointLight2Color = ARGBtoHex(lightScreens[1].colorWheelColor[0]);
       pointLight2X = lightScreens[1].distance;
       pointLight2Y = lightScreens[1].radius;
       pointLight2 = three.PointLight(pointLight2Color, pointLight2Intensity);
-    }
-
-    else
-    {
+    } else {
       pointLight2 = three.PointLight(0x000000, 0);
     }
-    
+
     pointLight2.position.set(pointLight2X, pointLight2Y, pointlight2Z);
     camera.add(pointLight2);
 
-    if (lightScreens.length < 2)
-    {
+    if (lightScreens.length < 2) {
       camera.remove(pointLight2);
     }
 
@@ -355,26 +352,23 @@ class _MyAppState extends State<WebGlLoaderObj> {
     double pointLight3Y = 20.0;
     double pointlight3Z = 6.0;
 
-    if (lightScreens.length >= 3 && lightScreens[2] != null)
-    {
+    if (lightScreens.length >= 3 && lightScreens[2] != null) {
       pointLight3On = true;
-      pointLight3Intensity = lightScreens[2].intensity;
+      pointLight3Intensity =
+          lightScreens[2].isLightOn ? lightScreens[2].intensity : 0.0;
+      ;
       pointLight3Color = ARGBtoHex(lightScreens[2].colorWheelColor[0]);
       pointLight3X = lightScreens[2].distance;
       pointLight3Y = lightScreens[2].radius;
       pointLight3 = three.PointLight(pointLight3Color, pointLight3Intensity);
-    }
-
-    else
-    {
+    } else {
       pointLight3 = three.PointLight(0x000000, 0);
     }
-    
+
     pointLight3.position.set(pointLight3X, pointLight3Y, pointlight3Z);
     camera.add(pointLight3);
 
-    if (lightScreens.length < 3)
-    {
+    if (lightScreens.length < 3) {
       camera.remove(pointLight3);
     }
 
@@ -389,26 +383,23 @@ class _MyAppState extends State<WebGlLoaderObj> {
     double pointLight4Y = 20.0;
     double pointlight4Z = 6.0;
 
-    if (lightScreens.length >= 4 && lightScreens[3] != null)
-    {
+    if (lightScreens.length >= 4 && lightScreens[3] != null) {
       pointLight4On = true;
-      pointLight4Intensity = lightScreens[3].intensity;
+      pointLight4Intensity =
+          lightScreens[3].isLightOn ? lightScreens[3].intensity : 0.0;
+      ;
       pointLight4Color = ARGBtoHex(lightScreens[3].colorWheelColor[0]);
       pointLight4X = lightScreens[3].distance;
       pointLight4Y = lightScreens[3].radius;
       pointLight4 = three.PointLight(pointLight4Color, pointLight4Intensity);
-    }
-
-    else
-    {
+    } else {
       pointLight4 = three.PointLight(0x000000, 0);
     }
-    
+
     pointLight4.position.set(pointLight4X, pointLight4Y, pointlight4Z);
     camera.add(pointLight4);
 
-    if (lightScreens.length < 4)
-    {
+    if (lightScreens.length < 4) {
       camera.remove(pointLight4);
     }
 
@@ -423,26 +414,23 @@ class _MyAppState extends State<WebGlLoaderObj> {
     double pointLight5Y = 20.0;
     double pointlight5Z = 6.0;
 
-    if (lightScreens.length >= 5 && lightScreens[4] != null)
-    {
+    if (lightScreens.length >= 5 && lightScreens[4] != null) {
       pointLight5On = true;
-      pointLight5Intensity = lightScreens[4].intensity;
+      pointLight5Intensity =
+          lightScreens[4].isLightOn ? lightScreens[4].intensity : 0.0;
+      ;
       pointLight5Color = ARGBtoHex(lightScreens[4].colorWheelColor[0]);
       pointLight5X = lightScreens[4].distance;
       pointLight5Y = lightScreens[4].radius;
       pointLight5 = three.PointLight(pointLight5Color, pointLight5Intensity);
-    }
-
-    else
-    {
+    } else {
       pointLight5 = three.PointLight(0x000000, 0);
     }
-    
+
     pointLight5.position.set(pointLight5X, pointLight5Y, pointlight5Z);
     camera.add(pointLight5);
 
-    if (lightScreens.length < 5)
-    {
+    if (lightScreens.length < 5) {
       camera.remove(pointLight5);
     }
 
@@ -477,7 +465,6 @@ class _MyAppState extends State<WebGlLoaderObj> {
     // var plane = three.PlaneGeometry(100, 100);
     // mesh = three.Mesh(plane, three.MeshPhongMaterial({"map": texture}));
     // scene.add(mesh);
-
 
     animate();
   }
