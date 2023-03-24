@@ -61,6 +61,8 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
         colorWheelColor: rainbowColor,
         changeColor: _changeColor,
         removeLight: _removeLight,
+        hideLight: _hideLight,
+        isLightOn: true,
       )
     ];
 
@@ -99,6 +101,12 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
     });
   }
 
+  void _hideLight() {
+    setState(() {
+      
+    });
+  }
+
   void _changeColor(color) {
     setState(() {
       lightScreens.insert(
@@ -111,6 +119,8 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
             colorWheelColor: [color, color],
             changeColor: _changeColor,
             removeLight: _removeLight,
+            hideLight: _hideLight,
+            isLightOn: true,
           ));
       lightScreens.removeAt(_selectedLight + 1);
     });
@@ -137,6 +147,8 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
                   colorWheelColor: lightScreens[_selectedLight].colorWheelColor,
                   changeColor: _changeColor,
                   removeLight: _removeLight,
+                  hideLight: _hideLight,
+                  isLightOn: true,
                 ));
             lightScreens.removeAt(_selectedLight + 1);
           });
@@ -154,6 +166,8 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
                     radius: lightScreens[_selectedLight].radius,
                     changeColor: _changeColor,
                     removeLight: _removeLight,
+                    hideLight: _hideLight,
+                    isLightOn: true,
                     colorWheelColor:
                         lightScreens[_selectedLight].colorWheelColor));
             lightScreens.removeAt(_selectedLight + 1);
@@ -173,6 +187,8 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
                   radius: value,
                   colorWheelColor: lightScreens[_selectedLight].colorWheelColor,
                   changeColor: _changeColor,
+                  hideLight: _hideLight,
+                  isLightOn: true,
                 ));
             lightScreens.removeAt(_selectedLight + 1);
           });
@@ -199,6 +215,8 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
         colorWheelColor: rainbowColor,
         changeColor: _changeColor,
         removeLight: _removeLight,
+        hideLight: _hideLight,
+        isLightOn: true,
       ));
     });
   }
@@ -404,13 +422,13 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
                 ])
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
             onPressed: () {
               sceneCapture();
               print(screenshotImage);
               saveImage();
             },
-            child: const Icon(Icons.download)),
+            child: const Icon(Icons.download)),*/
       bottomNavigationBar: _selectedImage != null
           ? BottomNav(
               selectedScreen: _selectedScreen,

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LightButton extends StatefulWidget {
@@ -51,7 +52,7 @@ class _LightButtonState extends State<LightButton> {
           },
           child: Row(children: [
             Icon(
-              Icons.lightbulb_outline,
+              CupertinoIcons.lightbulb,
               size: 15,
               color: changeTextColor(),
             ),

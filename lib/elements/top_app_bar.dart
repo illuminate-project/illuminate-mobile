@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
@@ -75,21 +76,21 @@ class _TopAppBarState extends State<TopAppBar> {
         alignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-              icon: const Icon(Icons.cancel_outlined),
+              icon: const Icon(CupertinoIcons.xmark_circle),
               color: const Color.fromARGB(255, 255, 140, 140),
               onPressed: () => showModal('Remove Photo?', 1)),
           IconButton(
-            icon: const Icon(Icons.dark_mode_outlined),
+            icon: const Icon(CupertinoIcons.eye_fill),
             color: Color.fromARGB(255, 255, 255, 255),
             onPressed: () => {},
           ),
           IconButton(
-            icon: const Icon(Icons.remove_red_eye_outlined),
+            icon: const Icon(CupertinoIcons.lightbulb_fill), //not fill to show image w/o lights
             color: Color.fromARGB(255, 255, 255, 255),
             onPressed: () => {},
           ),
           IconButton(
-            icon: const Icon(Icons.check_circle_outline),
+            icon: const Icon(CupertinoIcons.checkmark_circle),
             color: const Color.fromARGB(255, 227, 174, 111),
             onPressed: () => {
               widget.sceneCapture(),
