@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BottomNav extends StatefulWidget {
@@ -30,20 +31,20 @@ class _BottomNavState extends State<BottomNav> {
       items: const [
         BottomNavigationBarItem(
           label: 'Light',
-          icon: Icon(Icons.lightbulb_outlined),
+          icon: Icon(CupertinoIcons.lightbulb_fill),
         ),
         BottomNavigationBarItem(
           label: 'Ambience',
-          icon: Icon(Icons.wb_sunny_outlined),
+          icon: Icon(CupertinoIcons.light_max),
         ),
         // BottomNavigationBarItem(
         //   label: 'Background',
         //   icon: Icon(Icons.filter),
         // ),
-        BottomNavigationBarItem(
+        /*BottomNavigationBarItem(
           label: 'Filter',
           icon: Icon(Icons.filter_b_and_w),
-        ),
+        ),*/
       ],
       currentIndex: widget.selectedScreen,
     );

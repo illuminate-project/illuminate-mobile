@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:illuminate/home_page.dart';
 import 'package:illuminate/screens/splash_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => HomePageState(),
+    child: const MyApp())
+  );
 }
 
 class MyApp extends StatelessWidget {

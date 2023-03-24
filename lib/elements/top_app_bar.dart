@@ -1,12 +1,22 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:flutter/material.dart';
+import '../home_page.dart';
 
 class TopAppBar extends StatefulWidget with PreferredSizeWidget {
   final Function changePicture;
+  final Function sceneCapture;
+  final Function saveImage;
   final XFile? selectedImage;
   const TopAppBar(
     this.changePicture,
+    this.sceneCapture,
+    this.saveImage,
     this.selectedImage, {
     super.key,
   });
@@ -19,12 +29,8 @@ class TopAppBar extends StatefulWidget with PreferredSizeWidget {
 }
 
 class _TopAppBarState extends State<TopAppBar> {
-  String message = 'Image Saved';
-  Future<bool> saveImage() async {
-    await GallerySaver.saveImage(widget.selectedImage!.path)
-        .catchError((error, stackTrace) => false);
-    return true;
-  }
+  
+  HomePageState imageInstance = HomePageState();
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +52,10 @@ class _TopAppBarState extends State<TopAppBar> {
                   {widget.changePicture(null)}
                 else
                   {
+                    imageInstance.sceneCapture(),
+                    imageInstance.saveImage(),
                     ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
-                      content: Text(await saveImage() == true
-                          ? 'Image Saved!'
-                          : 'Failed to Save Image'),
+                      content: Text('Image Saved!'),
                       behavior: SnackBarBehavior.floating,
                       margin: EdgeInsets.only(
                           bottom: MediaQuery.of(context).size.height - 193,
@@ -64,30 +70,33 @@ class _TopAppBarState extends State<TopAppBar> {
         ),
       );
     }
-
     return AppBar(
       backgroundColor: const Color.fromARGB(255, 31, 31, 31),
       title: ButtonBar(
         alignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-              icon: const Icon(Icons.cancel_outlined),
+              icon: const Icon(CupertinoIcons.xmark_circle),
               color: const Color.fromARGB(255, 255, 140, 140),
               onPressed: () => showModal('Remove Photo?', 1)),
           IconButton(
-            icon: const Icon(Icons.dark_mode_outlined),
+            icon: const Icon(CupertinoIcons.eye_fill),
             color: Color.fromARGB(255, 255, 255, 255),
             onPressed: () => {},
           ),
           IconButton(
-            icon: const Icon(Icons.remove_red_eye_outlined),
+            icon: const Icon(CupertinoIcons.lightbulb_fill), //not fill to show image w/o lights
             color: Color.fromARGB(255, 255, 255, 255),
             onPressed: () => {},
           ),
           IconButton(
-            icon: const Icon(Icons.check_circle_outline),
+            icon: const Icon(CupertinoIcons.checkmark_circle),
             color: const Color.fromARGB(255, 227, 174, 111),
-            onPressed: () => showModal('Save to Camera Roll?', 2),
+            onPressed: () => {
+              widget.sceneCapture(),
+              widget.saveImage(),
+              //showModal('Save to Camera Roll?', 2)
+            },
           ),
         ],
       ),

@@ -1,7 +1,10 @@
 import 'dart:async';
-
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:illuminate/screens/start_screen.dart';
 import 'elements/lights/lights_bar.dart';
 import 'elements/picture_container.dart';
@@ -10,20 +13,24 @@ import 'elements/lights/light_button.dart';
 import 'elements/top_app_bar.dart';
 import 'elements/bottom_nav.dart';
 import 'screens/screen_selector.dart';
+import 'webgl_loader_obj.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+
+Uint8List? screenshotImage;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> with ChangeNotifier {
   XFile? _selectedImage;
   XFile? _originalImage;
   int _selectedScreen = 0;
   int _selectedLight = 0;
-  double _ambience = 0;
+  double ambience = 1;
   bool _showLoadingBar = false;
   bool _3DMesh = false;
   List<LightScreen> lightScreens = [];
@@ -39,7 +46,7 @@ class _HomePageState extends State<HomePage> {
     Colors.red,
   ];
 
-  List<Color> _ambienceColor = [Colors.white, Colors.white];
+  List<Color> ambienceColor = [Colors.white, Colors.white];
 
   @override
   void initState() {
@@ -47,12 +54,14 @@ class _HomePageState extends State<HomePage> {
     lightScreens = [
       LightScreen(
         setSliderValue: _setSliderValue,
-        distance: 0,
-        intensity: 0,
-        radius: 0,
+        distance: 0.0,
+        intensity: 0.0,
+        radius: 0.0,
         colorWheelColor: rainbowColor,
         changeColor: _changeColor,
         removeLight: _removeLight,
+        hideLight: _hideLight,
+        isLightOn: true,
       )
     ];
 
@@ -64,6 +73,8 @@ class _HomePageState extends State<HomePage> {
         selectedLight: 0,
       )
     ];
+
+    print(lightScreens);
   }
 
   void _removeLight() {
@@ -88,6 +99,44 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _hideLight() {
+    setState(() {
+      if (lightScreens[_selectedLight].isLightOn) {
+        lightScreens.insert(
+            _selectedLight,
+            LightScreen(
+              setSliderValue: _setSliderValue,
+              intensity: lightScreens[_selectedLight].intensity,
+              distance: lightScreens[_selectedLight].distance,
+              radius: lightScreens[_selectedLight].radius,
+              colorWheelColor: lightScreens[_selectedLight].colorWheelColor,
+              changeColor: _changeColor,
+              removeLight: _removeLight,
+              hideLight: _hideLight,
+              isLightOn: false,
+            ));
+        lightScreens.removeAt(_selectedLight + 1);
+        print(lightScreens[_selectedLight].isLightOn);
+      } else {
+        lightScreens.insert(
+            _selectedLight,
+            LightScreen(
+              setSliderValue: _setSliderValue,
+              intensity: lightScreens[_selectedLight].intensity,
+              distance: lightScreens[_selectedLight].distance,
+              radius: lightScreens[_selectedLight].radius,
+              colorWheelColor: lightScreens[_selectedLight].colorWheelColor,
+              changeColor: _changeColor,
+              removeLight: _removeLight,
+              hideLight: _hideLight,
+              isLightOn: true,
+            ));
+        lightScreens.removeAt(_selectedLight + 1);
+        print(lightScreens[_selectedLight].isLightOn);
+      }
+    });
+  }
+
   void _changeColor(color) {
     setState(() {
       lightScreens.insert(
@@ -100,6 +149,8 @@ class _HomePageState extends State<HomePage> {
             colorWheelColor: [color, color],
             changeColor: _changeColor,
             removeLight: _removeLight,
+            hideLight: _hideLight,
+            isLightOn: true,
           ));
       lightScreens.removeAt(_selectedLight + 1);
     });
@@ -107,7 +158,7 @@ class _HomePageState extends State<HomePage> {
 
   void _changeAmbienceColor(color) {
     setState(() {
-      _ambienceColor = [color, color];
+      ambienceColor = [color, color];
     });
   }
 
@@ -126,6 +177,8 @@ class _HomePageState extends State<HomePage> {
                   colorWheelColor: lightScreens[_selectedLight].colorWheelColor,
                   changeColor: _changeColor,
                   removeLight: _removeLight,
+                  hideLight: _hideLight,
+                  isLightOn: true,
                 ));
             lightScreens.removeAt(_selectedLight + 1);
           });
@@ -143,6 +196,8 @@ class _HomePageState extends State<HomePage> {
                     radius: lightScreens[_selectedLight].radius,
                     changeColor: _changeColor,
                     removeLight: _removeLight,
+                    hideLight: _hideLight,
+                    isLightOn: true,
                     colorWheelColor:
                         lightScreens[_selectedLight].colorWheelColor));
             lightScreens.removeAt(_selectedLight + 1);
@@ -162,6 +217,8 @@ class _HomePageState extends State<HomePage> {
                   radius: value,
                   colorWheelColor: lightScreens[_selectedLight].colorWheelColor,
                   changeColor: _changeColor,
+                  hideLight: _hideLight,
+                  isLightOn: true,
                 ));
             lightScreens.removeAt(_selectedLight + 1);
           });
@@ -170,7 +227,7 @@ class _HomePageState extends State<HomePage> {
       case 4:
         {
           setState(() {
-            _ambience = value;
+            ambience = value;
           });
           break;
         }
@@ -188,6 +245,8 @@ class _HomePageState extends State<HomePage> {
         colorWheelColor: rainbowColor,
         changeColor: _changeColor,
         removeLight: _removeLight,
+        hideLight: _hideLight,
+        isLightOn: true,
       ));
     });
   }
@@ -211,8 +270,8 @@ class _HomePageState extends State<HomePage> {
         _setMesh(false);
         lightScreens.removeRange(0, lightScreens.length);
         lightsButtons.removeRange(0, lightsButtons.length);
-        _ambienceColor = [Colors.white, Colors.white];
-        _ambience = 0;
+        ambienceColor = [Colors.white, Colors.white];
+        ambience = 1.0;
       } else {
         _setLoadingBar(true);
         Timer(
@@ -290,16 +349,67 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  ScreenshotController screenshotController = ScreenshotController();
+
+  int iterator = 0;
+
+  Future<bool> newSave(File currImage) async {
+    await GallerySaver.saveImage(currImage.path)
+        .catchError((error, stackTrace) => false);
+    return true;
+  }
+
+  Uint8List? sceneCapture() {
+    screenshotController.capture().then((image) {
+      //Capture Done
+      screenshotImage = image;
+      iterator++;
+      setState(() {});
+      return image;
+    }).catchError((onError) {
+      print(onError);
+    });
+    return null;
+  }
+
+  saveImage() {
+    ImageGallerySaver.saveImage(screenshotImage!);
+  }
+
+  Widget downloadFAB() {
+    if (_selectedImage != null) {
+      FloatingActionButton(
+          onPressed: () async {
+            sceneCapture();
+            File temp = File.fromRawPath(screenshotImage!);
+            GallerySaver.saveImage(temp.path)
+                .catchError((error, stackTrace) => false);
+          },
+          child: const Icon(Icons.download));
+    } else {
+      return Container();
+    }
+    return Container();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          _selectedImage != null ? TopAppBar(_setImage, _selectedImage) : null,
+      appBar: _selectedImage != null
+          ? TopAppBar(_setImage, sceneCapture, saveImage, _selectedImage)
+          : null,
       backgroundColor: const Color.fromARGB(255, 31, 31, 31),
       body: Column(
         children: [
           _selectedImage != null
-              ? PictureContainer(_selectedImage, _setImage, _setOriginalImage)
+              ? Screenshot(
+                  controller: screenshotController,
+                  child: Container(
+                      child: SizedBox(
+                          height: 400,
+                          child: WebGlLoaderObj(
+                              ambienceColor, lightScreens, ambience))))
+              //PictureContainer(_selectedImage, _setImage, _setOriginalImage)
               : StartScreen(
                   selectedImage: _selectedImage,
                   changeOriginalImage: _setOriginalImage,
@@ -314,6 +424,7 @@ class _HomePageState extends State<HomePage> {
                 ])
               : Container(),
           //Probably will change this to when 3d mesh isnt null later
+          //iterator > 0 ? Container(child:Image.memory(screenshotImage!)) : Container(),
           _3DMesh == false
               ? Container()
               : Column(children: [
@@ -325,21 +436,31 @@ class _HomePageState extends State<HomePage> {
                     selectedLight: _selectedLight,
                     addLightButton: _addLight,
                   ),
-                  ScreenSelector(
-                    selectedScreen: _selectedScreen,
-                    selectedLight: _selectedLight,
-                    lightScreens: lightScreens,
-                    originalImage: _originalImage,
-                    setSelectedImage: _setImage,
-                    selectedValue: _ambience,
-                    setSliderValue: _setSliderValue,
-                    type: 4,
-                    ambienceColor: _ambienceColor,
-                    changeAmbienceColor: _changeAmbienceColor,
-                  ),
+                  Transform.scale(
+                    scale: 0.95,
+                    child: ScreenSelector(
+                      selectedScreen: _selectedScreen,
+                      selectedLight: _selectedLight,
+                      lightScreens: lightScreens,
+                      originalImage: _originalImage,
+                      setSelectedImage: _setImage,
+                      selectedValue: ambience,
+                      setSliderValue: _setSliderValue,
+                      type: 4,
+                      ambienceColor: ambienceColor,
+                      changeAmbienceColor: _changeAmbienceColor,
+                    ),
+                  )
                 ])
         ],
       ),
+      /*floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              sceneCapture();
+              print(screenshotImage);
+              saveImage();
+            },
+            child: const Icon(Icons.download)),*/
       bottomNavigationBar: _selectedImage != null
           ? BottomNav(
               selectedScreen: _selectedScreen,

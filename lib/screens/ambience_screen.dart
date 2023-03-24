@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:illuminate/elements/color_selector.dart';
 import 'package:illuminate/elements/slider/slider_bar.dart';
 import 'package:illuminate/elements/slider/slider_label.dart';
@@ -39,6 +38,8 @@ class _AmbienceScreenState extends State<AmbienceScreen> {
           selectedValue: widget.selectedValue,
           setSliderValue: widget.setSliderValue,
           type: widget.type,
+          maxSliderValue: 2.0,
+          minSliderValue: 0,
         )
       ])
     ]);
