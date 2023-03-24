@@ -470,6 +470,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     });
 
     object.scale.set(1, 1, 1);
+    scene.remove(object);
     scene.add(object);
 
     // var plane = three.PlaneGeometry(100, 100);
