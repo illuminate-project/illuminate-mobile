@@ -67,12 +67,10 @@ class _MyAppState extends State<WebGlLoaderObj> {
    @override
     void didChangeDependencies() {
       super.didChangeDependencies();
-      print('hi');
       }
 
   // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState(lightScreens, ambience) async {
-    print('initPlatformState called');
+  Future<void> initPlatformState(lightScreens, ambience, ambienceColor) async {
     width = screenSize!.width;
     height = screenSize!.height;
 
@@ -94,16 +92,13 @@ class _MyAppState extends State<WebGlLoaderObj> {
     Future.delayed(const Duration(milliseconds: 100), () async {
       await three3dRender.prepareContext();
 
-      initScene(lightScreens, ambience);
+      initScene(lightScreens, ambience, ambienceColor);
     });
   }
 
-  initSize(BuildContext context, lightScreens, ambience) {
-    print('initSize called');
-    
+  initSize(BuildContext context, lightScreens, ambience, ambienceColor) {   
     if (screenSize != null) {
-      print('screenSize != null');
-      initPage(lightScreens, ambience);
+      initPage(lightScreens, ambience, ambienceColor);
       // render();
       return;
     }
@@ -114,7 +109,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     
     dpr = mqd.devicePixelRatio;
 
-    initPlatformState(lightScreens, ambience);
+    initPlatformState(lightScreens, ambience, ambienceColor);
   }
 
   @override
@@ -122,8 +117,8 @@ class _MyAppState extends State<WebGlLoaderObj> {
     return Scaffold(
       body: Builder(
         builder: (BuildContext context) {
-          initSize(context, widget.lightScreens, widget.ambience);
-          return SingleChildScrollView(child: _build(context, widget.lightScreens, widget.ambience));
+          initSize(context, widget.lightScreens, widget.ambience, widget.ambienceColor);
+          return SingleChildScrollView(child: _build(context, widget.lightScreens, widget.ambience, widget.ambienceColor));
         },
       ),
       /* floatingActionButton: FloatingActionButton(
@@ -135,7 +130,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     );
   }
 
-  Widget _build(BuildContext context, lightScreens, ambience) {
+  Widget _build(BuildContext context, lightScreens, ambience, ambienceColor) {
     // initSize(context, lightScreens);
     return Column(
       children: [
@@ -187,7 +182,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     }
   }
 
-  initRenderer(lightScreens, ambience) {
+  initRenderer(lightScreens, ambience, ambienceColor) {
     print('initRenderer called');
     Map<String, dynamic> options = {
       "width": width,
@@ -211,15 +206,25 @@ class _MyAppState extends State<WebGlLoaderObj> {
     }
   }
 
-  initScene(lightScreens, ambience) {
-    initRenderer(lightScreens, ambience);
-    initPage(lightScreens, ambience);
+  initScene(lightScreens, ambience, ambienceColor) {
+    initRenderer(lightScreens, ambience, ambienceColor);
+    initPage(lightScreens, ambience, ambienceColor);
   }
 
-  initPage(lightScreens, ambience) async {
-    print('initPage called');
-    // camera settings
-    // print(lightScreens[0].intensity);
+  ARGBtoHex(colorARGB) {
+    var colorHexString;
+    int colorHexInt;
+    String hexAppend = "0x";
+
+    colorARGB = '${colorARGB.value.toRadixString(16)}';
+    colorHexString = hexAppend + colorARGB.substring(2);
+    colorHexString = colorHexString.replaceAll(new RegExp(r'[^0-9a-fA-F]'), '');
+    colorHexInt = int.parse(colorHexString, radix: 16);
+
+    return colorHexInt;
+  }
+
+  initPage(lightScreens, ambience, ambienceColor) async {
     double cameraFOV = 45;
     camera = three.PerspectiveCamera(cameraFOV, (width / height), 1, 1000);
     double cameraX = 0;
@@ -234,7 +239,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
     // ambient light settings
     // bool ambientLightOn = true;
-    var ambientLightColor = 0xffffff;
+    var ambientLightColor = ARGBtoHex(ambienceColor[0]);
     var ambientLightIntensity = ambience;
     var ambientLight =
         three.AmbientLight(ambientLightColor, ambientLightIntensity);
@@ -273,20 +278,20 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
     // point light 1 settings
     bool pointLight1On = false;
-    var pointLight1Color = 0xe59f3e;
+    var pointLight1Color = 0x000000;
     double pointLight1Intensity = 0.0;
-    var pointLight1 = three.PointLight(0x000000, 0);
-    print(pointLight1Intensity);
+    var pointLight1 = three.PointLight(pointLight1Color, pointLight1Intensity);
 
     // point light 1 position
     double pointLight1X = 50.0;
     double pointLight1Y = 20.0;
     double pointlight1Z = 6.0;
 
-    if (lightScreens.length >= 1)
+    if (lightScreens.length >= 1 && lightScreens[0] != null)
     {
       pointLight1On = true;
       pointLight1Intensity = lightScreens[0].intensity;
+      pointLight1Color = ARGBtoHex(lightScreens[0].colorWheelColor[0]);
       pointLight1X = lightScreens[0].distance;
       pointLight1Y = lightScreens[0].radius;
       pointLight1 = three.PointLight(pointLight1Color, pointLight1Intensity);
@@ -294,23 +299,22 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
     else
     {
-      pointLight1 = three.PointLight(0x000000, 0);
+      pointLight1 = three.PointLight(0x000000, 0.0);
     }
 
     pointLight1.position.set(pointLight1X, pointLight1Y, pointlight1Z);
     camera.add(pointLight1);
 
-    if (lightScreens.length < 1)
+    if (lightScreens.length < 1 || lightScreens[0] == null)
     {
       camera.remove(pointLight1);
     }
 
     // point light 2 settings
     bool pointLight2On = false;
-    var pointLight2Color = 0xe59f3e;
+    var pointLight2Color = 0x000000;
     double pointLight2Intensity = 0.0;
-    var pointLight2 = three.PointLight(0x000000, 0);
-    print(pointLight2Intensity);
+    var pointLight2 = three.PointLight(pointLight2Color, pointLight2Intensity);
 
     // point light 2 position
     double pointLight2X = 50.0;
@@ -321,9 +325,9 @@ class _MyAppState extends State<WebGlLoaderObj> {
     {
       pointLight2On = true;
       pointLight2Intensity = lightScreens[1].intensity;
+      pointLight2Color = ARGBtoHex(lightScreens[1].colorWheelColor[0]);
       pointLight2X = lightScreens[1].distance;
       pointLight2Y = lightScreens[1].radius;
-      print(pointLight2Intensity);
       pointLight2 = three.PointLight(pointLight2Color, pointLight2Intensity);
     }
 
@@ -342,10 +346,9 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
     // point light 3 settings
     bool pointLight3On = false;
-    var pointLight3Color = 0xe59f3e;
+    var pointLight3Color = 0x000000;
     double pointLight3Intensity = 0.0;
-    var pointLight3 = three.PointLight(0x000000, 0);
-    print(pointLight3Intensity);
+    var pointLight3 = three.PointLight(pointLight3Color, pointLight3Intensity);
 
     // point light 3 position
     double pointLight3X = 50.0;
@@ -356,9 +359,9 @@ class _MyAppState extends State<WebGlLoaderObj> {
     {
       pointLight3On = true;
       pointLight3Intensity = lightScreens[2].intensity;
+      pointLight3Color = ARGBtoHex(lightScreens[2].colorWheelColor[0]);
       pointLight3X = lightScreens[2].distance;
       pointLight3Y = lightScreens[2].radius;
-      print(pointLight3Intensity);
       pointLight3 = three.PointLight(pointLight3Color, pointLight3Intensity);
     }
 
@@ -377,10 +380,9 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
     // point light 4 settings
     bool pointLight4On = false;
-    var pointLight4Color = 0xe59f3e;
+    var pointLight4Color = 0x000000;
     double pointLight4Intensity = 0.0;
-    var pointLight4 = three.PointLight(0x000000, 0);
-    print(pointLight4Intensity);
+    var pointLight4 = three.PointLight(pointLight4Color, pointLight4Intensity);
 
     // point light 4 position
     double pointLight4X = 50.0;
@@ -391,9 +393,9 @@ class _MyAppState extends State<WebGlLoaderObj> {
     {
       pointLight4On = true;
       pointLight4Intensity = lightScreens[3].intensity;
+      pointLight4Color = ARGBtoHex(lightScreens[3].colorWheelColor[0]);
       pointLight4X = lightScreens[3].distance;
       pointLight4Y = lightScreens[3].radius;
-      print(pointLight4Intensity);
       pointLight4 = three.PointLight(pointLight4Color, pointLight4Intensity);
     }
 
@@ -412,10 +414,9 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
     // point light 5 settings
     bool pointLight5On = false;
-    var pointLight5Color = 0xe59f3e;
+    var pointLight5Color = 0x000000;
     double pointLight5Intensity = 0.0;
-    var pointLight5 = three.PointLight(0x000000, 0);
-    print(pointLight5Intensity);
+    var pointLight5 = three.PointLight(pointLight5Color, pointLight5Intensity);
 
     // point light 5 position
     double pointLight5X = 50.0;
@@ -426,9 +427,9 @@ class _MyAppState extends State<WebGlLoaderObj> {
     {
       pointLight5On = true;
       pointLight5Intensity = lightScreens[4].intensity;
+      pointLight5Color = ARGBtoHex(lightScreens[4].colorWheelColor[0]);
       pointLight5X = lightScreens[4].distance;
       pointLight5Y = lightScreens[4].radius;
-      print(pointLight5Intensity);
       pointLight5 = three.PointLight(pointLight5Color, pointLight5Intensity);
     }
 

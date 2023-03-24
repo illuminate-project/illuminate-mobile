@@ -55,9 +55,9 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
     lightScreens = [
       LightScreen(
         setSliderValue: _setSliderValue,
-        distance: 0,
-        intensity: 1.0,
-        radius: 0,
+        distance: 0.0,
+        intensity: 0.0,
+        radius: 0.0,
         colorWheelColor: rainbowColor,
         changeColor: _changeColor,
         removeLight: _removeLight,
@@ -223,7 +223,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier{
         lightScreens.removeRange(0, lightScreens.length);
         lightsButtons.removeRange(0, lightsButtons.length);
         ambienceColor = [Colors.white, Colors.white];
-        ambience = 0;
+        ambience = 1.0;
       } else {
         _setLoadingBar(true);
         Timer(
