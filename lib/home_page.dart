@@ -31,6 +31,10 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
   int _selectedScreen = 0;
   int _selectedLight = 0;
   double ambience = 1;
+  double dIntensity = 0;
+  double dHorizontal = 0;
+  double dVertical = 0;
+  double dDistance = 0;
   bool _showLoadingBar = false;
   bool _3DMesh = false;
   bool allLightsShown = true;
@@ -48,6 +52,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
   ];
 
   List<Color> ambienceColor = [Colors.white, Colors.white];
+  List<Color> directionalColor = [Colors.white, Colors.white];
 
   @override
   void initState() {
@@ -164,6 +169,12 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
   void _changeAmbienceColor(color) {
     setState(() {
       ambienceColor = [color, color];
+    });
+  }
+
+  void _changeDirectionalColor(color) {
+    setState(() {
+      directionalColor = [color, color];
     });
   }
 
@@ -528,6 +539,12 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
                       selectedValue: ambience,
                       setSliderValue: _setSliderValue,
                       type: 4,
+                      dDistance: dDistance,
+                      dIntensity: dIntensity,
+                      dHorizontal: dHorizontal,
+                      dVertical: dVertical,
+                      changeDirectionalColor: _changeDirectionalColor,
+                      directionalColor: directionalColor,
                       ambienceColor: ambienceColor,
                       changeAmbienceColor: _changeAmbienceColor,
                     ),

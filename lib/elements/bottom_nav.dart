@@ -30,8 +30,12 @@ class _BottomNavState extends State<BottomNav> {
       },
       items: const [
         BottomNavigationBarItem(
-          label: 'Light',
+          label: 'Point',
           icon: Icon(CupertinoIcons.lightbulb_fill),
+        ),
+        BottomNavigationBarItem(
+          label: 'Directional',
+          icon: Icon(CupertinoIcons.arrow_down_right),
         ),
         BottomNavigationBarItem(
           label: 'Ambience',
@@ -41,10 +45,6 @@ class _BottomNavState extends State<BottomNav> {
         //   label: 'Background',
         //   icon: Icon(Icons.filter),
         // ),
-        /*BottomNavigationBarItem(
-          label: 'Filter',
-          icon: Icon(Icons.filter_b_and_w),
-        ),*/
       ],
       currentIndex: widget.selectedScreen,
     );
