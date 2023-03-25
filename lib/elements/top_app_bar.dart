@@ -12,10 +12,12 @@ class TopAppBar extends StatefulWidget with PreferredSizeWidget {
   final Function changePicture;
   final Function sceneCapture;
   final Function saveImage;
+  final Function allLightToggle;
   final XFile? selectedImage;
   const TopAppBar(
     this.changePicture,
     this.sceneCapture,
+    this.allLightToggle,
     this.saveImage,
     this.selectedImage, {
     super.key,
@@ -29,7 +31,6 @@ class TopAppBar extends StatefulWidget with PreferredSizeWidget {
 }
 
 class _TopAppBarState extends State<TopAppBar> {
-  
   HomePageState imageInstance = HomePageState();
 
   @override
@@ -70,6 +71,7 @@ class _TopAppBarState extends State<TopAppBar> {
         ),
       );
     }
+
     return AppBar(
       backgroundColor: const Color.fromARGB(255, 31, 31, 31),
       title: ButtonBar(
@@ -85,9 +87,12 @@ class _TopAppBarState extends State<TopAppBar> {
             onPressed: () => {},
           ),
           IconButton(
-            icon: const Icon(CupertinoIcons.lightbulb_fill), //not fill to show image w/o lights
+            icon: const Icon(CupertinoIcons
+                .lightbulb_fill), //not fill to show image w/o lights
             color: Color.fromARGB(255, 255, 255, 255),
-            onPressed: () => {},
+            onPressed: () => {
+              widget.allLightToggle(),
+            },
           ),
           IconButton(
             icon: const Icon(CupertinoIcons.checkmark_circle),

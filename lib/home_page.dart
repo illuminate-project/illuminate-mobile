@@ -33,6 +33,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
   double ambience = 1;
   bool _showLoadingBar = false;
   bool _3DMesh = false;
+  bool allLightsShown = true;
   List<LightScreen> lightScreens = [];
   List<LightButton> lightsButtons = [];
   List<Color> rainbowColor = [
@@ -359,6 +360,75 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
     return true;
   }
 
+  void allLightToggle() {
+    print("This is a test goofy");
+    setState(() {
+      if (allLightsShown) {
+        for (int i = 0; i < lightScreens.length; i++) {
+          LightScreen curr = LightScreen(
+            setSliderValue: _setSliderValue,
+            intensity: lightScreens[i].intensity,
+            distance: lightScreens[i].distance,
+            radius: lightScreens[i].radius,
+            colorWheelColor: lightScreens[i].colorWheelColor,
+            changeColor: _changeColor,
+            removeLight: _removeLight,
+            hideLight: _hideLight,
+            isLightOn: false,
+          );
+          lightScreens.insert(i, curr);
+          lightScreens.removeAt(i + 1);
+        }
+        /* lightScreens.insert(
+            _selectedLight,
+            LightScreen(
+              setSliderValue: _setSliderValue,
+              intensity: lightScreens[_selectedLight].intensity,
+              distance: lightScreens[_selectedLight].distance,
+              radius: lightScreens[_selectedLight].radius,
+              colorWheelColor: lightScreens[_selectedLight].colorWheelColor,
+              changeColor: _changeColor,
+              removeLight: _removeLight,
+              hideLight: _hideLight,
+              isLightOn: false,
+            ));
+        lightScreens.removeAt(_selectedLight + 1); */
+        allLightsShown = false;
+      } else {
+        for (int i = 0; i < lightScreens.length; i++) {
+          LightScreen curr = LightScreen(
+            setSliderValue: _setSliderValue,
+            intensity: lightScreens[i].intensity,
+            distance: lightScreens[i].distance,
+            radius: lightScreens[i].radius,
+            colorWheelColor: lightScreens[i].colorWheelColor,
+            changeColor: _changeColor,
+            removeLight: _removeLight,
+            hideLight: _hideLight,
+            isLightOn: true,
+          );
+          lightScreens.insert(i, curr);
+          lightScreens.removeAt(i + 1);
+        }
+        /* lightScreens.insert(
+            _selectedLight,
+            LightScreen(
+              setSliderValue: _setSliderValue,
+              intensity: lightScreens[_selectedLight].intensity,
+              distance: lightScreens[_selectedLight].distance,
+              radius: lightScreens[_selectedLight].radius,
+              colorWheelColor: lightScreens[_selectedLight].colorWheelColor,
+              changeColor: _changeColor,
+              removeLight: _removeLight,
+              hideLight: _hideLight,
+              isLightOn: true,
+            ));
+        lightScreens.removeAt(_selectedLight + 1); */
+        allLightsShown = true;
+      }
+    });
+  }
+
   Uint8List? sceneCapture() {
     screenshotController.capture().then((image) {
       //Capture Done
@@ -396,7 +466,8 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _selectedImage != null
-          ? TopAppBar(_setImage, sceneCapture, saveImage, _selectedImage)
+          ? TopAppBar(_setImage, sceneCapture, allLightToggle, saveImage,
+              _selectedImage)
           : null,
       backgroundColor: const Color.fromARGB(255, 31, 31, 31),
       body: Column(
