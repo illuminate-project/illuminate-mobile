@@ -39,31 +39,28 @@ class _DirectionalScreenState extends State<DirectionalScreen> {
             changeColor: widget.changeColor),
         //Icon(Icons.wb_sunny_sharp, color: Colors.amber, size: 50),
         SizedBox(width: 15),
-        Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              MovableSlider(
-                  label: 'Intensity',
-                  selectedValue: widget.intensity,
-                  setSliderValue: widget.setSliderValue,
-                  type: 1),
-              MovableSlider(
-                  label: 'Horizontal',
-                  selectedValue: widget.horizontal,
-                  setSliderValue: widget.setSliderValue,
-                  type: 2),
-              MovableSlider(
-                  label: 'Vertical',
-                  selectedValue: widget.vertical,
-                  setSliderValue: widget.setSliderValue,
-                  type: 3),
-              MovableSlider(
-                  label: 'Distance',
-                  selectedValue: widget.distance,
-                  setSliderValue: widget.setSliderValue,
-                  type: 4),
-            ]
-        ),
+        Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          MovableSlider(
+              label: 'Intensity',
+              selectedValue: widget.intensity,
+              setSliderValue: widget.setSliderValue,
+              type: 1),
+          MovableSlider(
+              label: 'Horizontal',
+              selectedValue: widget.horizontal,
+              setSliderValue: widget.setSliderValue,
+              type: 2),
+          MovableSlider(
+              label: 'Vertical',
+              selectedValue: widget.vertical,
+              setSliderValue: widget.setSliderValue,
+              type: 3),
+          MovableSlider(
+              label: 'Distance',
+              selectedValue: widget.distance,
+              setSliderValue: widget.setSliderValue,
+              type: 5),
+        ]),
       ])
     ]);
   }

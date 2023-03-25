@@ -24,7 +24,7 @@ class _MovableSliderState extends State<MovableSlider> {
   }
 
   double getMinSliderValue() {
-    switch(widget.type) {
+    switch (widget.type) {
       case 1:
         return 0;
       case 2:
@@ -33,13 +33,15 @@ class _MovableSliderState extends State<MovableSlider> {
         return -100;
       case 4:
         return -100;
+      case 5:
+        return -100;
       default:
         return 0.0;
     }
   }
 
   double getMaxSliderValue() {
-    switch(widget.type) {
+    switch (widget.type) {
       case 1:
         return 2.0;
       case 2:
@@ -47,6 +49,8 @@ class _MovableSliderState extends State<MovableSlider> {
       case 3:
         return 100;
       case 4:
+        return 100;
+      case 5:
         return 100;
       default:
         return 0.0;
@@ -61,15 +65,14 @@ class _MovableSliderState extends State<MovableSlider> {
             margin: EdgeInsets.only(right: marginValue()),
             child: SliderLabel(label: widget.label)),
         Container(
-          width: 160,
-          child: SliderBar(
-            selectedValue: widget.selectedValue,
-            setSliderValue: widget.setSliderValue,
-            type: widget.type,
-            minSliderValue: getMinSliderValue(),
-            maxSliderValue: getMaxSliderValue(),
-          )
-        ),
+            width: 160,
+            child: SliderBar(
+              selectedValue: widget.selectedValue,
+              setSliderValue: widget.setSliderValue,
+              type: widget.type,
+              minSliderValue: getMinSliderValue(),
+              maxSliderValue: getMaxSliderValue(),
+            )),
       ],
     );
   }

@@ -250,6 +250,27 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
           });
           break;
         }
+      case 5:
+        {
+          setState(() {
+            lightScreens.insert(
+                _selectedLight,
+                LightScreen(
+                  setSliderValue: _setSliderValue,
+                  intensity: lightScreens[_selectedLight].intensity,
+                  horizontal: lightScreens[_selectedLight].horizontal,
+                  vertical: lightScreens[_selectedLight].vertical,
+                  colorWheelColor: lightScreens[_selectedLight].colorWheelColor,
+                  distance: value,
+                  changeColor: _changeColor,
+                  removeLight: _removeLight,
+                  hideLight: _hideLight,
+                  isLightOn: true,
+                ));
+            lightScreens.removeAt(_selectedLight + 1);
+          });
+        }
+        break;
       default:
     }
   }
@@ -380,7 +401,6 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
   }
 
   void allLightToggle() {
-    print("This is a test goofy");
     setState(() {
       if (allLightsShown) {
         for (int i = 0; i < lightScreens.length; i++) {
@@ -399,20 +419,6 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
           lightScreens.insert(i, curr);
           lightScreens.removeAt(i + 1);
         }
-        /* lightScreens.insert(
-            _selectedLight,
-            LightScreen(
-              setSliderValue: _setSliderValue,
-              intensity: lightScreens[_selectedLight].intensity,
-              horizontal: lightScreens[_selectedLight].horizontal,
-              vertical: lightScreens[_selectedLight].vertical,
-              colorWheelColor: lightScreens[_selectedLight].colorWheelColor,
-              changeColor: _changeColor,
-              removeLight: _removeLight,
-              hideLight: _hideLight,
-              isLightOn: false,
-            ));
-        lightScreens.removeAt(_selectedLight + 1); */
         allLightsShown = false;
       } else {
         for (int i = 0; i < lightScreens.length; i++) {
@@ -431,20 +437,6 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
           lightScreens.insert(i, curr);
           lightScreens.removeAt(i + 1);
         }
-        /* lightScreens.insert(
-            _selectedLight,
-            LightScreen(
-              setSliderValue: _setSliderValue,
-              intensity: lightScreens[_selectedLight].intensity,
-              horizontal: lightScreens[_selectedLight].horizontal,
-              vertical: lightScreens[_selectedLight].vertical,
-              colorWheelColor: lightScreens[_selectedLight].colorWheelColor,
-              changeColor: _changeColor,
-              removeLight: _removeLight,
-              hideLight: _hideLight,
-              isLightOn: true,
-            ));
-        lightScreens.removeAt(_selectedLight + 1); */
         allLightsShown = true;
       }
     });

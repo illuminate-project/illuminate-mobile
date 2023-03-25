@@ -36,42 +36,41 @@ class _LightScreenState extends State<LightScreen> {
   Widget build(BuildContext context) {
     return Column(children: [
       //SizedBox(height: 0),
-      Row(mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Transform.scale(scale: 0.8,
+      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Transform.scale(
+          scale: 0.8,
           child: ColorSelector(
-            colorWheelColor: widget.colorWheelColor,
-            changeColor: widget.changeColor),
+              colorWheelColor: widget.colorWheelColor,
+              changeColor: widget.changeColor),
         ),
         const SizedBox(
           width: 15,
         ),
-        
         Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              MovableSlider(
-                  label: 'Intensity',
-                  selectedValue: widget.intensity,
-                  setSliderValue: widget.setSliderValue,
-                  type: 1),
-              MovableSlider(
-                  label: 'Horizontal',
-                  selectedValue: widget.horizontal,
-                  setSliderValue: widget.setSliderValue,
-                  type: 2),
-              MovableSlider(
-                  label: 'Vertical',
-                  selectedValue: widget.vertical,
-                  setSliderValue: widget.setSliderValue,
-                  type: 3),
-              MovableSlider(
-                  label: 'Distance',
-                  selectedValue: widget.distance,
-                  setSliderValue: widget.setSliderValue,
-                  type: 4),
-            ],
-          ),
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            MovableSlider(
+                label: 'Intensity',
+                selectedValue: widget.intensity,
+                setSliderValue: widget.setSliderValue,
+                type: 1),
+            MovableSlider(
+                label: 'Horizontal',
+                selectedValue: widget.horizontal,
+                setSliderValue: widget.setSliderValue,
+                type: 2),
+            MovableSlider(
+                label: 'Vertical',
+                selectedValue: widget.vertical,
+                setSliderValue: widget.setSliderValue,
+                type: 3),
+            MovableSlider(
+                label: 'Distance',
+                selectedValue: widget.distance,
+                setSliderValue: widget.setSliderValue,
+                type: 5),
+          ],
+        ),
         Column(
           children: [
             IconButton(
@@ -79,7 +78,9 @@ class _LightScreenState extends State<LightScreen> {
               padding: const EdgeInsets.only(right: 10),
               iconSize: 30,
               onPressed: () => widget.hideLight(),
-              icon: widget.isLightOn ? const Icon(CupertinoIcons.lightbulb) : const Icon(CupertinoIcons.lightbulb_slash),
+              icon: widget.isLightOn
+                  ? const Icon(CupertinoIcons.lightbulb)
+                  : const Icon(CupertinoIcons.lightbulb_slash),
               color: const Color.fromARGB(255, 217, 217, 217),
             ),
             SizedBox(height: 10),
@@ -91,8 +92,8 @@ class _LightScreenState extends State<LightScreen> {
               icon: const Icon(CupertinoIcons.trash_fill),
               color: const Color.fromARGB(255, 217, 217, 217),
             )
-
-        ],)
+          ],
+        )
       ])
     ]);
   }
