@@ -32,6 +32,7 @@ class TopAppBar extends StatefulWidget with PreferredSizeWidget {
 
 class _TopAppBarState extends State<TopAppBar> {
   HomePageState imageInstance = HomePageState();
+  bool allLightsOn = true;
 
   @override
   Widget build(BuildContext context) {
@@ -53,10 +54,10 @@ class _TopAppBarState extends State<TopAppBar> {
                   {widget.changePicture(null)}
                 else
                   {
-                    imageInstance.sceneCapture(),
                     imageInstance.saveImage(),
                     ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
-                      content: Text('Image Saved!'),
+                      backgroundColor: Color.fromARGB(255, 105, 241, 143),
+                      content: Text('Saved to Camera Roll!', style: TextStyle(color: Color.fromARGB(255, 26, 47, 24))),
                       behavior: SnackBarBehavior.floating,
                       margin: EdgeInsets.only(
                           bottom: MediaQuery.of(context).size.height - 193,
@@ -78,7 +79,7 @@ class _TopAppBarState extends State<TopAppBar> {
         alignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-              icon: const Icon(CupertinoIcons.xmark_circle),
+              icon: const Icon(CupertinoIcons.xmark),
               color: const Color.fromARGB(255, 255, 140, 140),
               onPressed: () => showModal('Remove Photo?', 1)),
           IconButton(
@@ -87,20 +88,23 @@ class _TopAppBarState extends State<TopAppBar> {
             onPressed: () => {},
           ),
           IconButton(
-            icon: const Icon(CupertinoIcons
-                .lightbulb_fill), //not fill to show image w/o lights
+            icon: allLightsOn ? const Icon(CupertinoIcons
+                .lightbulb_fill) : const Icon(CupertinoIcons.lightbulb),
             color: Color.fromARGB(255, 255, 255, 255),
             onPressed: () => {
               widget.allLightToggle(),
+              setState(() {
+                allLightsOn = !allLightsOn;
+              })
             },
           ),
           IconButton(
-            icon: const Icon(CupertinoIcons.checkmark_circle),
+            icon: const Icon(CupertinoIcons.square_arrow_down),
             color: const Color.fromARGB(255, 227, 174, 111),
             onPressed: () => {
               widget.sceneCapture(),
-              widget.saveImage(),
-              //showModal('Save to Camera Roll?', 2)
+              
+              showModal('Save to Camera Roll?', 2)
             },
           ),
         ],

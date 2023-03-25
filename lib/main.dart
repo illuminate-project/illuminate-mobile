@@ -22,6 +22,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Illuminate',
       theme: ThemeData(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
         primarySwatch: Colors.blue,
       ),
       home: const SplashScreen(),

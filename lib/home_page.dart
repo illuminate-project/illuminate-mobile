@@ -464,6 +464,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
   }
 
   saveImage() {
+    sceneCapture();
     ImageGallerySaver.saveImage(screenshotImage!);
   }
 
