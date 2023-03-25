@@ -20,7 +20,7 @@ class MovableSlider extends StatefulWidget {
 
 class _MovableSliderState extends State<MovableSlider> {
   double marginValue() {
-    return widget.type == 3 ? 12.75 : 0;
+    return widget.type == 34 ? 12.75 : 0;
   }
 
   double getMinSliderValue() {
@@ -28,11 +28,11 @@ class _MovableSliderState extends State<MovableSlider> {
       case 1:
         return 0;
       case 2:
-        return -30;
+        return -100;
       case 3:
-        return -30;
+        return -100;
       case 4:
-        return -30;
+        return -100;
       default:
         return 0.0;
     }
@@ -43,11 +43,11 @@ class _MovableSliderState extends State<MovableSlider> {
       case 1:
         return 2.0;
       case 2:
-        return 30;
+        return 100;
       case 3:
-        return 30;
+        return 100;
       case 4:
-        return 30;
+        return 100;
       default:
         return 0.0;
     }

@@ -289,7 +289,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     // point light 1 position
     double pointLight1X = 50.0;
     double pointLight1Y = 20.0;
-    double pointlight1Z = 6.0;
+    double pointLight1Z = 6.0;
 
     if (lightScreens.length >= 1 && lightScreens[0] != null) {
       pointLight1On = true;
@@ -298,12 +298,13 @@ class _MyAppState extends State<WebGlLoaderObj> {
       pointLight1Color = ARGBtoHex(lightScreens[0].colorWheelColor[0]);
       pointLight1X = lightScreens[0].horizontal;
       pointLight1Y = lightScreens[0].vertical;
+      pointLight1Z = lightScreens[0].distance;
       pointLight1 = three.PointLight(pointLight1Color, pointLight1Intensity);
     } else {
       pointLight1 = three.PointLight(0x000000, 0.0);
     }
 
-    pointLight1.position.set(pointLight1X, pointLight1Y, pointlight1Z);
+    pointLight1.position.set(pointLight1X, pointLight1Y, pointLight1Z);
     camera.add(pointLight1);
 
     if (lightScreens.length < 1 || lightScreens[0] == null) {
@@ -319,7 +320,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     // point light 2 position
     double pointLight2X = 50.0;
     double pointLight2Y = 20.0;
-    double pointlight2Z = 6.0;
+    double pointLight2Z = 6.0;
 
     if (lightScreens.length >= 2 && lightScreens[1] != null) {
       pointLight2On = true;
@@ -329,12 +330,13 @@ class _MyAppState extends State<WebGlLoaderObj> {
       pointLight2Color = ARGBtoHex(lightScreens[1].colorWheelColor[0]);
       pointLight2X = lightScreens[1].horizontal;
       pointLight2Y = lightScreens[1].vertical;
+      pointLight2Z = lightScreens[1].distance;
       pointLight2 = three.PointLight(pointLight2Color, pointLight2Intensity);
     } else {
       pointLight2 = three.PointLight(0x000000, 0);
     }
 
-    pointLight2.position.set(pointLight2X, pointLight2Y, pointlight2Z);
+    pointLight2.position.set(pointLight2X, pointLight2Y, pointLight2Z);
     camera.add(pointLight2);
 
     if (lightScreens.length < 2) {
@@ -350,7 +352,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     // point light 3 position
     double pointLight3X = 50.0;
     double pointLight3Y = 20.0;
-    double pointlight3Z = 6.0;
+    double pointLight3Z = 6.0;
 
     if (lightScreens.length >= 3 && lightScreens[2] != null) {
       pointLight3On = true;
@@ -360,12 +362,13 @@ class _MyAppState extends State<WebGlLoaderObj> {
       pointLight3Color = ARGBtoHex(lightScreens[2].colorWheelColor[0]);
       pointLight3X = lightScreens[2].horizontal;
       pointLight3Y = lightScreens[2].vertical;
+      pointLight3Z = lightScreens[2].distance;
       pointLight3 = three.PointLight(pointLight3Color, pointLight3Intensity);
     } else {
       pointLight3 = three.PointLight(0x000000, 0);
     }
 
-    pointLight3.position.set(pointLight3X, pointLight3Y, pointlight3Z);
+    pointLight3.position.set(pointLight3X, pointLight3Y, pointLight3Z);
     camera.add(pointLight3);
 
     if (lightScreens.length < 3) {
@@ -381,7 +384,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     // point light 4 position
     double pointLight4X = 50.0;
     double pointLight4Y = 20.0;
-    double pointlight4Z = 6.0;
+    double pointLight4Z = 6.0;
 
     if (lightScreens.length >= 4 && lightScreens[3] != null) {
       pointLight4On = true;
@@ -391,12 +394,13 @@ class _MyAppState extends State<WebGlLoaderObj> {
       pointLight4Color = ARGBtoHex(lightScreens[3].colorWheelColor[0]);
       pointLight4X = lightScreens[3].horizontal;
       pointLight4Y = lightScreens[3].vertical;
+      pointLight4Z = lightScreens[3].distance;
       pointLight4 = three.PointLight(pointLight4Color, pointLight4Intensity);
     } else {
       pointLight4 = three.PointLight(0x000000, 0);
     }
 
-    pointLight4.position.set(pointLight4X, pointLight4Y, pointlight4Z);
+    pointLight4.position.set(pointLight4X, pointLight4Y, pointLight4Z);
     camera.add(pointLight4);
 
     if (lightScreens.length < 4) {
@@ -412,7 +416,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     // point light 5 position
     double pointLight5X = 50.0;
     double pointLight5Y = 20.0;
-    double pointlight5Z = 6.0;
+    double pointLight5Z = 6.0;
 
     if (lightScreens.length >= 5 && lightScreens[4] != null) {
       pointLight5On = true;
@@ -422,12 +426,13 @@ class _MyAppState extends State<WebGlLoaderObj> {
       pointLight5Color = ARGBtoHex(lightScreens[4].colorWheelColor[0]);
       pointLight5X = lightScreens[4].horizontal;
       pointLight5Y = lightScreens[4].vertical;
+      pointLight5Z = lightScreens[4].distance;
       pointLight5 = three.PointLight(pointLight5Color, pointLight5Intensity);
     } else {
       pointLight5 = three.PointLight(0x000000, 0);
     }
 
-    pointLight5.position.set(pointLight5X, pointLight5Y, pointlight5Z);
+    pointLight5.position.set(pointLight5X, pointLight5Y, pointLight5Z);
     camera.add(pointLight5);
 
     if (lightScreens.length < 5) {
@@ -441,7 +446,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
     var textureLoader = three.TextureLoader(null);
     textureLoader.flipY = true;
-    texture = await textureLoader.loadAsync('assets/squirtle_texture.png');
+    texture = await textureLoader.loadAsync('squirtle_texture.png');
 
     texture.magFilter = three.LinearFilter;
     texture.minFilter = three.LinearMipmapLinearFilter;
@@ -450,7 +455,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     texture.flipY = true; // this flipY is only for web
 
     var loader = three_jsm.OBJLoader(null);
-    object = await loader.loadAsync('assets/squirtle.obj');
+    object = await loader.loadAsync('squirtle.obj');
 
     object.traverse((child) {
       if (child is three.Mesh) {
