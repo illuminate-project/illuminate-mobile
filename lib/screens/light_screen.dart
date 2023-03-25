@@ -5,8 +5,9 @@ import 'package:illuminate/elements/slider/slider.dart';
 
 class LightScreen extends StatefulWidget {
   final double intensity;
+  final double horizontal;
+  final double vertical;
   final double distance;
-  final double radius;
   final Function setSliderValue;
   final List<Color> colorWheelColor;
   final Function changeColor;
@@ -17,8 +18,9 @@ class LightScreen extends StatefulWidget {
       {super.key,
       required this.setSliderValue,
       required this.intensity,
+      required this.horizontal,
       required this.distance,
-      required this.radius,
+      required this.vertical,
       required this.hideLight,
       required this.colorWheelColor,
       required this.changeColor,
@@ -33,7 +35,7 @@ class _LightScreenState extends State<LightScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      SizedBox(height: 12),
+      //SizedBox(height: 0),
       Row(mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Transform.scale(scale: 0.8,
@@ -44,6 +46,7 @@ class _LightScreenState extends State<LightScreen> {
         const SizedBox(
           width: 15,
         ),
+        
         Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -54,14 +57,19 @@ class _LightScreenState extends State<LightScreen> {
                   type: 1),
               MovableSlider(
                   label: 'Horizontal',
-                  selectedValue: widget.distance,
+                  selectedValue: widget.horizontal,
                   setSliderValue: widget.setSliderValue,
                   type: 2),
               MovableSlider(
                   label: 'Vertical',
-                  selectedValue: widget.radius,
+                  selectedValue: widget.vertical,
                   setSliderValue: widget.setSliderValue,
                   type: 3),
+              MovableSlider(
+                  label: 'Distance',
+                  selectedValue: widget.distance,
+                  setSliderValue: widget.setSliderValue,
+                  type: 4),
             ],
           ),
         Column(
@@ -71,7 +79,7 @@ class _LightScreenState extends State<LightScreen> {
               padding: const EdgeInsets.only(right: 10),
               iconSize: 30,
               onPressed: () => widget.hideLight(),
-              icon: const Icon(CupertinoIcons.lightbulb), //widget.isLightOn ? const Icon(CupertinoIcons.lightbulb) : const Icon(CupertinoIcons.lightbulb_slash),
+              icon: widget.isLightOn ? const Icon(CupertinoIcons.lightbulb) : const Icon(CupertinoIcons.lightbulb_slash),
               color: const Color.fromARGB(255, 217, 217, 217),
             ),
             SizedBox(height: 10),

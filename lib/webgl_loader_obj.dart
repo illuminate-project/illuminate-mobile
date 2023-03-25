@@ -296,8 +296,8 @@ class _MyAppState extends State<WebGlLoaderObj> {
       pointLight1Intensity =
           lightScreens[0].isLightOn ? lightScreens[0].intensity : 0.0;
       pointLight1Color = ARGBtoHex(lightScreens[0].colorWheelColor[0]);
-      pointLight1X = lightScreens[0].distance;
-      pointLight1Y = lightScreens[0].radius;
+      pointLight1X = lightScreens[0].horizontal;
+      pointLight1Y = lightScreens[0].vertical;
       pointLight1 = three.PointLight(pointLight1Color, pointLight1Intensity);
     } else {
       pointLight1 = three.PointLight(0x000000, 0.0);
@@ -327,8 +327,8 @@ class _MyAppState extends State<WebGlLoaderObj> {
           lightScreens[1].isLightOn ? lightScreens[1].intensity : 0.0;
       ;
       pointLight2Color = ARGBtoHex(lightScreens[1].colorWheelColor[0]);
-      pointLight2X = lightScreens[1].distance;
-      pointLight2Y = lightScreens[1].radius;
+      pointLight2X = lightScreens[1].horizontal;
+      pointLight2Y = lightScreens[1].vertical;
       pointLight2 = three.PointLight(pointLight2Color, pointLight2Intensity);
     } else {
       pointLight2 = three.PointLight(0x000000, 0);
@@ -358,8 +358,8 @@ class _MyAppState extends State<WebGlLoaderObj> {
           lightScreens[2].isLightOn ? lightScreens[2].intensity : 0.0;
       ;
       pointLight3Color = ARGBtoHex(lightScreens[2].colorWheelColor[0]);
-      pointLight3X = lightScreens[2].distance;
-      pointLight3Y = lightScreens[2].radius;
+      pointLight3X = lightScreens[2].horizontal;
+      pointLight3Y = lightScreens[2].vertical;
       pointLight3 = three.PointLight(pointLight3Color, pointLight3Intensity);
     } else {
       pointLight3 = three.PointLight(0x000000, 0);
@@ -389,8 +389,8 @@ class _MyAppState extends State<WebGlLoaderObj> {
           lightScreens[3].isLightOn ? lightScreens[3].intensity : 0.0;
       ;
       pointLight4Color = ARGBtoHex(lightScreens[3].colorWheelColor[0]);
-      pointLight4X = lightScreens[3].distance;
-      pointLight4Y = lightScreens[3].radius;
+      pointLight4X = lightScreens[3].horizontal;
+      pointLight4Y = lightScreens[3].vertical;
       pointLight4 = three.PointLight(pointLight4Color, pointLight4Intensity);
     } else {
       pointLight4 = three.PointLight(0x000000, 0);
@@ -420,8 +420,8 @@ class _MyAppState extends State<WebGlLoaderObj> {
           lightScreens[4].isLightOn ? lightScreens[4].intensity : 0.0;
       ;
       pointLight5Color = ARGBtoHex(lightScreens[4].colorWheelColor[0]);
-      pointLight5X = lightScreens[4].distance;
-      pointLight5Y = lightScreens[4].radius;
+      pointLight5X = lightScreens[4].horizontal;
+      pointLight5Y = lightScreens[4].vertical;
       pointLight5 = three.PointLight(pointLight5Color, pointLight5Intensity);
     } else {
       pointLight5 = three.PointLight(0x000000, 0);
