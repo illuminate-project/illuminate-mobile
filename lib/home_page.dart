@@ -55,10 +55,11 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
     lightScreens = [
       LightScreen(
         setSliderValue: _setSliderValue,
-        distance: 0.0,
+        horizontal: 0.0,
         intensity: 0.0,
-        radius: 0.0,
+        vertical: 0.0,
         colorWheelColor: rainbowColor,
+        distance: 0.0,
         changeColor: _changeColor,
         removeLight: _removeLight,
         hideLight: _hideLight,
@@ -108,8 +109,9 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
             LightScreen(
               setSliderValue: _setSliderValue,
               intensity: lightScreens[_selectedLight].intensity,
+              horizontal: lightScreens[_selectedLight].horizontal,
+              vertical: lightScreens[_selectedLight].vertical,
               distance: lightScreens[_selectedLight].distance,
-              radius: lightScreens[_selectedLight].radius,
               colorWheelColor: lightScreens[_selectedLight].colorWheelColor,
               changeColor: _changeColor,
               removeLight: _removeLight,
@@ -124,8 +126,9 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
             LightScreen(
               setSliderValue: _setSliderValue,
               intensity: lightScreens[_selectedLight].intensity,
+              horizontal: lightScreens[_selectedLight].horizontal,
+              vertical: lightScreens[_selectedLight].vertical,
               distance: lightScreens[_selectedLight].distance,
-              radius: lightScreens[_selectedLight].radius,
               colorWheelColor: lightScreens[_selectedLight].colorWheelColor,
               changeColor: _changeColor,
               removeLight: _removeLight,
@@ -145,8 +148,9 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
           LightScreen(
             setSliderValue: _setSliderValue,
             intensity: lightScreens[_selectedLight].intensity,
+            horizontal: lightScreens[_selectedLight].horizontal,
+            vertical: lightScreens[_selectedLight].vertical,
             distance: lightScreens[_selectedLight].distance,
-            radius: lightScreens[_selectedLight].radius,
             colorWheelColor: [color, color],
             changeColor: _changeColor,
             removeLight: _removeLight,
@@ -173,9 +177,10 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
                 LightScreen(
                   setSliderValue: _setSliderValue,
                   intensity: value,
-                  distance: lightScreens[_selectedLight].distance,
-                  radius: lightScreens[_selectedLight].radius,
+                  horizontal: lightScreens[_selectedLight].horizontal,
+                  vertical: lightScreens[_selectedLight].vertical,
                   colorWheelColor: lightScreens[_selectedLight].colorWheelColor,
+                  distance: lightScreens[_selectedLight].distance,
                   changeColor: _changeColor,
                   removeLight: _removeLight,
                   hideLight: _hideLight,
@@ -193,8 +198,9 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
                 LightScreen(
                     setSliderValue: _setSliderValue,
                     intensity: lightScreens[_selectedLight].intensity,
-                    distance: value,
-                    radius: lightScreens[_selectedLight].radius,
+                    horizontal: value,
+                    vertical: lightScreens[_selectedLight].vertical,
+                    distance: lightScreens[_selectedLight].distance,
                     changeColor: _changeColor,
                     removeLight: _removeLight,
                     hideLight: _hideLight,
@@ -214,9 +220,10 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
                   setSliderValue: _setSliderValue,
                   removeLight: _removeLight,
                   intensity: lightScreens[_selectedLight].intensity,
-                  distance: lightScreens[_selectedLight].distance,
-                  radius: value,
+                  horizontal: lightScreens[_selectedLight].horizontal,
+                  vertical: value,
                   colorWheelColor: lightScreens[_selectedLight].colorWheelColor,
+                  distance: lightScreens[_selectedLight].distance,
                   changeColor: _changeColor,
                   hideLight: _hideLight,
                   isLightOn: true,
@@ -240,9 +247,10 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
     setState(() {
       lightScreens.add(LightScreen(
         setSliderValue: _setSliderValue,
-        distance: 0,
+        horizontal: 0,
         intensity: 0,
-        radius: 0,
+        vertical: 0,
+        distance: 0,
         colorWheelColor: rainbowColor,
         changeColor: _changeColor,
         removeLight: _removeLight,
@@ -368,8 +376,9 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
           LightScreen curr = LightScreen(
             setSliderValue: _setSliderValue,
             intensity: lightScreens[i].intensity,
+            horizontal: lightScreens[i].horizontal,
+            vertical: lightScreens[i].vertical,
             distance: lightScreens[i].distance,
-            radius: lightScreens[i].radius,
             colorWheelColor: lightScreens[i].colorWheelColor,
             changeColor: _changeColor,
             removeLight: _removeLight,
@@ -384,8 +393,8 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
             LightScreen(
               setSliderValue: _setSliderValue,
               intensity: lightScreens[_selectedLight].intensity,
-              distance: lightScreens[_selectedLight].distance,
-              radius: lightScreens[_selectedLight].radius,
+              horizontal: lightScreens[_selectedLight].horizontal,
+              vertical: lightScreens[_selectedLight].vertical,
               colorWheelColor: lightScreens[_selectedLight].colorWheelColor,
               changeColor: _changeColor,
               removeLight: _removeLight,
@@ -399,9 +408,10 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
           LightScreen curr = LightScreen(
             setSliderValue: _setSliderValue,
             intensity: lightScreens[i].intensity,
-            distance: lightScreens[i].distance,
-            radius: lightScreens[i].radius,
+            horizontal: lightScreens[i].horizontal,
+            vertical: lightScreens[i].vertical,
             colorWheelColor: lightScreens[i].colorWheelColor,
+            distance: lightScreens[i].distance,
             changeColor: _changeColor,
             removeLight: _removeLight,
             hideLight: _hideLight,
@@ -415,8 +425,8 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
             LightScreen(
               setSliderValue: _setSliderValue,
               intensity: lightScreens[_selectedLight].intensity,
-              distance: lightScreens[_selectedLight].distance,
-              radius: lightScreens[_selectedLight].radius,
+              horizontal: lightScreens[_selectedLight].horizontal,
+              vertical: lightScreens[_selectedLight].vertical,
               colorWheelColor: lightScreens[_selectedLight].colorWheelColor,
               changeColor: _changeColor,
               removeLight: _removeLight,
@@ -477,7 +487,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
                   controller: screenshotController,
                   child: Container(
                       child: SizedBox(
-                          height: 400,
+                          height: 389,
                           child: WebGlLoaderObj(
                               ambienceColor, lightScreens, ambience))))
               //PictureContainer(_selectedImage, _setImage, _setOriginalImage)
