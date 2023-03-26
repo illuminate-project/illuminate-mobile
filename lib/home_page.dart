@@ -271,6 +271,34 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
           });
         }
         break;
+      case 6:
+        {
+          setState(() {
+            dIntensity = value;
+          });
+        }
+        break;
+      case 7:
+        {
+          setState(() {
+            dHorizontal = value;
+          });
+        }
+        break;
+      case 8:
+        {
+          setState(() {
+            dVertical = value;
+          });
+        }
+        break;
+      case 9:
+        {
+          setState(() {
+            dDistance = value;
+          });
+        }
+        break;
       default:
     }
   }
@@ -493,7 +521,14 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
                       child: SizedBox(
                           height: 389,
                           child: WebGlLoaderObj(
-                              ambienceColor, lightScreens, ambience, directionalColor, dIntensity, dHorizontal, dVertical, dDistance))))
+                              ambienceColor,
+                              lightScreens,
+                              ambience,
+                              directionalColor,
+                              dIntensity,
+                              dHorizontal,
+                              dVertical,
+                              dDistance))))
               //PictureContainer(_selectedImage, _setImage, _setOriginalImage)
               : StartScreen(
                   selectedImage: _selectedImage,

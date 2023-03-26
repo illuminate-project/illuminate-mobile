@@ -44,22 +44,22 @@ class _DirectionalScreenState extends State<DirectionalScreen> {
               label: 'Intensity',
               selectedValue: widget.intensity,
               setSliderValue: widget.setSliderValue,
-              type: 1),
+              type: 6),
           MovableSlider(
               label: 'Horizontal',
               selectedValue: widget.horizontal,
               setSliderValue: widget.setSliderValue,
-              type: 2),
+              type: 7),
           MovableSlider(
               label: 'Vertical',
               selectedValue: widget.vertical,
               setSliderValue: widget.setSliderValue,
-              type: 3),
+              type: 8),
           MovableSlider(
               label: 'Distance',
               selectedValue: widget.distance,
               setSliderValue: widget.setSliderValue,
-              type: 5),
+              type: 9),
         ]),
       ])
     ]);
