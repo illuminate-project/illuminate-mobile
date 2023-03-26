@@ -19,6 +19,22 @@ class SliderBar extends StatefulWidget {
 }
 
 class _SliderBarState extends State<SliderBar> {
+  String sliderLabel() {
+    switch (widget.type) {
+      case 1:
+        return (widget.selectedValue * 50).round().toString();
+
+      case 4:
+        return (widget.selectedValue * 50).round().toString();
+
+      case 6:
+        return (widget.selectedValue * 50).round().toString();
+
+      default:
+        return widget.selectedValue.round().toString();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Slider(
@@ -26,7 +42,7 @@ class _SliderBarState extends State<SliderBar> {
       max: widget.maxSliderValue,
       value: widget.selectedValue,
       divisions: 100,
-      label: widget.selectedValue.toString(),
+      label: sliderLabel(),
       onChanged: ((value) => widget.setSliderValue(value, widget.type)),
       activeColor: const Color.fromARGB(255, 217, 217, 217),
       inactiveColor: const Color.fromARGB(255, 84, 84, 84),
