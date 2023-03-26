@@ -19,8 +19,13 @@ import 'screens/light_screen.dart';
 class WebGlLoaderObj extends StatefulWidget {
   final List<LightScreen> lightScreens;
   final List<Color> ambienceColor;
+  final List<Color> directionalColor;
   final double ambience;
-  const WebGlLoaderObj(this.ambienceColor, this.lightScreens, this.ambience,
+  final double dIntensity;
+  final double dHorizontal;
+  final double dVertical;
+  final double dDistance;
+  const WebGlLoaderObj(this.ambienceColor, this.lightScreens, this.ambience, this.directionalColor, this.dIntensity, this.dHorizontal, this.dVertical, this.dDistance,
       {super.key});
 
   @override
@@ -71,7 +76,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState(lightScreens, ambience, ambienceColor) async {
+  Future<void> initPlatformState(lightScreens, ambience, ambienceColor, directionalColor, dIntensity, dHorizontal, dVertical, dDistance) async {
     width = screenSize!.width;
     height = screenSize!.height;
 
@@ -93,13 +98,13 @@ class _MyAppState extends State<WebGlLoaderObj> {
     Future.delayed(const Duration(milliseconds: 100), () async {
       await three3dRender.prepareContext();
 
-      initScene(lightScreens, ambience, ambienceColor);
+      initScene(lightScreens, ambience, ambienceColor, directionalColor, dIntensity, dHorizontal, dVertical, dDistance);
     });
   }
 
-  initSize(BuildContext context, lightScreens, ambience, ambienceColor) {
+  initSize(BuildContext context, lightScreens, ambience, ambienceColor, directionalColor, dIntensity, dHorizontal, dVertical, dDistance) {
     if (screenSize != null) {
-      initPage(lightScreens, ambience, ambienceColor);
+      initPage(lightScreens, ambience, ambienceColor, directionalColor, dIntensity, dHorizontal, dVertical, dDistance);
       // render();
       return;
     }
@@ -110,7 +115,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
     dpr = mqd.devicePixelRatio;
 
-    initPlatformState(lightScreens, ambience, ambienceColor);
+    initPlatformState(lightScreens, ambience, ambienceColor, directionalColor, dIntensity, dHorizontal, dVertical, dDistance);
   }
 
   @override
@@ -119,10 +124,10 @@ class _MyAppState extends State<WebGlLoaderObj> {
       body: Builder(
         builder: (BuildContext context) {
           initSize(context, widget.lightScreens, widget.ambience,
-              widget.ambienceColor);
+              widget.ambienceColor, widget.directionalColor, widget.dIntensity, widget.dHorizontal, widget.dVertical, widget.dDistance);
           return SingleChildScrollView(
               child: _build(context, widget.lightScreens, widget.ambience,
-                  widget.ambienceColor));
+                  widget.ambienceColor, widget.directionalColor, widget.dIntensity, widget.dHorizontal, widget.dVertical, widget.dDistance));
         },
       ),
       /* floatingActionButton: FloatingActionButton(
@@ -134,7 +139,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     );
   }
 
-  Widget _build(BuildContext context, lightScreens, ambience, ambienceColor) {
+  Widget _build(BuildContext context, lightScreens, ambience, ambienceColor, directionalColor, dIntensity, dHorizontal, dVertical, dDistance) {
     // initSize(context, lightScreens);
     return Column(
       children: [
@@ -186,7 +191,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     }
   }
 
-  initRenderer(lightScreens, ambience, ambienceColor) {
+  initRenderer(lightScreens, ambience, ambienceColor, directionalColor, dIntensity, dHorizontal, dVertical, dDistance) {
     print('initRenderer called');
     Map<String, dynamic> options = {
       "width": width,
@@ -210,9 +215,9 @@ class _MyAppState extends State<WebGlLoaderObj> {
     }
   }
 
-  initScene(lightScreens, ambience, ambienceColor) {
-    initRenderer(lightScreens, ambience, ambienceColor);
-    initPage(lightScreens, ambience, ambienceColor);
+  initScene(lightScreens, ambience, ambienceColor, directionalColor, dIntensity, dHorizontal, dVertical, dDistance) {
+    initRenderer(lightScreens, ambience, ambienceColor, directionalColor, dIntensity, dHorizontal, dVertical, dDistance);
+    initPage(lightScreens, ambience, ambienceColor, directionalColor, dIntensity, dHorizontal, dVertical, dDistance);
   }
 
   ARGBtoHex(colorARGB) {
@@ -228,7 +233,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     return colorHexInt;
   }
 
-  initPage(lightScreens, ambience, ambienceColor) async {
+  initPage(lightScreens, ambience, ambienceColor, directionalColor, dIntensity, dHorizontal, dVertical, dDistance) async {
     double cameraFOV = 45;
     camera = three.PerspectiveCamera(cameraFOV, (width / height), 1, 1000);
     double cameraX = 0;
@@ -257,11 +262,10 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
     scene.add(ambientLight);
 
-    // TO DO: Add in directional light functionality when the UI stuff exists
     // directional light settings
-    /* bool directionalLightOn = false;
-    var directionalLightColor = 0xfdcf60;
-    var directionalLightIntensity = 0.9;
+    bool directionalLightOn = false;
+    var directionalLightColor = ARGBtoHex(directionalColor[0]);
+    var directionalLightIntensity = dIntensity;
     var directionalLight = three.DirectionalLight(
         directionalLightColor, directionalLightIntensity);
 
@@ -273,12 +277,12 @@ class _MyAppState extends State<WebGlLoaderObj> {
     // how this works is the light direction points at the origin and starts from the position set here
     // if we want to make the light come from the opposite direction, we can use negative values
     // not sure how we can make this more intuitive for the user in the app though
-    double fromX = -60;
-    double fromY = -10;
-    double fromZ = 100;
+    double fromX = dHorizontal;
+    double fromY = dVertical;
+    double fromZ = dDistance;
     directionalLight.position.set(fromX, fromY, fromZ);
 
-    scene.add(directionalLight); */
+    scene.add(directionalLight);
 
     // point light 1 settings
     bool pointLight1On = false;

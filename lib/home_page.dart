@@ -493,7 +493,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
                       child: SizedBox(
                           height: 389,
                           child: WebGlLoaderObj(
-                              ambienceColor, lightScreens, ambience))))
+                              ambienceColor, lightScreens, ambience, directionalColor, dIntensity, dHorizontal, dVertical, dDistance))))
               //PictureContainer(_selectedImage, _setImage, _setOriginalImage)
               : StartScreen(
                   selectedImage: _selectedImage,
