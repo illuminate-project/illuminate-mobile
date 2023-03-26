@@ -36,7 +36,7 @@ class _MovableSliderState extends State<MovableSlider> {
       case 5:
         return -100;
       case 6:
-        return -100;
+        return 0;
       case 7:
         return -100;
       case 8:
@@ -61,7 +61,7 @@ class _MovableSliderState extends State<MovableSlider> {
       case 5:
         return 100;
       case 6:
-        return 100;
+        return 2.0;
       case 7:
         return 100;
       case 8:

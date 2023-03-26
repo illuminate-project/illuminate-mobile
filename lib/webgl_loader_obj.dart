@@ -298,7 +298,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     scene.add(ambientLight);
 
     // directional light settings
-    bool directionalLightOn = false;
+    bool directionalLightOn = true;
     var directionalLightColor = ARGBtoHex(directionalColor[0]);
     var directionalLightIntensity = dIntensity;
     var directionalLight = three.DirectionalLight(
