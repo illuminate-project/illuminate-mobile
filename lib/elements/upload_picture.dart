@@ -1,6 +1,9 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:dio/dio.dart';
 
 class UploadPicture extends StatefulWidget {
   final XFile? selectedImage;
@@ -30,6 +33,69 @@ class _UploadPictureState extends State<UploadPicture> {
       widget.changeOriginalImage(image);
       //widget.changePicture(XFile('assets/images/depth.png'));
     }
+
+    // Clipdrop APIS (only depth map right now)
+    /* var dio = Dio();
+    dio.options.headers['x-api-key'] =
+        '53fd1fc49499393e445be00fb7c55a5608112b1b61973e8dd14691937af92f22d988ca52c7ae9599d023a906d59315bc';
+
+    var formData = FormData.fromMap({
+      'image_file':
+          await MultipartFile.fromFile(image!.path, filename: image.name)
+    });
+    var response =
+        await dio.post('https://clipdrop-api.co/portrait-depth-estimation/v1',
+            data: formData,
+            options: Options(
+              responseType: ResponseType.plain,
+            ));
+
+    if (response.statusCode == 200) {
+      var buffer = response.data;
+      final List<int> codeUnits = buffer.codeUnits;
+      final Uint8List uint8List = Uint8List.fromList(codeUnits);
+
+      XFile finalXImg = XFile.fromData(uint8List);
+      var finalImg = Image.memory(uint8List);
+
+      widget.changePicture(image);
+      print(finalImg);
+    }
+
+    // resused code for depth map
+    /* response = await dio.post(
+        'https://clipdrop-api.co/portrait-depth-estimation/v1',
+        data: formData);
+
+    if (response.statusCode == 200) {
+      var buffer = response.data;
+      final List<int> codeUnits = buffer.codeUnits;
+      final Uint8List uint8List = Uint8List.fromList(codeUnits);
+
+      XFile finalXImg = XFile.fromData(uint8List);
+      var finalImg = Image.memory(uint8List);
+
+      widget.changePicture(currImage);
+      print(finalImg);
+    } */ */
+  }
+
+  Future<void> postData() async {
+    /* var url =
+        Uri.https('https://clipdrop-api.co/portrait-surface-normals', 'v1');
+
+    var form = new FormData();
+    form.files.add(MapEntry("image_file", photo));
+
+    var response = await http.post(
+        'https://clipdrop-api.co/portrait-surface-normals/v1',
+        headers: {'x-api-key': 53fd1fc49499393e445be00fb7c55a5608112b1b61973e8dd14691937af92f22d988ca52c7ae9599d023a906d59315bc},
+        body: form);
+
+    if (response.statusCode == 200) {
+      var buffer = response.bodyBytes;
+      // buffer here is a binary representation of the returned image
+    } */
   }
 
   @override
