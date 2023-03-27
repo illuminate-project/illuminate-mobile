@@ -1,6 +1,7 @@
 // This is also technically sample code, thats been modified to work with our sample objects (Squirtle)
 // Currently only works on Flutter Web, displays a blank scene on Flutter Desktop, crashes on Flutter Mobile
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:provider/provider.dart';
 // import 'package:three_dart/three3d/three.dart';
 import 'package:three_dart/three_dart.dart' as three;
 import 'package:three_dart_jsm/three_dart_jsm.dart' as three_jsm;
+import 'package:path_provider/path_provider.dart';
 
 import 'home_page.dart';
 import 'screens/light_screen.dart';
@@ -104,7 +106,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     setState(() {});
 
     // Wait for web
-    Future.delayed(const Duration(milliseconds: 100), () async {
+    Future.delayed(const Duration(milliseconds: 1000), () async {
       await three3dRender.prepareContext();
 
       initScene(lightScreens, ambience, ambienceColor, directionalColor,
@@ -280,6 +282,8 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
     // scene
     scene = three.Scene();
+
+    Future.delayed(const Duration(milliseconds: 10000), () {});
 
     // ambient light settings
     // bool ambientLightOn = true;
@@ -482,10 +486,12 @@ class _MyAppState extends State<WebGlLoaderObj> {
     scene.add(camera);
 
     // textures
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
 
     var textureLoader = three.TextureLoader(null);
     textureLoader.flipY = true;
-    texture = await textureLoader.loadAsync('assets/squirtle_texture.png');
+    texture = await textureLoader.loadAsync('assets/obama.jpg');
 
     texture.magFilter = three.LinearFilter;
     texture.minFilter = three.LinearMipmapLinearFilter;
@@ -494,7 +500,8 @@ class _MyAppState extends State<WebGlLoaderObj> {
     texture.flipY = true; // this flipY is only for web
 
     var loader = three_jsm.OBJLoader(null);
-    object = await loader.loadAsync('assets/squirtle.obj');
+
+    object = await loader.loadAsync('assets/obama.obj');
 
     object.traverse((child) {
       if (child is three.Mesh) {
@@ -502,7 +509,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
       }
     });
 
-    object.scale.set(1, 1, 1);
+    object.scale.set(0.6, 0.6, 0.6);
     scene.remove(object);
     scene.add(object);
 

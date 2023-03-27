@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 class UploadPicture extends StatefulWidget {
   final XFile? selectedImage;
@@ -31,13 +34,12 @@ class _UploadPictureState extends State<UploadPicture> {
     if (image != null) {
       widget.changePicture(image);
       widget.changeOriginalImage(image);
-      //widget.changePicture(XFile('assets/images/depth.png'));
     }
 
     // Clipdrop APIS (only depth map right now)
-    /* var dio = Dio();
+    var dio = Dio();
     dio.options.headers['x-api-key'] =
-        '53fd1fc49499393e445be00fb7c55a5608112b1b61973e8dd14691937af92f22d988ca52c7ae9599d023a906d59315bc';
+        '9b6a9609d06fc627e98744d01e2b4688d1a7a6c37328efa7efc6cf60302e0fd4776825d6815d08942fcd50a9db7c4475';
 
     var formData = FormData.fromMap({
       'image_file':
@@ -53,13 +55,14 @@ class _UploadPictureState extends State<UploadPicture> {
     if (response.statusCode == 200) {
       var buffer = response.data;
       final List<int> codeUnits = buffer.codeUnits;
-      final Uint8List uint8List = Uint8List.fromList(codeUnits);
+      final Uint8List depthUint8List = Uint8List.fromList(codeUnits);
 
-      XFile finalXImg = XFile.fromData(uint8List);
-      var finalImg = Image.memory(uint8List);
+      XFile finalXImg = XFile.fromData(depthUint8List);
+      var finalImg = Image.memory(depthUint8List);
 
       widget.changePicture(image);
       print(finalImg);
+      postImageAndDepth(depthUint8List);
     }
 
     // resused code for depth map
@@ -77,25 +80,43 @@ class _UploadPictureState extends State<UploadPicture> {
 
       widget.changePicture(currImage);
       print(finalImg);
-    } */ */
+    } */
   }
 
-  Future<void> postData() async {
-    /* var url =
-        Uri.https('https://clipdrop-api.co/portrait-surface-normals', 'v1');
+  Future<void> postImageAndDepth(Uint8List depthUint8List) async {
+    // Set the endpoint URL
+    final url = Uri.parse('https://mesh-api.herokuapp.com/api/mesh');
 
-    var form = new FormData();
-    form.files.add(MapEntry("image_file", photo));
+    // Load the image file
+    final imageBytes = await rootBundle.load('assets/image_50.jpg');
+    final imageUpload = http.MultipartFile.fromBytes(
+        'image', imageBytes.buffer.asUint8List(),
+        filename: 'image_50.jpg');
 
-    var response = await http.post(
-        'https://clipdrop-api.co/portrait-surface-normals/v1',
-        headers: {'x-api-key': 53fd1fc49499393e445be00fb7c55a5608112b1b61973e8dd14691937af92f22d988ca52c7ae9599d023a906d59315bc},
-        body: form);
+    // Load the depth file
+    final depthBytes = await rootBundle.load('assets/depth_50.jpg');
+    final depthUpload = http.MultipartFile.fromBytes(
+        'depth', depthBytes.buffer.asUint8List(),
+        filename: 'depth_50.png');
 
-    if (response.statusCode == 200) {
-      var buffer = response.bodyBytes;
-      // buffer here is a binary representation of the returned image
-    } */
+    // Create a new multipart request
+    final request = http.MultipartRequest('POST', url)
+      ..files.add(imageUpload)
+      ..files.add(depthUpload);
+
+    // Send the request and retrieve the response
+    final response = await request.send();
+
+    final tempDir = await getTemporaryDirectory();
+    final path = await tempDir.path;
+    final file = await File('$path/test.obj');
+
+    // Open the file and write the response to it
+    await response.stream.pipe(file.openWrite());
+
+    // Print a message indicating that the file has been saved
+    print('File saved to ${file.path}');
+    print(file.path);
   }
 
   @override
