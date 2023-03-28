@@ -284,11 +284,11 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
   initPage(lightScreens, ambience, ambienceColor, directionalColor, dIntensity,
       dHorizontal, dVertical, dDistance) async {
-    double cameraFOV = 45;
-    camera = three.PerspectiveCamera(cameraFOV, (width / height), 1, 1000);
+    double cameraFOV = 70;
+    camera = three.PerspectiveCamera(cameraFOV, (width / height), 0.1, 1000);
     double cameraX = 0;
     double cameraY = 0;
-    double cameraZ = 15;
+    double cameraZ = 4;
     camera.position.x = cameraX;
     camera.position.y = cameraY;
     camera.position.z = cameraZ;
@@ -296,7 +296,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     // scene
     scene = three.Scene();
 
-    Future.delayed(const Duration(milliseconds: 1000), () {});
+    //Future.delayed(const Duration(milliseconds: 1000), () {});
 
     // ambient light settings
     // bool ambientLightOn = true;
