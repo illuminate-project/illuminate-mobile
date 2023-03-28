@@ -55,7 +55,7 @@ class _UploadPictureState extends State<UploadPicture> {
     final url = 'https://clipdrop-api.co/portrait-depth-estimation/v1';
     final headers = {
       'x-api-key':
-          '9b6a9609d06fc627e98744d01e2b4688d1a7a6c37328efa7efc6cf60302e0fd4776825d6815d08942fcd50a9db7c4475',
+          'c8542f8fe628f7f4f047d698f4c2fa3befb0d278a8feeb258d29273e18118db39471c20160963c02df48dcc91d70a38a',
     };
     final request = http.MultipartRequest('POST', Uri.parse(url))
       ..headers.addAll(headers)
