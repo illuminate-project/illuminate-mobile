@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_gl/flutter_gl.dart';
 import 'package:illuminate/screens/light_screen.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 // for some reason I had to remove this line to prevent a compilation error
 // import 'package:three_dart/three3d/three.dart';
@@ -19,6 +20,7 @@ import 'home_page.dart';
 import 'screens/light_screen.dart';
 
 class WebGlLoaderObj extends StatefulWidget {
+  final XFile _selectedImage;
   final List<LightScreen> lightScreens;
   final List<Color> ambienceColor;
   final List<Color> directionalColor;
@@ -28,6 +30,7 @@ class WebGlLoaderObj extends StatefulWidget {
   final double dVertical;
   final double dDistance;
   const WebGlLoaderObj(
+      this._selectedImage,
       this.ambienceColor,
       this.lightScreens,
       this.ambience,
@@ -114,8 +117,18 @@ class _MyAppState extends State<WebGlLoaderObj> {
     });
   }
 
-  initSize(BuildContext context, lightScreens, ambience, ambienceColor,
-      directionalColor, dIntensity, dHorizontal, dVertical, dDistance) {
+  initSize(
+      BuildContext context,
+      _selectedImage,
+      lightScreens,
+      ambience,
+      ambienceColor,
+      directionalColor,
+      dIntensity,
+      dHorizontal,
+      dVertical,
+      dDistance) {
+    print(_selectedImage);
     if (screenSize != null) {
       initPage(lightScreens, ambience, ambienceColor, directionalColor,
           dIntensity, dHorizontal, dVertical, dDistance);
@@ -140,6 +153,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
         builder: (BuildContext context) {
           initSize(
               context,
+              widget._selectedImage,
               widget.lightScreens,
               widget.ambience,
               widget.ambienceColor,
@@ -225,7 +239,6 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
   initRenderer(lightScreens, ambience, ambienceColor, directionalColor,
       dIntensity, dHorizontal, dVertical, dDistance) {
-    print('initRenderer called');
     Map<String, dynamic> options = {
       "width": width,
       "height": height,
@@ -283,7 +296,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     // scene
     scene = three.Scene();
 
-    Future.delayed(const Duration(milliseconds: 10000), () {});
+    Future.delayed(const Duration(milliseconds: 1000), () {});
 
     // ambient light settings
     // bool ambientLightOn = true;
@@ -491,7 +504,8 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
     var textureLoader = three.TextureLoader(null);
     textureLoader.flipY = true;
-    texture = await textureLoader.loadAsync('assets/obama.jpg');
+    // texture = await textureLoader.loadAsync('assets/image_50.jpg');
+    texture = await textureLoader.loadAsync('$tempPath/selectedImage.jpg');
 
     texture.magFilter = three.LinearFilter;
     texture.minFilter = three.LinearMipmapLinearFilter;
@@ -501,7 +515,9 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
     var loader = three_jsm.OBJLoader(null);
 
-    object = await loader.loadAsync('assets/obama.obj');
+    // object = await loader.loadAsync('assets/obama.obj');
+
+    object = await loader.loadAsync('$tempPath/mesh.obj');
 
     object.traverse((child) {
       if (child is three.Mesh) {

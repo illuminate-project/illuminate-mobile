@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import 'package:image/image.dart' as img;
 
 class UploadPicture extends StatefulWidget {
   final XFile? selectedImage;
@@ -35,55 +36,51 @@ class _UploadPictureState extends State<UploadPicture> {
       widget.changePicture(image);
       widget.changeOriginalImage(image);
     }
+    final imgDir = await getTemporaryDirectory();
+    final path = await imgDir.path;
+    final imgBytes = await image!.readAsBytes();
+    // final selectedImage = img.encodeJpg(imgBytes);
+    final storeImage = await File('$path/selectedImage.jpg');
+    await storeImage.writeAsBytes(imgBytes);
+    print(storeImage);
 
-    // Clipdrop APIS (only depth map right now)
-    var dio = Dio();
-    dio.options.headers['x-api-key'] =
-        '9b6a9609d06fc627e98744d01e2b4688d1a7a6c37328efa7efc6cf60302e0fd4776825d6815d08942fcd50a9db7c4475';
-
-    var formData = FormData.fromMap({
-      'image_file':
-          await MultipartFile.fromFile(image!.path, filename: image.name)
-    });
-    var response =
-        await dio.post('https://clipdrop-api.co/portrait-depth-estimation/v1',
-            data: formData,
-            options: Options(
-              responseType: ResponseType.plain,
-            ));
-
-    if (response.statusCode == 200) {
-      var buffer = response.data;
-      final List<int> codeUnits = buffer.codeUnits;
-      final Uint8List depthUint8List = Uint8List.fromList(codeUnits);
-
-      XFile finalXImg = XFile.fromData(depthUint8List);
-      var finalImg = Image.memory(depthUint8List);
-
-      widget.changePicture(image);
-      print(finalImg);
-      postImageAndDepth(depthUint8List);
-    }
-
-    // resused code for depth map
-    /* response = await dio.post(
-        'https://clipdrop-api.co/portrait-depth-estimation/v1',
-        data: formData);
-
-    if (response.statusCode == 200) {
-      var buffer = response.data;
-      final List<int> codeUnits = buffer.codeUnits;
-      final Uint8List uint8List = Uint8List.fromList(codeUnits);
-
-      XFile finalXImg = XFile.fromData(uint8List);
-      var finalImg = Image.memory(uint8List);
-
-      widget.changePicture(currImage);
-      print(finalImg);
-    } */
+    clipdropImage(image);
   }
 
-  Future<void> postImageAndDepth(Uint8List depthUint8List) async {
+  Future<void> clipdropImage(XFile imageFile) async {
+    final testBytes = await imageFile.readAsBytes();
+    final depthImage = img.decodeJpg(testBytes);
+    print(depthImage);
+
+    final url = 'https://clipdrop-api.co/portrait-depth-estimation/v1';
+    final headers = {
+      'x-api-key':
+          '9b6a9609d06fc627e98744d01e2b4688d1a7a6c37328efa7efc6cf60302e0fd4776825d6815d08942fcd50a9db7c4475',
+    };
+    final request = http.MultipartRequest('POST', Uri.parse(url))
+      ..headers.addAll(headers)
+      ..files.add(
+        await http.MultipartFile.fromPath('image_file', imageFile.path),
+      );
+
+    final response = await request.send();
+    if (response.statusCode == 200) {
+      final responseBytes = await response.stream.toBytes();
+      final image =
+          img.decodeImage(responseBytes); // decode the bytes as an image
+      final depthImage = img.encodeJpg(image!);
+      final tempDir = await getTemporaryDirectory();
+      final path = await tempDir.path;
+      final depthFile = await File('$path/depthImg.jpg');
+      await depthFile.writeAsBytes(depthImage);
+      // await File('assets/sakun.jpg').writeAsBytes(depthImage);
+
+      postImageAndDepth(
+          depthImage); // encode the image as PNG and write it to a file
+    }
+  }
+
+  Future<void> postImageAndDepth(depthFile) async {
     // Set the endpoint URL
     final url = Uri.parse('https://mesh-api.herokuapp.com/api/mesh');
 
@@ -93,11 +90,11 @@ class _UploadPictureState extends State<UploadPicture> {
         'image', imageBytes.buffer.asUint8List(),
         filename: 'image_50.jpg');
 
+    print(depthFile);
     // Load the depth file
     final depthBytes = await rootBundle.load('assets/depth_50.jpg');
-    final depthUpload = http.MultipartFile.fromBytes(
-        'depth', depthBytes.buffer.asUint8List(),
-        filename: 'depth_50.png');
+    final depthUpload = http.MultipartFile.fromBytes('depth', depthFile,
+        filename: 'imageDepth.jpg');
 
     // Create a new multipart request
     final request = http.MultipartRequest('POST', url)
@@ -109,7 +106,7 @@ class _UploadPictureState extends State<UploadPicture> {
 
     final tempDir = await getTemporaryDirectory();
     final path = await tempDir.path;
-    final file = await File('$path/test.obj');
+    final file = await File('$path/mesh.obj');
 
     // Open the file and write the response to it
     await response.stream.pipe(file.openWrite());

@@ -333,24 +333,26 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
   }
 
   void _setImage(image) {
-    setState(() {
-      _selectedImage = image;
-      if (image == null) {
-        _setMesh(false);
-        lightScreens.removeRange(0, lightScreens.length);
-        lightsButtons.removeRange(0, lightsButtons.length);
-        ambienceColor = [Colors.white, Colors.white];
-        ambience = 1.0;
-      } else {
-        _setLoadingBar(true);
-        Timer(
-          const Duration(seconds: 3),
-          () => {_setLoadingBar(false), _setMesh(true)},
-        );
-        if (lightsButtons.isEmpty) {
-          _addLight();
+    Timer(Duration(seconds: 10), () {
+      setState(() {
+        _selectedImage = image;
+        if (image == null) {
+          _setMesh(false);
+          lightScreens.removeRange(0, lightScreens.length);
+          lightsButtons.removeRange(0, lightsButtons.length);
+          ambienceColor = [Colors.white, Colors.white];
+          ambience = 1.0;
+        } else {
+          _setLoadingBar(true);
+          Timer(
+            const Duration(seconds: 3),
+            () => {_setLoadingBar(false), _setMesh(true)},
+          );
+          if (lightsButtons.isEmpty) {
+            _addLight();
+          }
         }
-      }
+      });
     });
   }
 
@@ -521,6 +523,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
                       child: SizedBox(
                           height: 389,
                           child: WebGlLoaderObj(
+                              _selectedImage!,
                               ambienceColor,
                               lightScreens,
                               ambience,
