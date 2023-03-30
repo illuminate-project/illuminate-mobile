@@ -523,6 +523,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
                       child: SizedBox(
                           height: 389,
                           child: WebGlLoaderObj(
+                              MediaQuery.of(context),
                               _selectedImage!,
                               ambienceColor,
                               lightScreens,

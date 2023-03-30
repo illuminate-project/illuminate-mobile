@@ -20,6 +20,7 @@ import 'home_page.dart';
 import 'screens/light_screen.dart';
 
 class WebGlLoaderObj extends StatefulWidget {
+  final MediaQueryData sizeOfScreen;
   final XFile _selectedImage;
   final List<LightScreen> lightScreens;
   final List<Color> ambienceColor;
@@ -30,6 +31,7 @@ class WebGlLoaderObj extends StatefulWidget {
   final double dVertical;
   final double dDistance;
   const WebGlLoaderObj(
+      this.sizeOfScreen,
       this._selectedImage,
       this.ambienceColor,
       this.lightScreens,
@@ -46,6 +48,7 @@ class WebGlLoaderObj extends StatefulWidget {
 }
 
 class _MyAppState extends State<WebGlLoaderObj> {
+  bool hasInitialized = false;
   late FlutterGlPlugin three3dRender;
   three.WebGLRenderer? renderer;
 
@@ -74,18 +77,27 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
   dynamic sourceTexture;
 
+  var pointLight1 = three.PointLight(0x000000, 0.0);
+  var pointLight2 = three.PointLight(0x000000, 0.0);
+  var pointLight3 = three.PointLight(0x000000, 0.0);
+  var pointLight4 = three.PointLight(0x000000, 0.0);
+  var pointLight5 = three.PointLight(0x000000, 0.0);
+
   @override
   void initState() {
-    // initSize(context, widget.lightScreens);
     super.initState();
 
-    // initPage(widget.lightScreens);
-    // WidgetsBinding.instance.addPostFrameCallback((_) => initSize(context, widget.lightScreens));
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+    initSize(
+        widget.sizeOfScreen,
+        widget._selectedImage,
+        widget.lightScreens,
+        widget.ambience,
+        widget.ambienceColor,
+        widget.directionalColor,
+        widget.dIntensity,
+        widget.dHorizontal,
+        widget.dVertical,
+        widget.dDistance);
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -118,7 +130,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
   }
 
   initSize(
-      BuildContext context,
+      MediaQueryData sizeOfScreen,
       _selectedImage,
       lightScreens,
       ambience,
@@ -136,7 +148,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
       return;
     }
 
-    final mqd = MediaQuery.of(context);
+    final mqd = sizeOfScreen;
 
     screenSize = mqd.size;
 
@@ -146,52 +158,171 @@ class _MyAppState extends State<WebGlLoaderObj> {
         dIntensity, dHorizontal, dVertical, dDistance);
   }
 
+  setLight(three.PointLight pointLight, i) {
+    var pointLightColor = 0x000000;
+    double pointLightIntensity = 0.0;
+    double pointLightX = 50.0;
+    double pointLightY = 20.0;
+    double pointLightZ = 6.0;
+
+    pointLightIntensity = widget.lightScreens[i].isLightOn
+        ? widget.lightScreens[i].intensity
+        : 0.0;
+    pointLightColor = ARGBtoHex(widget.lightScreens[i].colorWheelColor[i]);
+    pointLightX = widget.lightScreens[i].horizontal;
+    pointLightY = widget.lightScreens[i].vertical;
+    pointLightZ = widget.lightScreens[i].distance;
+    pointLight = three.PointLight(pointLightColor, pointLightIntensity);
+
+    pointLight.position.set(pointLightX, pointLightY, pointLightZ);
+    camera.add(pointLight);
+  }
+
+  updateScene(lightScreens) {
+    if (hasInitialized != false) {
+      //camera = three.PerspectiveCamera(120, (width / height), 0.1, 1000);
+      camera.remove(pointLight1);
+      camera.remove(pointLight2);
+      camera.remove(pointLight3);
+      camera.remove(pointLight4);
+      camera.remove(pointLight5);
+
+      for (var i = 0; i < lightScreens.length; i++) {
+        switch (i) {
+          case 0:
+            var pointLightColor = 0x000000;
+            double pointLightIntensity = 0.0;
+            double pointLightX = 50.0;
+            double pointLightY = 20.0;
+            double pointLightZ = 6.0;
+
+            pointLightIntensity = widget.lightScreens[0].isLightOn
+                ? widget.lightScreens[0].intensity
+                : 0.0;
+            pointLightColor =
+                ARGBtoHex(widget.lightScreens[0].colorWheelColor[0]);
+            pointLightX = widget.lightScreens[0].horizontal;
+            pointLightY = widget.lightScreens[0].vertical;
+            pointLightZ = widget.lightScreens[0].distance;
+            pointLight1 =
+                three.PointLight(pointLightColor, pointLightIntensity);
+
+            pointLight1.position.set(pointLightX, pointLightY, pointLightZ);
+            camera.add(pointLight1);
+            break;
+          case 1:
+            var pointLightColor = 0x000000;
+            double pointLightIntensity = 0.0;
+            double pointLightX = 50.0;
+            double pointLightY = 20.0;
+            double pointLightZ = 6.0;
+
+            pointLightIntensity = widget.lightScreens[1].isLightOn
+                ? widget.lightScreens[1].intensity
+                : 0.0;
+            pointLightColor =
+                ARGBtoHex(widget.lightScreens[1].colorWheelColor[0]);
+            pointLightX = widget.lightScreens[1].horizontal;
+            pointLightY = widget.lightScreens[1].vertical;
+            pointLightZ = widget.lightScreens[1].distance;
+            pointLight2 =
+                three.PointLight(pointLightColor, pointLightIntensity);
+
+            pointLight2.position.set(pointLightX, pointLightY, pointLightZ);
+            camera.add(pointLight2);
+            break;
+          case 2:
+            var pointLightColor = 0x000000;
+            double pointLightIntensity = 0.0;
+            double pointLightX = 50.0;
+            double pointLightY = 20.0;
+            double pointLightZ = 6.0;
+
+            pointLightIntensity = widget.lightScreens[2].isLightOn
+                ? widget.lightScreens[2].intensity
+                : 0.0;
+            pointLightColor =
+                ARGBtoHex(widget.lightScreens[2].colorWheelColor[0]);
+            pointLightX = widget.lightScreens[2].horizontal;
+            pointLightY = widget.lightScreens[2].vertical;
+            pointLightZ = widget.lightScreens[2].distance;
+            pointLight3 =
+                three.PointLight(pointLightColor, pointLightIntensity);
+
+            pointLight3.position.set(pointLightX, pointLightY, pointLightZ);
+            camera.add(pointLight3);
+            break;
+          case 3:
+            var pointLightColor = 0x000000;
+            double pointLightIntensity = 0.0;
+            double pointLightX = 50.0;
+            double pointLightY = 20.0;
+            double pointLightZ = 6.0;
+
+            pointLightIntensity = widget.lightScreens[3].isLightOn
+                ? widget.lightScreens[3].intensity
+                : 0.0;
+            pointLightColor =
+                ARGBtoHex(widget.lightScreens[3].colorWheelColor[0]);
+            pointLightX = widget.lightScreens[3].horizontal;
+            pointLightY = widget.lightScreens[3].vertical;
+            pointLightZ = widget.lightScreens[3].distance;
+            pointLight4 =
+                three.PointLight(pointLightColor, pointLightIntensity);
+
+            pointLight4.position.set(pointLightX, pointLightY, pointLightZ);
+            camera.add(pointLight4);
+            break;
+          case 4:
+            var pointLightColor = 0x000000;
+            double pointLightIntensity = 0.0;
+            double pointLightX = 50.0;
+            double pointLightY = 20.0;
+            double pointLightZ = 6.0;
+
+            pointLightIntensity = widget.lightScreens[4].isLightOn
+                ? widget.lightScreens[4].intensity
+                : 0.0;
+            pointLightColor =
+                ARGBtoHex(widget.lightScreens[4].colorWheelColor[0]);
+            pointLightX = widget.lightScreens[4].horizontal;
+            pointLightY = widget.lightScreens[4].vertical;
+            pointLightZ = widget.lightScreens[4].distance;
+            pointLight5 =
+                three.PointLight(pointLightColor, pointLightIntensity);
+
+            pointLight5.position.set(pointLightX, pointLightY, pointLightZ);
+            camera.add(pointLight5);
+            break;
+          default:
+        }
+      }
+
+      render();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Builder(
         builder: (BuildContext context) {
-          initSize(
-              context,
-              widget._selectedImage,
-              widget.lightScreens,
-              widget.ambience,
-              widget.ambienceColor,
-              widget.directionalColor,
-              widget.dIntensity,
-              widget.dHorizontal,
-              widget.dVertical,
-              widget.dDistance);
+          updateScene(widget.lightScreens);
           return SingleChildScrollView(
               child: _build(
-                  context,
-                  widget.lightScreens,
-                  widget.ambience,
-                  widget.ambienceColor,
-                  widget.directionalColor,
-                  widget.dIntensity,
-                  widget.dHorizontal,
-                  widget.dVertical,
-                  widget.dDistance));
+            context,
+          ));
         },
       ),
-      /* floatingActionButton: FloatingActionButton(
-        child: const Text("render"),
-        onPressed: () {
-          render();
-        },
-      ), */
     );
   }
 
-  Widget _build(BuildContext context, lightScreens, ambience, ambienceColor,
-      directionalColor, dIntensity, dHorizontal, dVertical, dDistance) {
+  Widget _build(BuildContext context) {
     // initSize(context, lightScreens);
     return Column(
       children: [
         Stack(
           children: [
-            Text('Hello'),
             Container(
                 width: width,
                 height: height,
@@ -234,6 +365,10 @@ class _MyAppState extends State<WebGlLoaderObj> {
     if (verbose) print(" render: sourceTexture: $sourceTexture ");
     if (!kIsWeb) {
       three3dRender.updateTexture(sourceTexture);
+    }
+
+    if (hasInitialized == false) {
+      hasInitialized = true;
     }
   }
 
@@ -340,7 +475,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     bool pointLight1On = false;
     var pointLight1Color = 0x000000;
     double pointLight1Intensity = 0.0;
-    var pointLight1 = three.PointLight(pointLight1Color, pointLight1Intensity);
+    pointLight1 = three.PointLight(pointLight1Color, pointLight1Intensity);
 
     // point light 1 position
     double pointLight1X = 50.0;
@@ -371,7 +506,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     bool pointLight2On = false;
     var pointLight2Color = 0x000000;
     double pointLight2Intensity = 0.0;
-    var pointLight2 = three.PointLight(pointLight2Color, pointLight2Intensity);
+    pointLight2 = three.PointLight(pointLight2Color, pointLight2Intensity);
 
     // point light 2 position
     double pointLight2X = 50.0;
@@ -403,7 +538,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     bool pointLight3On = false;
     var pointLight3Color = 0x000000;
     double pointLight3Intensity = 0.0;
-    var pointLight3 = three.PointLight(pointLight3Color, pointLight3Intensity);
+    pointLight3 = three.PointLight(pointLight3Color, pointLight3Intensity);
 
     // point light 3 position
     double pointLight3X = 50.0;
@@ -435,7 +570,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     bool pointLight4On = false;
     var pointLight4Color = 0x000000;
     double pointLight4Intensity = 0.0;
-    var pointLight4 = three.PointLight(pointLight4Color, pointLight4Intensity);
+    pointLight4 = three.PointLight(pointLight4Color, pointLight4Intensity);
 
     // point light 4 position
     double pointLight4X = 50.0;
@@ -467,7 +602,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     bool pointLight5On = false;
     var pointLight5Color = 0x000000;
     double pointLight5Intensity = 0.0;
-    var pointLight5 = three.PointLight(pointLight5Color, pointLight5Intensity);
+    pointLight5 = three.PointLight(pointLight5Color, pointLight5Intensity);
 
     // point light 5 position
     double pointLight5X = 50.0;
