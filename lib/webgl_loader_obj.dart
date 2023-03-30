@@ -184,18 +184,18 @@ class _MyAppState extends State<WebGlLoaderObj> {
   updateScene(lightScreens, ambient, ambientColor, dDistance, dHorizontal,
       dVertical, dIntensity, directionalColor) {
     if (hasInitialized != false) {
-      /*double cameraFOV = 70;
+      /*double cameraFOV = 95;
       camera = three.PerspectiveCamera(cameraFOV, (width / height), 0.1, 1000);
       double cameraX = 0;
-      double cameraY = -0.3;
-      double cameraZ = 4;
+      double cameraY = 0;
+      double cameraZ = 1.5;
       camera.position.x = cameraX;
       camera.position.y = cameraY;
       camera.position.z = cameraZ;*/
       
       camera.remove(pointLight1);
       camera.remove(pointLight2);
-      camera.remove(pointLight4);
+      camera.remove(pointLight3);
       camera.remove(pointLight4);
       camera.remove(pointLight5);
 
@@ -463,11 +463,11 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
   initPage(lightScreens, ambience, ambienceColor, directionalColor, dIntensity,
       dHorizontal, dVertical, dDistance) async {
-    double cameraFOV = 70;
+    double cameraFOV = 95;
     camera = three.PerspectiveCamera(cameraFOV, (width / height), 0.1, 1000);
     double cameraX = 0;
-    double cameraY = -0.3;
-    double cameraZ = 4;
+    double cameraY = 0;
+    double cameraZ = 1.5;
     camera.position.x = cameraX;
     camera.position.y = cameraY;
     camera.position.z = cameraZ;
