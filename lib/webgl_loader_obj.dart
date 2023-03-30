@@ -83,6 +83,9 @@ class _MyAppState extends State<WebGlLoaderObj> {
   var pointLight4 = three.PointLight(0x000000, 0.0);
   var pointLight5 = three.PointLight(0x000000, 0.0);
 
+  var ambientLight = three.AmbientLight(0xFFFFFF, 1.0);
+  var directionalLight = three.DirectionalLight(0xFFFFFF, 0.0);
+
   @override
   void initState() {
     super.initState();
@@ -178,14 +181,25 @@ class _MyAppState extends State<WebGlLoaderObj> {
     camera.add(pointLight);
   }
 
-  updateScene(lightScreens) {
+  updateScene(lightScreens, ambient, ambientColor, dDistance, dHorizontal,
+      dVertical, dIntensity, directionalColor) {
     if (hasInitialized != false) {
-      //camera = three.PerspectiveCamera(120, (width / height), 0.1, 1000);
+      /*double cameraFOV = 70;
+      camera = three.PerspectiveCamera(cameraFOV, (width / height), 0.1, 1000);
+      double cameraX = 0;
+      double cameraY = -0.3;
+      double cameraZ = 4;
+      camera.position.x = cameraX;
+      camera.position.y = cameraY;
+      camera.position.z = cameraZ;*/
+      
       camera.remove(pointLight1);
       camera.remove(pointLight2);
-      camera.remove(pointLight3);
+      camera.remove(pointLight4);
       camera.remove(pointLight4);
       camera.remove(pointLight5);
+
+    
 
       for (var i = 0; i < lightScreens.length; i++) {
         switch (i) {
@@ -298,6 +312,29 @@ class _MyAppState extends State<WebGlLoaderObj> {
         }
       }
 
+      scene.remove(ambientLight);
+      ambientLight = three.AmbientLight(ARGBtoHex(ambientColor[0]), ambient);
+      scene.add(ambientLight);
+
+      scene.remove(directionalLight);
+
+      bool directionalLightOn = true;
+      var directionalLightColor = ARGBtoHex(directionalColor[0]);
+      var directionalLightIntensity = dIntensity;
+      directionalLight = three.DirectionalLight(
+          directionalLightColor, directionalLightIntensity);
+
+      if (directionalLightOn == false) {
+        directionalLight = three.DirectionalLight(0x000000, 0);
+      }
+
+      double fromX = dHorizontal;
+      double fromY = dVertical;
+      double fromZ = dDistance;
+      directionalLight.position.set(fromX, fromY, fromZ);
+
+      scene.add(directionalLight);
+
       render();
     }
   }
@@ -307,7 +344,14 @@ class _MyAppState extends State<WebGlLoaderObj> {
     return Scaffold(
       body: Builder(
         builder: (BuildContext context) {
-          updateScene(widget.lightScreens);
+          updateScene(widget.lightScreens,
+              widget.ambience,
+              widget.ambienceColor,
+              widget.dDistance,
+              widget.dHorizontal,
+              widget.dVertical,
+              widget.dIntensity,
+              widget.directionalColor);
           return SingleChildScrollView(
               child: _build(
             context,
@@ -422,7 +466,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     double cameraFOV = 70;
     camera = three.PerspectiveCamera(cameraFOV, (width / height), 0.1, 1000);
     double cameraX = 0;
-    double cameraY = 0;
+    double cameraY = -0.3;
     double cameraZ = 4;
     camera.position.x = cameraX;
     camera.position.y = cameraY;
@@ -437,8 +481,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     // bool ambientLightOn = true;
     var ambientLightColor = ARGBtoHex(ambienceColor[0]);
     var ambientLightIntensity = ambience;
-    var ambientLight =
-        three.AmbientLight(ambientLightColor, ambientLightIntensity);
+    ambientLight = three.AmbientLight(ambientLightColor, ambientLightIntensity);
 
     // we kinda need an ambient light to be on at all times or else we can't see anything
     // but the functionality to turn it off is here anyway if we need it for whatever reason
@@ -453,7 +496,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     bool directionalLightOn = true;
     var directionalLightColor = ARGBtoHex(directionalColor[0]);
     var directionalLightIntensity = dIntensity;
-    var directionalLight = three.DirectionalLight(
+    directionalLight = three.DirectionalLight(
         directionalLightColor, directionalLightIntensity);
 
     if (directionalLightOn == false) {
