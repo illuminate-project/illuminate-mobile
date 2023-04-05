@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:illuminate/screens/start_screen.dart';
@@ -35,6 +36,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
   double dHorizontal = 0;
   double dVertical = 0;
   double dDistance = 0;
+  double blur = 10;
   bool _showLoadingBar = false;
   bool _3DMesh = false;
   bool allLightsShown = true;
@@ -332,28 +334,59 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
     });
   }
 
-  void _setImage(image) {
-    Timer(Duration(seconds: 10), () {
-      setState(() {
-        _selectedImage = image;
-        if (image == null) {
-          _setMesh(false);
-          lightScreens.removeRange(0, lightScreens.length);
-          lightsButtons.removeRange(0, lightsButtons.length);
-          ambienceColor = [Colors.white, Colors.white];
-          ambience = 1.0;
-        } else {
-          _setLoadingBar(true);
-          Timer(
-            const Duration(seconds: 3),
-            () => {_setLoadingBar(false), _setMesh(true)},
-          );
-          if (lightsButtons.isEmpty) {
-            _addLight();
-          }
-        }
-      });
+  void _setImage(image) async {
+    setState(() {
+      _selectedImage = image;
     });
+
+    if (_selectedImage != null) {
+      _setLoadingBar(true);
+    }
+
+    if (image == null) {
+      _setMesh(false);
+      blur = 14;
+      lightScreens.removeRange(0, lightScreens.length);
+      lightsButtons.removeRange(0, lightsButtons.length);
+      ambienceColor = [Colors.white, Colors.white];
+      ambience = 1.0;
+    } else {
+      Timer(
+          const Duration(seconds: 2),
+          () => {
+                setState(() {
+                  blur = blur - 2;
+                }),
+                Timer(
+                    const Duration(seconds: 2),
+                    () => {
+                          setState(() {
+                            blur = blur - 2;
+                          }),
+                          Timer(
+                              const Duration(seconds: 2),
+                              () => {
+                                    setState(() {
+                                      blur = blur - 2;
+                                    }),
+                                    Timer(
+                                        const Duration(seconds: 2),
+                                        () => {
+                                              setState(() {
+                                                blur = blur - 2;
+                                              })
+                                            })
+                                  })
+                        })
+              });
+      Timer(
+          const Duration(seconds: 10),
+          () => {
+                _setLoadingBar(false),
+                _setMesh(true),
+                if (lightsButtons.isEmpty) {_addLight()}
+              });
+    }
   }
 
   void _setMesh(mesh) {
@@ -374,30 +407,6 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
       _setScreen(0);
     });
   }
-
-  // void _pickImage(image) {
-  //   setState(() {
-  //     _showLoadingBar = true;
-  //     _setImage(image);
-  //     Timer(
-  //         const Duration(seconds: 3),
-  //         //Probably have something here like
-  //         //await for normal map then dispaly and start another timer for 3 seconds then show
-  //         //depth map, after 3 seconds of depth map, if 3d mesh isnt ready just repeat until its ready
-
-  //         //Side note it could be cool to add a blurred image into this for like 0.5 seconds
-  //         //for a way to have a transition effect
-  //         () => {
-  //               _setImage(XFile('assets/images/logo.png')),
-  //               Timer(
-  //                   const Duration(seconds: 3),
-  //                   () => {
-  //                         _setImage(XFile('assets/images/normal.png')),
-  //                         _showLoadingBar = false
-  //                       })
-  //             });
-  //   });
-  // }
 
   void _setScreen(int index) {
     setState(() {
@@ -509,14 +518,14 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _selectedImage != null
+      appBar: _3DMesh != false
           ? TopAppBar(_setImage, sceneCapture, allLightToggle, saveImage,
               _selectedImage)
           : null,
       backgroundColor: const Color.fromARGB(255, 31, 31, 31),
       body: Column(
         children: [
-          _selectedImage != null
+          _3DMesh != false
               ? Screenshot(
                   controller: screenshotController,
                   child: Container(
@@ -533,17 +542,24 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
                               dHorizontal,
                               dVertical,
                               dDistance))))
-              //PictureContainer(_selectedImage, _setImage, _setOriginalImage)
-              : StartScreen(
-                  selectedImage: _selectedImage,
-                  changeOriginalImage: _setOriginalImage,
-                  changePicture: _setImage,
-                ),
+              : _selectedImage != null
+                  ? PictureContainer(_selectedImage, blur)
+                  : StartScreen(
+                      selectedImage: _selectedImage,
+                      changeOriginalImage: _setOriginalImage,
+                      changePicture: _setImage,
+                    ),
           const SizedBox(height: 2.5),
           _showLoadingBar == true
               ? Column(children: [
-                  SizedBox(height: 1),
-                  SizedBox(width: 345, child: LinearProgressIndicator()),
+                  SizedBox(height: 17.5),
+                  SizedBox(
+                      width: 45,
+                      height: 45,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 6,
+                        color: Color.fromARGB(255, 255, 220, 128),
+                      )),
                   SizedBox(height: 5)
                 ])
               : Container(),
@@ -591,7 +607,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
               saveImage();
             },
             child: const Icon(Icons.download)),*/
-      bottomNavigationBar: _selectedImage != null
+      bottomNavigationBar: _3DMesh != false
           ? BottomNav(
               selectedScreen: _selectedScreen,
               changeScreen: _setScreen,

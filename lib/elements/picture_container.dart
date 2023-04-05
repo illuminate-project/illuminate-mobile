@@ -1,16 +1,14 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class PictureContainer extends StatefulWidget with PreferredSizeWidget {
   final XFile? selectedImage;
-  final Function changeOriginalImage;
-  final Function changePicture;
+  final double blur;
 
-  PictureContainer(
-      this.selectedImage, this.changePicture, this.changeOriginalImage,
-      {super.key});
+  PictureContainer(this.selectedImage, this.blur, {super.key});
 
   @override
   State<PictureContainer> createState() => _PictureContainerState();
@@ -24,18 +22,17 @@ class _PictureContainerState extends State<PictureContainer> {
   Widget build(BuildContext context) {
     return Container(
         width: double.infinity,
-        height: 350,
-        margin:
-            const EdgeInsets.only(left: 30, right: 30, top: 12.5, bottom: 0.0),
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(217, 217, 217, 217),
-          border: Border.all(
-            width: 2.5,
-          ),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Image.asset(
-          'images/depth.png',
-        ));
+        height: 389,
+        margin: const EdgeInsets.only(top: 0, bottom: 0.0),
+        child: ImageFiltered(
+            imageFilter: ImageFilter.blur(
+                sigmaY: widget.blur,
+                sigmaX:
+                    widget.blur), //SigmaX and Y are just for X and Y directions
+            child: Image.file(
+              File(widget.selectedImage!.path),
+              fit: BoxFit.cover,
+            )) //here you can use any widget you'd like to blur .
+        );
   }
 }
