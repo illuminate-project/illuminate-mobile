@@ -6,6 +6,7 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import '../home_page.dart';
 
 class TopAppBar extends StatefulWidget with PreferredSizeWidget {
@@ -36,6 +37,14 @@ class _TopAppBarState extends State<TopAppBar> {
 
   @override
   Widget build(BuildContext context) {
+    void removeImage() async {
+      widget.changePicture(null);
+      print("Hit");
+      final tempDir = await getTemporaryDirectory();
+      tempDir.deleteSync(recursive: true);
+      tempDir.create();
+    }
+
     void showModal(String title, int type) {
       showDialog<String>(
         context: context,
@@ -51,13 +60,15 @@ class _TopAppBarState extends State<TopAppBar> {
               onPressed: () async => {
                 Navigator.pop(context, 'Yes'),
                 if (type == 1)
-                  {widget.changePicture(null)}
+                  {removeImage()}
                 else
                   {
                     imageInstance.saveImage(),
                     ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
                       backgroundColor: Color.fromARGB(255, 105, 241, 143),
-                      content: Text('Saved to Camera Roll!', style: TextStyle(color: Color.fromARGB(255, 26, 47, 24))),
+                      content: Text('Saved to Camera Roll!',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 26, 47, 24))),
                       behavior: SnackBarBehavior.floating,
                       margin: EdgeInsets.only(
                           bottom: MediaQuery.of(context).size.height - 193,
@@ -88,8 +99,9 @@ class _TopAppBarState extends State<TopAppBar> {
             onPressed: () => {},
           ),
           IconButton(
-            icon: allLightsOn ? const Icon(CupertinoIcons
-                .lightbulb_fill) : const Icon(CupertinoIcons.lightbulb),
+            icon: allLightsOn
+                ? const Icon(CupertinoIcons.lightbulb_fill)
+                : const Icon(CupertinoIcons.lightbulb),
             color: Color.fromARGB(255, 255, 255, 255),
             onPressed: () => {
               widget.allLightToggle(),
@@ -101,11 +113,8 @@ class _TopAppBarState extends State<TopAppBar> {
           IconButton(
             icon: const Icon(CupertinoIcons.square_arrow_down),
             color: const Color.fromARGB(255, 227, 174, 111),
-            onPressed: () => {
-              widget.sceneCapture(),
-              
-              showModal('Save to Camera Roll?', 2)
-            },
+            onPressed: () =>
+                {widget.sceneCapture(), showModal('Save to Camera Roll?', 2)},
           ),
         ],
       ),

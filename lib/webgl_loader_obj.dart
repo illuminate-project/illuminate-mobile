@@ -192,14 +192,12 @@ class _MyAppState extends State<WebGlLoaderObj> {
       camera.position.x = cameraX;
       camera.position.y = cameraY;
       camera.position.z = cameraZ;*/
-      
+
       camera.remove(pointLight1);
       camera.remove(pointLight2);
       camera.remove(pointLight3);
       camera.remove(pointLight4);
       camera.remove(pointLight5);
-
-    
 
       for (var i = 0; i < lightScreens.length; i++) {
         switch (i) {
@@ -344,7 +342,8 @@ class _MyAppState extends State<WebGlLoaderObj> {
     return Scaffold(
       body: Builder(
         builder: (BuildContext context) {
-          updateScene(widget.lightScreens,
+          updateScene(
+              widget.lightScreens,
               widget.ambience,
               widget.ambienceColor,
               widget.dDistance,

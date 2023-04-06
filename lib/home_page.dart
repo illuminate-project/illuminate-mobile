@@ -530,7 +530,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
                   controller: screenshotController,
                   child: Container(
                       child: SizedBox(
-                          height: 389,
+                          height: 440,
                           child: WebGlLoaderObj(
                               MediaQuery.of(context),
                               _selectedImage!,
