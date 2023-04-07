@@ -29,7 +29,7 @@ class _LightsBarState extends State<LightsBar> {
       child: Row(children: [
         Row(children: widget.lightsButtons),
         SizedBox(
-            height: 32.5,
+            height: 40,
             child: TextButton(
                 onPressed: () {
                   widget.addLightButton();

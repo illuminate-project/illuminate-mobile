@@ -36,6 +36,7 @@ class TopAppBar extends StatefulWidget with PreferredSizeWidget {
 class _TopAppBarState extends State<TopAppBar> {
   HomePageState imageInstance = HomePageState();
   bool allLightsOn = true;
+  bool movableLightOn = true;
 
   @override
   Widget build(BuildContext context) {
@@ -96,19 +97,26 @@ class _TopAppBarState extends State<TopAppBar> {
               color: const Color.fromARGB(255, 255, 140, 140),
               onPressed: () => showModal('Remove Photo?', 1)),
           IconButton(
-            icon: const Icon(CupertinoIcons.eye_fill),
+            icon: allLightsOn
+                ? const Icon(CupertinoIcons.eye_fill)
+                : const Icon(CupertinoIcons.eye_slash_fill),
             color: Color.fromARGB(255, 255, 255, 255),
-            onPressed: () => {widget.hideMovableLight()},
+            onPressed: () => {
+              widget.hideMovableLight(),
+              setState(() {
+                allLightsOn = !allLightsOn;
+              })
+            },
           ),
           IconButton(
-            icon: allLightsOn
+            icon: movableLightOn
                 ? const Icon(CupertinoIcons.lightbulb_fill)
                 : const Icon(CupertinoIcons.lightbulb),
             color: Color.fromARGB(255, 255, 255, 255),
             onPressed: () => {
               widget.allLightToggle(),
               setState(() {
-                allLightsOn = !allLightsOn;
+                movableLightOn = !movableLightOn;
               })
             },
           ),

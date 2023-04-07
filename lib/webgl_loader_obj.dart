@@ -364,7 +364,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
               widget.directionalColor);
           return SingleChildScrollView(
               controller: _scrollController,
-              physics: NeverScrollableScrollPhysics(),
+              //physics: NeverScrollableScrollPhysics(),
               child: _build(
             context,
           ));

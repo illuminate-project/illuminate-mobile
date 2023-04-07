@@ -37,7 +37,7 @@ class _LightScreenState extends State<LightScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      //SizedBox(height: 0),
+      SizedBox(height: 20),
       Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         Transform.scale(
           scale: 0.8,
@@ -56,7 +56,7 @@ class _LightScreenState extends State<LightScreen> {
                 selectedValue: widget.intensity,
                 setSliderValue: widget.setSliderValue,
                 type: 1),
-            MovableSlider(
+            /*MovableSlider(
                 label: 'Horizontal',
                 selectedValue: widget.horizontal,
                 setSliderValue: widget.setSliderValue,
@@ -65,7 +65,7 @@ class _LightScreenState extends State<LightScreen> {
                 label: 'Vertical',
                 selectedValue: widget.vertical,
                 setSliderValue: widget.setSliderValue,
-                type: 3),
+                type: 3),*/
             MovableSlider(
                 label: 'Distance',
                 selectedValue: widget.distance,
