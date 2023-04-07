@@ -62,11 +62,8 @@ class _MyAppState extends State<WebGlLoaderObj> {
   late three.Camera camera;
   late three.Mesh mesh;
 
-  ScrollController _scrollController = new ScrollController(
-    initialScrollOffset: 200,
-    keepScrollOffset: true,
-  );
-
+  late double screenHeight;
+  late double midpoint;
 
   double dpr = 1.0;
 
@@ -345,6 +342,14 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
   @override
   Widget build(BuildContext context) {
+    
+    screenHeight = MediaQuery.of(context).size.height;
+    midpoint = screenHeight / 4;
+    
+    ScrollController _scrollController = new ScrollController(
+      initialScrollOffset: midpoint,
+      keepScrollOffset: true,
+    );
     return Scaffold(
       body: Builder(
         builder: (BuildContext context) {
