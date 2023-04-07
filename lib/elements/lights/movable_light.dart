@@ -5,6 +5,7 @@ class MovingCircle extends StatefulWidget {
   final double horizontal;
   final List<Color> colors;
   final screenType;
+  final double width;
   final Function changePosition;
   final Function setScreen;
 
@@ -16,6 +17,7 @@ class MovingCircle extends StatefulWidget {
     required this.screenType,
     required this.changePosition,
     required this.setScreen,
+    required this.width,
   });
 
   @override
@@ -43,7 +45,7 @@ class _MovingCircleState extends State<MovingCircle> {
 
   double convertHorizontalToDraggable(value) {
     value = value + 100;
-    return (value / 200) * 340;
+    return (value / 200) * (widget.width - 60);
   }
 
   double convertVerticalToWebGL(value) {
@@ -51,7 +53,7 @@ class _MovingCircleState extends State<MovingCircle> {
   }
 
   double convertHorizontalToWebGL(value) {
-    return ((value / 340) * 200) - 100;
+    return ((value / (widget.width - 60)) * 200) - 100;
   }
 
   Color getColor() {
@@ -103,8 +105,8 @@ class _MovingCircleState extends State<MovingCircle> {
                 top = top + details.delta.dy;
               }
 
-              if (left + details.delta.dx > 340) {
-                left = 340;
+              if (left + details.delta.dx > (widget.width - 60)) {
+                left = (widget.width - 60);
               } else if (left + details.delta.dx < 0) {
                 left = 0;
               } else {

@@ -584,7 +584,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
     return Container();
   }
 
-  Widget getMovableCircle() {
+  Widget getMovableCircle(double width) {
     if (_selectedScreen == 1) {
       return MovingCircle(
         changePosition: _setSliderValue,
@@ -593,6 +593,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
         colors: directionalColor,
         setScreen: _setScreen,
         screenType: _selectedScreen,
+        width: width,
       );
     } else if (_selectedScreen == 0) {
       return MovingCircle(
@@ -602,17 +603,18 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
         colors: lightScreens[_selectedLight].colorWheelColor,
         setScreen: _setScreen,
         screenType: _selectedScreen,
+        width: width,
       );
     } else {
       return Container();
     }
   }
 
-  Widget getLightType() {
+  Widget getLightType(double width) {
     if (_selectedScreen == 0) {
       if (lightScreens.length != 0 &&
           lightScreens[_selectedLight].isMovableLightHidden == false) {
-        return getMovableCircle();
+        return getMovableCircle(width);
       } else {
         return Container();
       }
@@ -620,7 +622,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
       if (dLightHidden) {
         return Container();
       } else {
-        return getMovableCircle();
+        return getMovableCircle(width);
       }
     } else {
       return Container();
@@ -652,7 +654,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
                               dHorizontal,
                               dVertical,
                               dDistance),
-                          getLightType()
+                          getLightType(MediaQuery.of(context).size.width)
                         ],
                       )))),
           Column(children: [
