@@ -14,6 +14,7 @@ import 'elements/lights/light_button.dart';
 import 'elements/top_app_bar.dart';
 import 'elements/bottom_nav.dart';
 import 'screens/screen_selector.dart';
+import 'elements/lights/movable_light.dart';
 import 'webgl_loader_obj.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 
@@ -36,7 +37,8 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
   double dHorizontal = 0;
   double dVertical = 0;
   double dDistance = 0;
-  double blur = 10;
+  bool dLightHidden = false;
+  double blur = 20;
   bool _showLoadingBar = false;
   bool _3DMesh = false;
   bool allLightsShown = true;
@@ -71,6 +73,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
         removeLight: _removeLight,
         hideLight: _hideLight,
         isLightOn: true,
+        isMovableLightHidden: false,
       )
     ];
 
@@ -124,6 +127,8 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
               removeLight: _removeLight,
               hideLight: _hideLight,
               isLightOn: false,
+              isMovableLightHidden:
+                  lightScreens[_selectedLight].isMovableLightHidden,
             ));
         lightScreens.removeAt(_selectedLight + 1);
         print(lightScreens[_selectedLight].isLightOn);
@@ -141,6 +146,8 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
               removeLight: _removeLight,
               hideLight: _hideLight,
               isLightOn: true,
+              isMovableLightHidden:
+                  lightScreens[_selectedLight].isMovableLightHidden,
             ));
         lightScreens.removeAt(_selectedLight + 1);
         print(lightScreens[_selectedLight].isLightOn);
@@ -163,6 +170,8 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
             removeLight: _removeLight,
             hideLight: _hideLight,
             isLightOn: true,
+            isMovableLightHidden:
+                lightScreens[_selectedLight].isMovableLightHidden,
           ));
       lightScreens.removeAt(_selectedLight + 1);
     });
@@ -180,7 +189,8 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
     });
   }
 
-  void _setSliderValue(double value, int type) {
+  void _setSliderValue(double value, int type,
+      [double? horizontal, double? vertical]) {
     switch (type) {
       case 1:
         {
@@ -198,6 +208,8 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
                   removeLight: _removeLight,
                   hideLight: _hideLight,
                   isLightOn: true,
+                  isMovableLightHidden:
+                      lightScreens[_selectedLight].isMovableLightHidden,
                 ));
             lightScreens.removeAt(_selectedLight + 1);
           });
@@ -218,6 +230,8 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
                     removeLight: _removeLight,
                     hideLight: _hideLight,
                     isLightOn: true,
+                    isMovableLightHidden:
+                        lightScreens[_selectedLight].isMovableLightHidden,
                     colorWheelColor:
                         lightScreens[_selectedLight].colorWheelColor));
             lightScreens.removeAt(_selectedLight + 1);
@@ -240,6 +254,8 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
                   changeColor: _changeColor,
                   hideLight: _hideLight,
                   isLightOn: true,
+                  isMovableLightHidden:
+                      lightScreens[_selectedLight].isMovableLightHidden,
                 ));
             lightScreens.removeAt(_selectedLight + 1);
           });
@@ -268,6 +284,8 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
                   removeLight: _removeLight,
                   hideLight: _hideLight,
                   isLightOn: true,
+                  isMovableLightHidden:
+                      lightScreens[_selectedLight].isMovableLightHidden,
                 ));
             lightScreens.removeAt(_selectedLight + 1);
           });
@@ -301,6 +319,37 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
           });
         }
         break;
+      case 10:
+        {
+          setState(() {
+            lightScreens.insert(
+                _selectedLight,
+                LightScreen(
+                  setSliderValue: _setSliderValue,
+                  removeLight: _removeLight,
+                  intensity: lightScreens[_selectedLight].intensity,
+                  horizontal: horizontal != null ? horizontal : 0,
+                  vertical: vertical != null ? vertical : 0,
+                  colorWheelColor: lightScreens[_selectedLight].colorWheelColor,
+                  distance: lightScreens[_selectedLight].distance,
+                  changeColor: _changeColor,
+                  hideLight: _hideLight,
+                  isLightOn: true,
+                  isMovableLightHidden:
+                      lightScreens[_selectedLight].isMovableLightHidden,
+                ));
+            lightScreens.removeAt(_selectedLight + 1);
+          });
+          break;
+        }
+      case 11:
+        {
+          setState(() {
+            dHorizontal = horizontal != null ? horizontal : 0;
+            dVertical = vertical != null ? vertical : 0;
+          });
+          break;
+        }
       default:
     }
   }
@@ -310,7 +359,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
       lightScreens.add(LightScreen(
         setSliderValue: _setSliderValue,
         horizontal: 0,
-        intensity: 0,
+        intensity: 0.5,
         vertical: 0,
         distance: 0,
         colorWheelColor: rainbowColor,
@@ -318,6 +367,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
         removeLight: _removeLight,
         hideLight: _hideLight,
         isLightOn: true,
+        isMovableLightHidden: false,
       ));
     });
   }
@@ -326,6 +376,20 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
     setState(() {
       _showLoadingBar = show;
     });
+  }
+
+  void reduceBlur(i) {
+    if (i == 0 || blur == 0) {
+      return;
+    }
+    Timer(
+        const Duration(milliseconds: 900),
+        () => {
+              setState(() {
+                blur--;
+              }),
+              reduceBlur(i - 0.5)
+            });
   }
 
   void _setOriginalImage(image) {
@@ -345,40 +409,13 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
 
     if (image == null) {
       _setMesh(false);
-      blur = 14;
+      blur = 10;
       lightScreens.removeRange(0, lightScreens.length);
       lightsButtons.removeRange(0, lightsButtons.length);
       ambienceColor = [Colors.white, Colors.white];
       ambience = 1.0;
     } else {
-      Timer(
-          const Duration(seconds: 2),
-          () => {
-                setState(() {
-                  blur = blur - 2;
-                }),
-                Timer(
-                    const Duration(seconds: 2),
-                    () => {
-                          setState(() {
-                            blur = blur - 2;
-                          }),
-                          Timer(
-                              const Duration(seconds: 2),
-                              () => {
-                                    setState(() {
-                                      blur = blur - 2;
-                                    }),
-                                    Timer(
-                                        const Duration(seconds: 2),
-                                        () => {
-                                              setState(() {
-                                                blur = blur - 2;
-                                              })
-                                            })
-                                  })
-                        })
-              });
+      reduceBlur(20);
       Timer(
           const Duration(seconds: 10),
           () => {
@@ -454,6 +491,8 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
             removeLight: _removeLight,
             hideLight: _hideLight,
             isLightOn: false,
+            isMovableLightHidden:
+                lightScreens[_selectedLight].isMovableLightHidden,
           );
           lightScreens.insert(i, curr);
           lightScreens.removeAt(i + 1);
@@ -472,11 +511,41 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
             removeLight: _removeLight,
             hideLight: _hideLight,
             isLightOn: true,
+            isMovableLightHidden:
+                lightScreens[_selectedLight].isMovableLightHidden,
           );
           lightScreens.insert(i, curr);
           lightScreens.removeAt(i + 1);
         }
         allLightsShown = true;
+      }
+    });
+  }
+
+  void toggleHideMovableLight() {
+    setState(() {
+      if (_selectedScreen == 0) {
+        lightScreens.insert(
+            _selectedLight,
+            LightScreen(
+              setSliderValue: _setSliderValue,
+              removeLight: _removeLight,
+              intensity: lightScreens[_selectedLight].intensity,
+              horizontal: lightScreens[_selectedLight].horizontal,
+              vertical: lightScreens[_selectedLight].vertical,
+              colorWheelColor: lightScreens[_selectedLight].colorWheelColor,
+              distance: lightScreens[_selectedLight].distance,
+              changeColor: _changeColor,
+              hideLight: _hideLight,
+              isLightOn: true,
+              isMovableLightHidden:
+                  lightScreens[_selectedLight].isMovableLightHidden
+                      ? false
+                      : true,
+            ));
+        lightScreens.removeAt(_selectedLight + 1);
+      } else if (_selectedScreen == 1) {
+        dLightHidden = dLightHidden == false ? true : false;
       }
     });
   }
@@ -515,23 +584,64 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
     return Container();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _3DMesh != false
-          ? TopAppBar(_setImage, sceneCapture, allLightToggle, saveImage,
-              _selectedImage)
-          : null,
-      backgroundColor: const Color.fromARGB(255, 31, 31, 31),
-      body: Column(
+  Widget getMovableCircle() {
+    if (_selectedScreen == 1) {
+      return MovingCircle(
+        changePosition: _setSliderValue,
+        horizontal: dHorizontal,
+        vertical: dVertical,
+        colors: directionalColor,
+        setScreen: _setScreen,
+        screenType: _selectedScreen,
+      );
+    } else if (_selectedScreen == 0) {
+      return MovingCircle(
+        changePosition: _setSliderValue,
+        horizontal: lightScreens[_selectedLight].horizontal,
+        vertical: lightScreens[_selectedLight].vertical,
+        colors: lightScreens[_selectedLight].colorWheelColor,
+        setScreen: _setScreen,
+        screenType: _selectedScreen,
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Widget getLightType() {
+    if (_selectedScreen == 0) {
+      if (lightScreens.length != 0 &&
+          lightScreens[_selectedLight].isMovableLightHidden == false) {
+        return getMovableCircle();
+      } else {
+        return Container();
+      }
+    } else if (_selectedScreen == 1) {
+      if (dLightHidden) {
+        return Container();
+      } else {
+        return getMovableCircle();
+      }
+    } else {
+      return Container();
+    }
+  }
+
+  Widget getBody() {
+    if (_3DMesh != false) {
+      return Center(
+          child: FittedBox(
+              child: Column(
         children: [
-          _3DMesh != false
-              ? Screenshot(
-                  controller: screenshotController,
-                  child: Container(
-                      child: SizedBox(
-                          height: 440,
-                          child: WebGlLoaderObj(
+          Screenshot(
+              controller: screenshotController,
+              child: Container(
+                  child: SizedBox(
+                      height: 389,
+                      width: 400,
+                      child: Stack(
+                        children: [
+                          WebGlLoaderObj(
                               MediaQuery.of(context),
                               _selectedImage!,
                               ambienceColor,
@@ -541,72 +651,79 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
                               dIntensity,
                               dHorizontal,
                               dVertical,
-                              dDistance))))
-              : _selectedImage != null
-                  ? PictureContainer(_selectedImage, blur)
-                  : StartScreen(
-                      selectedImage: _selectedImage,
-                      changeOriginalImage: _setOriginalImage,
-                      changePicture: _setImage,
-                    ),
-          const SizedBox(height: 2.5),
-          _showLoadingBar == true
-              ? Column(children: [
-                  SizedBox(height: 17.5),
-                  SizedBox(
-                      width: 45,
-                      height: 45,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 6,
-                        color: Color.fromARGB(255, 255, 220, 128),
-                      )),
-                  SizedBox(height: 5)
-                ])
-              : Container(),
-          //Probably will change this to when 3d mesh isnt null later
-          //iterator > 0 ? Container(child:Image.memory(screenshotImage!)) : Container(),
-          _3DMesh == false
-              ? Container()
-              : Column(children: [
-                  LightsBar(
-                    setLight: _setLight,
-                    setScreen: _setScreen,
-                    addLightScreen: _addLightScreen,
-                    lightsButtons: lightsButtons,
-                    selectedLight: _selectedLight,
-                    addLightButton: _addLight,
-                  ),
-                  Transform.scale(
-                    scale: 0.95,
-                    child: ScreenSelector(
-                      selectedScreen: _selectedScreen,
-                      selectedLight: _selectedLight,
-                      lightScreens: lightScreens,
-                      originalImage: _originalImage,
-                      setSelectedImage: _setImage,
-                      selectedValue: ambience,
-                      setSliderValue: _setSliderValue,
-                      type: 4,
-                      dDistance: dDistance,
-                      dIntensity: dIntensity,
-                      dHorizontal: dHorizontal,
-                      dVertical: dVertical,
-                      changeDirectionalColor: _changeDirectionalColor,
-                      directionalColor: directionalColor,
-                      ambienceColor: ambienceColor,
-                      changeAmbienceColor: _changeAmbienceColor,
-                    ),
-                  )
-                ])
+                              dDistance),
+                          getLightType()
+                        ],
+                      )))),
+          Column(children: [
+            LightsBar(
+              setLight: _setLight,
+              setScreen: _setScreen,
+              addLightScreen: _addLightScreen,
+              lightsButtons: lightsButtons,
+              selectedLight: _selectedLight,
+              addLightButton: _addLight,
+            ),
+            Transform.scale(
+              scale: 0.95,
+              child: ScreenSelector(
+                selectedScreen: _selectedScreen,
+                selectedLight: _selectedLight,
+                lightScreens: lightScreens,
+                originalImage: _originalImage,
+                setSelectedImage: _setImage,
+                selectedValue: ambience,
+                setSliderValue: _setSliderValue,
+                type: 4,
+                dDistance: dDistance,
+                dIntensity: dIntensity,
+                dHorizontal: dHorizontal,
+                dVertical: dVertical,
+                changeDirectionalColor: _changeDirectionalColor,
+                directionalColor: directionalColor,
+                ambienceColor: ambienceColor,
+                changeAmbienceColor: _changeAmbienceColor,
+              ),
+            )
+          ])
         ],
-      ),
-      /*floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              sceneCapture();
-              print(screenshotImage);
-              saveImage();
-            },
-            child: const Icon(Icons.download)),*/
+      )));
+    } else {
+      return Column(children: [
+        _selectedImage != null
+            ? PictureContainer(_selectedImage, blur)
+            : StartScreen(
+                selectedImage: _selectedImage,
+                changeOriginalImage: _setOriginalImage,
+                changePicture: _setImage,
+              ),
+        const SizedBox(height: 2.5),
+        _showLoadingBar == true
+            ? Column(children: [
+                SizedBox(height: 17.5),
+                SizedBox(
+                    width: 45,
+                    height: 45,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 6,
+                      color: Color.fromARGB(255, 255, 220, 128),
+                    )),
+                SizedBox(height: 5)
+              ])
+            : Container(),
+      ]);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: _3DMesh != false
+          ? TopAppBar(_setImage, sceneCapture, allLightToggle, saveImage,
+              toggleHideMovableLight, _selectedImage)
+          : null,
+      backgroundColor: const Color.fromARGB(255, 31, 31, 31),
+      body: getBody(),
       bottomNavigationBar: _3DMesh != false
           ? BottomNav(
               selectedScreen: _selectedScreen,

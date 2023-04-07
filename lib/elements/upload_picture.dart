@@ -35,16 +35,17 @@ class _UploadPictureState extends State<UploadPicture> {
     if (image != null) {
       widget.changePicture(image);
       widget.changeOriginalImage(image);
-    }
-    final imgDir = await getTemporaryDirectory();
-    final path = await imgDir.path;
-    final imgBytes = await image!.readAsBytes();
-    // final selectedImage = img.encodeJpg(imgBytes);
-    final storeImage = await File('$path/selectedImage.jpg');
-    await storeImage.writeAsBytes(imgBytes);
-    print(storeImage);
 
-    clipdropImage(image);
+      final imgDir = await getTemporaryDirectory();
+      final path = await imgDir.path;
+      final imgBytes = await image.readAsBytes();
+      // final selectedImage = img.encodeJpg(imgBytes);
+      final storeImage = await File('$path/selectedImage.jpg');
+      await storeImage.writeAsBytes(imgBytes);
+      print(storeImage);
+
+      clipdropImage(image);
+    }
   }
 
   Future<void> clipdropImage(XFile imageFile) async {
@@ -55,7 +56,7 @@ class _UploadPictureState extends State<UploadPicture> {
     final url = 'https://clipdrop-api.co/portrait-depth-estimation/v1';
     final headers = {
       'x-api-key':
-          '702e264d9e135b0fb420bcb8ceede683b35af982a08616a19aac93c1a6fec0a5898dafd465bad223dac8579cbf283d32',
+          '25854d2792b3c0d035f18363b80e028052414396feac5d0f708310976ed455ee58f02be3d6455c1b8dfab6147cf384e7',
     };
     final request = http.MultipartRequest('POST', Uri.parse(url))
       ..headers.addAll(headers)

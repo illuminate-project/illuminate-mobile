@@ -14,6 +14,7 @@ class LightScreen extends StatefulWidget {
   final Function removeLight;
   final Function hideLight;
   final bool isLightOn;
+  final bool isMovableLightHidden;
   const LightScreen(
       {super.key,
       required this.setSliderValue,
@@ -25,6 +26,7 @@ class LightScreen extends StatefulWidget {
       required this.colorWheelColor,
       required this.changeColor,
       required this.isLightOn,
+      required this.isMovableLightHidden,
       required this.removeLight});
 
   @override

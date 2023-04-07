@@ -14,12 +14,14 @@ class TopAppBar extends StatefulWidget with PreferredSizeWidget {
   final Function sceneCapture;
   final Function saveImage;
   final Function allLightToggle;
+  final Function hideMovableLight;
   final XFile? selectedImage;
   const TopAppBar(
     this.changePicture,
     this.sceneCapture,
     this.allLightToggle,
     this.saveImage,
+    this.hideMovableLight,
     this.selectedImage, {
     super.key,
   });
@@ -96,7 +98,7 @@ class _TopAppBarState extends State<TopAppBar> {
           IconButton(
             icon: const Icon(CupertinoIcons.eye_fill),
             color: Color.fromARGB(255, 255, 255, 255),
-            onPressed: () => {},
+            onPressed: () => {widget.hideMovableLight()},
           ),
           IconButton(
             icon: allLightsOn

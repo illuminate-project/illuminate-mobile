@@ -20,7 +20,22 @@ class MovableSlider extends StatefulWidget {
 
 class _MovableSliderState extends State<MovableSlider> {
   double marginValue() {
-    return widget.type == 34 ? 12.75 : 0;
+    switch (widget.type) {
+      case 1:
+        return 11;
+      case 3:
+        return 17.5;
+      case 5:
+        return 10;
+      case 6:
+        return 11;
+      case 8:
+        return 17.5;
+      case 9:
+        return 11;
+      default:
+        return 0;
+    }
   }
 
   double getMinSliderValue() {

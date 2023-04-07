@@ -161,26 +161,6 @@ class _MyAppState extends State<WebGlLoaderObj> {
         dIntensity, dHorizontal, dVertical, dDistance);
   }
 
-  setLight(three.PointLight pointLight, i) {
-    var pointLightColor = 0x000000;
-    double pointLightIntensity = 0.0;
-    double pointLightX = 50.0;
-    double pointLightY = 20.0;
-    double pointLightZ = 6.0;
-
-    pointLightIntensity = widget.lightScreens[i].isLightOn
-        ? widget.lightScreens[i].intensity
-        : 0.0;
-    pointLightColor = ARGBtoHex(widget.lightScreens[i].colorWheelColor[i]);
-    pointLightX = widget.lightScreens[i].horizontal;
-    pointLightY = widget.lightScreens[i].vertical;
-    pointLightZ = widget.lightScreens[i].distance;
-    pointLight = three.PointLight(pointLightColor, pointLightIntensity);
-
-    pointLight.position.set(pointLightX, pointLightY, pointLightZ);
-    camera.add(pointLight);
-  }
-
   updateScene(lightScreens, ambient, ambientColor, dDistance, dHorizontal,
       dVertical, dIntensity, directionalColor) {
     if (hasInitialized != false) {
@@ -211,8 +191,12 @@ class _MyAppState extends State<WebGlLoaderObj> {
             pointLightIntensity = widget.lightScreens[0].isLightOn
                 ? widget.lightScreens[0].intensity
                 : 0.0;
-            pointLightColor =
-                ARGBtoHex(widget.lightScreens[0].colorWheelColor[0]);
+            if (widget.lightScreens[0].colorWheelColor.length > 2) {
+              pointLightColor = ARGBtoHex(Color.fromARGB(255, 255, 255, 255));
+            } else {
+              pointLightColor =
+                  ARGBtoHex(widget.lightScreens[0].colorWheelColor[0]);
+            }
             pointLightX = widget.lightScreens[0].horizontal;
             pointLightY = widget.lightScreens[0].vertical;
             pointLightZ = widget.lightScreens[0].distance;
@@ -232,8 +216,12 @@ class _MyAppState extends State<WebGlLoaderObj> {
             pointLightIntensity = widget.lightScreens[1].isLightOn
                 ? widget.lightScreens[1].intensity
                 : 0.0;
-            pointLightColor =
-                ARGBtoHex(widget.lightScreens[1].colorWheelColor[0]);
+            if (widget.lightScreens[1].colorWheelColor.length > 2) {
+              pointLightColor = ARGBtoHex(Color.fromARGB(255, 255, 255, 255));
+            } else {
+              pointLightColor =
+                  ARGBtoHex(widget.lightScreens[1].colorWheelColor[0]);
+            }
             pointLightX = widget.lightScreens[1].horizontal;
             pointLightY = widget.lightScreens[1].vertical;
             pointLightZ = widget.lightScreens[1].distance;
@@ -253,8 +241,12 @@ class _MyAppState extends State<WebGlLoaderObj> {
             pointLightIntensity = widget.lightScreens[2].isLightOn
                 ? widget.lightScreens[2].intensity
                 : 0.0;
-            pointLightColor =
-                ARGBtoHex(widget.lightScreens[2].colorWheelColor[0]);
+            if (widget.lightScreens[2].colorWheelColor.length > 2) {
+              pointLightColor = ARGBtoHex(Color.fromARGB(255, 255, 255, 255));
+            } else {
+              pointLightColor =
+                  ARGBtoHex(widget.lightScreens[2].colorWheelColor[0]);
+            }
             pointLightX = widget.lightScreens[2].horizontal;
             pointLightY = widget.lightScreens[2].vertical;
             pointLightZ = widget.lightScreens[2].distance;
@@ -274,8 +266,12 @@ class _MyAppState extends State<WebGlLoaderObj> {
             pointLightIntensity = widget.lightScreens[3].isLightOn
                 ? widget.lightScreens[3].intensity
                 : 0.0;
-            pointLightColor =
-                ARGBtoHex(widget.lightScreens[3].colorWheelColor[0]);
+            if (widget.lightScreens[3].colorWheelColor.length > 2) {
+              pointLightColor = ARGBtoHex(Color.fromARGB(255, 255, 255, 255));
+            } else {
+              pointLightColor =
+                  ARGBtoHex(widget.lightScreens[3].colorWheelColor[0]);
+            }
             pointLightX = widget.lightScreens[3].horizontal;
             pointLightY = widget.lightScreens[3].vertical;
             pointLightZ = widget.lightScreens[3].distance;
@@ -295,8 +291,12 @@ class _MyAppState extends State<WebGlLoaderObj> {
             pointLightIntensity = widget.lightScreens[4].isLightOn
                 ? widget.lightScreens[4].intensity
                 : 0.0;
-            pointLightColor =
-                ARGBtoHex(widget.lightScreens[4].colorWheelColor[0]);
+            if (widget.lightScreens[4].colorWheelColor.length > 2) {
+              pointLightColor = ARGBtoHex(Color.fromARGB(255, 255, 255, 255));
+            } else {
+              pointLightColor =
+                  ARGBtoHex(widget.lightScreens[4].colorWheelColor[0]);
+            }
             pointLightX = widget.lightScreens[4].horizontal;
             pointLightY = widget.lightScreens[4].vertical;
             pointLightZ = widget.lightScreens[4].distance;
@@ -528,7 +528,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
       pointLight1On = true;
       pointLight1Intensity =
           lightScreens[0].isLightOn ? lightScreens[0].intensity : 0.0;
-      pointLight1Color = ARGBtoHex(lightScreens[0].colorWheelColor[0]);
+      pointLight1Color = ARGBtoHex(Color.fromARGB(255, 255, 255, 255));
       pointLight1X = lightScreens[0].horizontal;
       pointLight1Y = lightScreens[0].vertical;
       pointLight1Z = lightScreens[0].distance;
@@ -560,7 +560,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
       pointLight2Intensity =
           lightScreens[1].isLightOn ? lightScreens[1].intensity : 0.0;
       ;
-      pointLight2Color = ARGBtoHex(lightScreens[1].colorWheelColor[0]);
+      pointLight2Color = ARGBtoHex(Color.fromARGB(255, 255, 255, 255));
       pointLight2X = lightScreens[1].horizontal;
       pointLight2Y = lightScreens[1].vertical;
       pointLight2Z = lightScreens[1].distance;
@@ -592,7 +592,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
       pointLight3Intensity =
           lightScreens[2].isLightOn ? lightScreens[2].intensity : 0.0;
       ;
-      pointLight3Color = ARGBtoHex(lightScreens[2].colorWheelColor[0]);
+      pointLight3Color = ARGBtoHex(Color.fromARGB(255, 255, 255, 255));
       pointLight3X = lightScreens[2].horizontal;
       pointLight3Y = lightScreens[2].vertical;
       pointLight3Z = lightScreens[2].distance;
@@ -624,7 +624,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
       pointLight4Intensity =
           lightScreens[3].isLightOn ? lightScreens[3].intensity : 0.0;
       ;
-      pointLight4Color = ARGBtoHex(lightScreens[3].colorWheelColor[0]);
+      pointLight4Color = ARGBtoHex(Color.fromARGB(255, 255, 255, 255));
       pointLight4X = lightScreens[3].horizontal;
       pointLight4Y = lightScreens[3].vertical;
       pointLight4Z = lightScreens[3].distance;
@@ -656,7 +656,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
       pointLight5Intensity =
           lightScreens[4].isLightOn ? lightScreens[4].intensity : 0.0;
       ;
-      pointLight5Color = ARGBtoHex(lightScreens[4].colorWheelColor[0]);
+      pointLight5Color = ARGBtoHex(Color.fromARGB(255, 255, 255, 255));
       pointLight5X = lightScreens[4].horizontal;
       pointLight5Y = lightScreens[4].vertical;
       pointLight5Z = lightScreens[4].distance;
