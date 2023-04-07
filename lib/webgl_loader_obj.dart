@@ -62,6 +62,12 @@ class _MyAppState extends State<WebGlLoaderObj> {
   late three.Camera camera;
   late three.Mesh mesh;
 
+  ScrollController _scrollController = new ScrollController(
+    initialScrollOffset: 200,
+    keepScrollOffset: true,
+  );
+
+
   double dpr = 1.0;
 
   var amount = 4;
@@ -352,6 +358,8 @@ class _MyAppState extends State<WebGlLoaderObj> {
               widget.dIntensity,
               widget.directionalColor);
           return SingleChildScrollView(
+              controller: _scrollController,
+              physics: NeverScrollableScrollPhysics(),
               child: _build(
             context,
           ));

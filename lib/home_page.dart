@@ -417,7 +417,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
     } else {
       reduceBlur(20);
       Timer(
-          const Duration(seconds: 10),
+          const Duration(seconds: 25),
           () => {
                 _setLoadingBar(false),
                 _setMesh(true),
@@ -627,7 +627,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
     }
   }
 
-  Widget getBody() {
+  Widget getBody(BuildContext context) {
     if (_3DMesh != false) {
       return Center(
           child: FittedBox(
@@ -638,7 +638,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
               child: Container(
                   child: SizedBox(
                       height: 389,
-                      width: 400,
+                      width: MediaQuery.of(context).size.width,
                       child: Stack(
                         children: [
                           WebGlLoaderObj(
@@ -723,7 +723,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
               toggleHideMovableLight, _selectedImage)
           : null,
       backgroundColor: const Color.fromARGB(255, 31, 31, 31),
-      body: getBody(),
+      body: getBody(context),
       bottomNavigationBar: _3DMesh != false
           ? BottomNav(
               selectedScreen: _selectedScreen,
