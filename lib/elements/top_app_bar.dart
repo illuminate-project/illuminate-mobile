@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:illuminate/screens/light_screen.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -15,14 +16,24 @@ class TopAppBar extends StatefulWidget with PreferredSizeWidget {
   final Function saveImage;
   final Function allLightToggle;
   final Function hideMovableLight;
+  final int selectedScreen;
   final XFile? selectedImage;
+  final List<LightScreen> lightScreens;
+  final int _selectedLight;
+  final bool dLightHidden;
+  final Function toggleHideMovableLight;
   const TopAppBar(
     this.changePicture,
     this.sceneCapture,
     this.allLightToggle,
     this.saveImage,
     this.hideMovableLight,
-    this.selectedImage, {
+    this.selectedImage, 
+    this.selectedScreen,
+    this.lightScreens,
+    this._selectedLight,
+    this.dLightHidden,
+    this.toggleHideMovableLight, {
     super.key,
   });
 
@@ -56,7 +67,19 @@ class _TopAppBarState extends State<TopAppBar> {
           insetPadding: EdgeInsets.only(bottom: 150),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.pop(context, 'Cancel'),
+              onPressed: () => {
+                if(widget.selectedScreen == 0 || widget.selectedScreen == 1) {
+                    if(widget.selectedScreen == 0) {
+                      if(widget.lightScreens[widget._selectedLight].isMovableLightHidden) {
+                        widget.toggleHideMovableLight(),
+                        Navigator.pop(context, 'Cancel'),
+                      }
+                    }
+                }
+                else {
+                  Navigator.pop(context, 'Cancel'),
+                }
+              },
               child: const Text('Cancel'),
             ),
             TextButton(
@@ -67,17 +90,18 @@ class _TopAppBarState extends State<TopAppBar> {
                 else
                   {
                     imageInstance.saveImage(),
-                    ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
-                      backgroundColor: Color.fromARGB(255, 105, 241, 143),
-                      content: Text('Saved to Camera Roll!',
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 26, 47, 24))),
-                      behavior: SnackBarBehavior.floating,
-                      margin: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).size.height - 193,
-                          right: 31.5,
-                          left: 31.5),
-                    ))
+                          ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+                            backgroundColor: Color.fromARGB(255, 105, 241, 143),
+                            content: Text('Saved to Camera Roll!',
+                                style: TextStyle(
+                                    color: Color.fromARGB(255, 26, 47, 24))),
+                            behavior: SnackBarBehavior.floating,
+                            margin: EdgeInsets.only(
+                                bottom: MediaQuery.of(context).size.height - 193,
+                                right: 31.5,
+                                left: 31.5),
+                          ))
+                    
                   }
               },
               child: const Text('Yes'),
@@ -124,7 +148,20 @@ class _TopAppBarState extends State<TopAppBar> {
             icon: const Icon(CupertinoIcons.square_arrow_down),
             color: const Color.fromARGB(255, 227, 174, 111),
             onPressed: () =>
-                {widget.sceneCapture(), showModal('Save to Camera Roll?', 2)},
+                {
+                  if(widget.selectedScreen == 0 || widget.selectedScreen == 1) {
+                      if(widget.selectedScreen == 0) {
+                        if(!widget.lightScreens[widget._selectedLight].isMovableLightHidden) {
+                          widget.toggleHideMovableLight(),
+                          widget.sceneCapture(),
+                        }
+                      }
+                  }
+                  else {
+                    widget.sceneCapture(),
+                  },
+                  showModal('Save to Camera Roll?', 2)
+                },
           ),
         ],
       ),

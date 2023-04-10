@@ -722,7 +722,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
     return Scaffold(
       appBar: _3DMesh != false
           ? TopAppBar(_setImage, sceneCapture, allLightToggle, saveImage,
-              toggleHideMovableLight, _selectedImage)
+              toggleHideMovableLight, _selectedImage, _selectedScreen, lightScreens, _selectedLight, dLightHidden, toggleHideMovableLight)
           : null,
       backgroundColor: const Color.fromARGB(255, 31, 31, 31),
       body: getBody(context),
