@@ -6,11 +6,13 @@ class StartScreen extends StatefulWidget {
   final XFile? selectedImage;
   final Function changeOriginalImage;
   final Function changePicture;
+  final Function setMeshReady;
   const StartScreen(
       {super.key,
       this.selectedImage,
       required this.changeOriginalImage,
-      required this.changePicture});
+      required this.changePicture,
+      required this.setMeshReady});
 
   @override
   State<StartScreen> createState() => _StartScreenState();
@@ -35,6 +37,7 @@ class _StartScreenState extends State<StartScreen> {
           selectedImage: widget.selectedImage,
           changeOriginalImage: widget.changeOriginalImage,
           changePicture: widget.changePicture,
+          setMeshReady: widget.setMeshReady,
         )
       ],
     );

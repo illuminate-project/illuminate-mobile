@@ -42,6 +42,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
   bool _showLoadingBar = false;
   bool _3DMesh = false;
   bool allLightsShown = true;
+  bool meshReady = false;
   List<LightScreen> lightScreens = [];
   List<LightButton> lightsButtons = [];
   List<Color> rainbowColor = [
@@ -409,20 +410,14 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
 
     if (image == null) {
       _setMesh(false);
-      blur = 10;
+      setMeshReady(false);
+      blur = 20;
       lightScreens.removeRange(0, lightScreens.length);
       lightsButtons.removeRange(0, lightsButtons.length);
       ambienceColor = [Colors.white, Colors.white];
       ambience = 1.0;
     } else {
       reduceBlur(20);
-      Timer(
-          const Duration(seconds: 25),
-          () => {
-                _setLoadingBar(false),
-                _setMesh(true),
-                if (lightsButtons.isEmpty) {_addLight()}
-              });
     }
   }
 
@@ -629,6 +624,20 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
     }
   }
 
+  void setMeshReady(state) {
+    setState(() {
+      meshReady = state;
+    });
+
+    if (state == true) {
+      _setLoadingBar(false);
+      _setMesh(true);
+      if (lightsButtons.isEmpty) {
+        _addLight();
+      }
+    }
+  }
+
   Widget getBody(BuildContext context) {
     if (_3DMesh != false) {
       return Center(
@@ -698,6 +707,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
                 selectedImage: _selectedImage,
                 changeOriginalImage: _setOriginalImage,
                 changePicture: _setImage,
+                setMeshReady: setMeshReady,
               ),
         const SizedBox(height: 2.5),
         _showLoadingBar == true
@@ -721,8 +731,18 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _3DMesh != false
-          ? TopAppBar(_setImage, sceneCapture, allLightToggle, saveImage,
-              toggleHideMovableLight, _selectedImage, _selectedScreen, lightScreens, _selectedLight, dLightHidden, toggleHideMovableLight)
+          ? TopAppBar(
+              _setImage,
+              sceneCapture,
+              allLightToggle,
+              saveImage,
+              toggleHideMovableLight,
+              _selectedImage,
+              _selectedScreen,
+              lightScreens,
+              _selectedLight,
+              dLightHidden,
+              toggleHideMovableLight)
           : null,
       backgroundColor: const Color.fromARGB(255, 31, 31, 31),
       body: getBody(context),

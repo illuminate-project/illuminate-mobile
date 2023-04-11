@@ -14,11 +14,13 @@ class UploadPicture extends StatefulWidget {
   final XFile? selectedImage;
   final Function changeOriginalImage;
   final Function changePicture;
+  final Function setMeshReady;
   const UploadPicture(
       {super.key,
       this.selectedImage,
       required this.changeOriginalImage,
-      required this.changePicture});
+      required this.changePicture,
+      required this.setMeshReady});
 
   @override
   State<UploadPicture> createState() => _UploadPictureState();
@@ -35,11 +37,7 @@ class _UploadPictureState extends State<UploadPicture> {
     }
 
     if (image != null) {
-      print(File(image.path).lengthSync());
-      print(File(image.path).lengthSync());
       File imageNew = await compressImage(image);
-      print(File(imageNew.path).lengthSync());
-      print(File(imageNew.path).lengthSync());
 
       widget.changePicture(image);
       widget.changeOriginalImage(image);
@@ -67,11 +65,35 @@ class _UploadPictureState extends State<UploadPicture> {
     final splitted = filePath.substring(0, (lastIndex));
     final outPath = "${splitted}_out${filePath.substring(lastIndex)}";
 
-    File? result = await FlutterImageCompress.compressAndGetFile(
-      imageFile.absolute.path,
-      outPath,
-      quality: 20,
-    );
+    int size = File(image.path).lengthSync();
+    File? result;
+
+    if (size > 1000000) {
+      result = await FlutterImageCompress.compressAndGetFile(
+        imageFile.absolute.path,
+        outPath,
+        quality: 40,
+      );
+    } else if (size > 500000) {
+      result = await FlutterImageCompress.compressAndGetFile(
+        imageFile.absolute.path,
+        outPath,
+        quality: 60,
+      );
+    } else if (size > 100000) {
+      result = await FlutterImageCompress.compressAndGetFile(
+        imageFile.absolute.path,
+        outPath,
+        quality: 80,
+      );
+    } else {
+      result = await FlutterImageCompress.compressAndGetFile(
+        imageFile.absolute.path,
+        outPath,
+        quality: 95,
+      );
+    }
+
     return result!;
   }
 
@@ -139,7 +161,10 @@ class _UploadPictureState extends State<UploadPicture> {
     await response.stream.pipe(file.openWrite());
 
     // Print a message indicating that the file has been saved
+
     print('File saved to ${file.path}');
+    print(file.path);
+    widget.setMeshReady(true);
   }
 
   @override
