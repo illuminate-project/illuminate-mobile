@@ -13,11 +13,13 @@ class UploadPicture extends StatefulWidget {
   final XFile? selectedImage;
   final Function changeOriginalImage;
   final Function changePicture;
+  final Function setMeshReady;
   const UploadPicture(
       {super.key,
       this.selectedImage,
       required this.changeOriginalImage,
-      required this.changePicture});
+      required this.changePicture,
+      required this.setMeshReady});
 
   @override
   State<UploadPicture> createState() => _UploadPictureState();
@@ -113,8 +115,10 @@ class _UploadPictureState extends State<UploadPicture> {
     await response.stream.pipe(file.openWrite());
 
     // Print a message indicating that the file has been saved
+
     print('File saved to ${file.path}');
     print(file.path);
+    widget.setMeshReady(true);
   }
 
   @override

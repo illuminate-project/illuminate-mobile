@@ -42,6 +42,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
   bool _showLoadingBar = false;
   bool _3DMesh = false;
   bool allLightsShown = true;
+  bool meshReady = false;
   List<LightScreen> lightScreens = [];
   List<LightButton> lightsButtons = [];
   List<Color> rainbowColor = [
@@ -409,6 +410,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
 
     if (image == null) {
       _setMesh(false);
+      setMeshReady(false);
       blur = 20;
       lightScreens.removeRange(0, lightScreens.length);
       lightsButtons.removeRange(0, lightsButtons.length);
@@ -417,11 +419,8 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
     } else {
       reduceBlur(20);
 
-      final tempDir = await getTemporaryDirectory();
-      final path = await tempDir.path;
-
       while (true) {
-        if (File('$path/mesh.obj').existsSync()) {
+        if (meshReady) {
           _setLoadingBar(false);
           _setMesh(true);
           if (lightsButtons.isEmpty) {
@@ -636,6 +635,12 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
     }
   }
 
+  void setMeshReady(state) {
+    setState(() {
+      meshReady = state;
+    });
+  }
+
   Widget getBody(BuildContext context) {
     if (_3DMesh != false) {
       return Center(
@@ -705,6 +710,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
                 selectedImage: _selectedImage,
                 changeOriginalImage: _setOriginalImage,
                 changePicture: _setImage,
+                setMeshReady: setMeshReady,
               ),
         const SizedBox(height: 2.5),
         _showLoadingBar == true
