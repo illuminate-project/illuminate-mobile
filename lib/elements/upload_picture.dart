@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -27,36 +28,62 @@ class _UploadPictureState extends State<UploadPicture> {
   void _getImage(int type) async {
     XFile? image;
     if (type == 1) {
-      image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      image = await ImagePicker().pickImage(
+          source: ImageSource.gallery, maxHeight: 1024, maxWidth: 1024);
     } else {
       image = await ImagePicker().pickImage(source: ImageSource.camera);
     }
 
     if (image != null) {
+      print(File(image.path).lengthSync());
+      print(File(image.path).lengthSync());
+      File imageNew = await compressImage(image);
+      print(File(imageNew.path).lengthSync());
+      print(File(imageNew.path).lengthSync());
+
       widget.changePicture(image);
       widget.changeOriginalImage(image);
 
       final imgDir = await getTemporaryDirectory();
       final path = await imgDir.path;
-      final imgBytes = await image.readAsBytes();
+      final imgBytes = await imageNew.readAsBytes();
+      final textBytes = await image.readAsBytes();
       // final selectedImage = img.encodeJpg(imgBytes);
       final storeImage = await File('$path/selectedImage.jpg');
       await storeImage.writeAsBytes(imgBytes);
+      final storeTexture = await File('$path/texture.jpg');
+      await storeTexture.writeAsBytes(textBytes);
       print(storeImage);
 
-      clipdropImage(image);
+      clipdropImage(imageNew);
     }
   }
 
-  Future<void> clipdropImage(XFile imageFile) async {
-    final testBytes = await imageFile.readAsBytes();
+  Future<File> compressImage(XFile image) async {
+    File imageFile = File(image.path);
+
+    final filePath = imageFile.absolute.path;
+    final lastIndex = filePath.lastIndexOf(new RegExp(r'.jp'));
+    final splitted = filePath.substring(0, (lastIndex));
+    final outPath = "${splitted}_out${filePath.substring(lastIndex)}";
+
+    File? result = await FlutterImageCompress.compressAndGetFile(
+      imageFile.absolute.path,
+      outPath,
+      quality: 20,
+    );
+    return result!;
+  }
+
+  Future<void> clipdropImage(File imageFile) async {
+    /* final testBytes = await imageFile.readAsBytes();
     final depthImage = img.decodeJpg(testBytes);
-    print(depthImage);
+    print(depthImage); */
 
     final url = 'https://clipdrop-api.co/portrait-depth-estimation/v1';
     final headers = {
       'x-api-key':
-          '25854d2792b3c0d035f18363b80e028052414396feac5d0f708310976ed455ee58f02be3d6455c1b8dfab6147cf384e7',
+          '895d0874697a0f23c39182ed12ab5891c62865f4fe93254bc36ac620e1659c35e543f29d2b68c0d81cf0024c19322045',
     };
     final request = http.MultipartRequest('POST', Uri.parse(url))
       ..headers.addAll(headers)
@@ -91,9 +118,8 @@ class _UploadPictureState extends State<UploadPicture> {
         'image', imageBytes.buffer.asUint8List(),
         filename: 'image_50.jpg');
 
-    print(depthFile);
     // Load the depth file
-    final depthBytes = await rootBundle.load('assets/depth_50.jpg');
+    // final depthBytes = await rootBundle.load('assets/depth_50.jpg');
     final depthUpload = http.MultipartFile.fromBytes('depth', depthFile,
         filename: 'imageDepth.jpg');
 
@@ -114,7 +140,6 @@ class _UploadPictureState extends State<UploadPicture> {
 
     // Print a message indicating that the file has been saved
     print('File saved to ${file.path}');
-    print(file.path);
   }
 
   @override

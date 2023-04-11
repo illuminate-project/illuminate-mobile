@@ -201,7 +201,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
                   ARGBtoHex(widget.lightScreens[0].colorWheelColor[0]);
             }
             pointLightX = widget.lightScreens[0].horizontal;
-            pointLightY = widget.lightScreens[0].vertical;
+            pointLightY = -widget.lightScreens[0].vertical;
             pointLightZ = widget.lightScreens[0].distance;
             pointLight1 =
                 three.PointLight(pointLightColor, pointLightIntensity);
@@ -226,7 +226,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
                   ARGBtoHex(widget.lightScreens[1].colorWheelColor[0]);
             }
             pointLightX = widget.lightScreens[1].horizontal;
-            pointLightY = widget.lightScreens[1].vertical;
+            pointLightY = -widget.lightScreens[1].vertical;
             pointLightZ = widget.lightScreens[1].distance;
             pointLight2 =
                 three.PointLight(pointLightColor, pointLightIntensity);
@@ -251,7 +251,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
                   ARGBtoHex(widget.lightScreens[2].colorWheelColor[0]);
             }
             pointLightX = widget.lightScreens[2].horizontal;
-            pointLightY = widget.lightScreens[2].vertical;
+            pointLightY = -widget.lightScreens[2].vertical;
             pointLightZ = widget.lightScreens[2].distance;
             pointLight3 =
                 three.PointLight(pointLightColor, pointLightIntensity);
@@ -276,7 +276,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
                   ARGBtoHex(widget.lightScreens[3].colorWheelColor[0]);
             }
             pointLightX = widget.lightScreens[3].horizontal;
-            pointLightY = widget.lightScreens[3].vertical;
+            pointLightY = -widget.lightScreens[3].vertical;
             pointLightZ = widget.lightScreens[3].distance;
             pointLight4 =
                 three.PointLight(pointLightColor, pointLightIntensity);
@@ -301,7 +301,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
                   ARGBtoHex(widget.lightScreens[4].colorWheelColor[0]);
             }
             pointLightX = widget.lightScreens[4].horizontal;
-            pointLightY = widget.lightScreens[4].vertical;
+            pointLightY = -widget.lightScreens[4].vertical;
             pointLightZ = widget.lightScreens[4].distance;
             pointLight5 =
                 three.PointLight(pointLightColor, pointLightIntensity);
@@ -342,10 +342,9 @@ class _MyAppState extends State<WebGlLoaderObj> {
 
   @override
   Widget build(BuildContext context) {
-    
     screenHeight = MediaQuery.of(context).size.height;
     midpoint = screenHeight / 4;
-    
+
     ScrollController _scrollController = new ScrollController(
       initialScrollOffset: midpoint,
       keepScrollOffset: true,
@@ -366,8 +365,8 @@ class _MyAppState extends State<WebGlLoaderObj> {
               controller: _scrollController,
               //physics: NeverScrollableScrollPhysics(),
               child: _build(
-            context,
-          ));
+                context,
+              ));
         },
       ),
     );
@@ -695,7 +694,7 @@ class _MyAppState extends State<WebGlLoaderObj> {
     var textureLoader = three.TextureLoader(null);
     textureLoader.flipY = true;
     // texture = await textureLoader.loadAsync('assets/image_50.jpg');
-    texture = await textureLoader.loadAsync('$tempPath/selectedImage.jpg');
+    texture = await textureLoader.loadAsync('$tempPath/texture.jpg');
 
     texture.magFilter = three.LinearFilter;
     texture.minFilter = three.LinearMipmapLinearFilter;
