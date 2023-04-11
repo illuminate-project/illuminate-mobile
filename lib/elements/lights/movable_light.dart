@@ -69,6 +69,7 @@ class _MovingCircleState extends State<MovingCircle> {
     final child = Container(
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
+        border: Border.all(color: Colors.black, width: 2),
         borderRadius: BorderRadius.circular(100),
         boxShadow: [
           BoxShadow(
