@@ -427,6 +427,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
           if (lightsButtons.isEmpty) {
             _addLight();
           }
+          break;
         }
       }
     }
@@ -727,8 +728,18 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _3DMesh != false
-          ? TopAppBar(_setImage, sceneCapture, allLightToggle, saveImage,
-              toggleHideMovableLight, _selectedImage, _selectedScreen, lightScreens, _selectedLight, dLightHidden, toggleHideMovableLight)
+          ? TopAppBar(
+              _setImage,
+              sceneCapture,
+              allLightToggle,
+              saveImage,
+              toggleHideMovableLight,
+              _selectedImage,
+              _selectedScreen,
+              lightScreens,
+              _selectedLight,
+              dLightHidden,
+              toggleHideMovableLight)
           : null,
       backgroundColor: const Color.fromARGB(255, 31, 31, 31),
       body: getBody(context),
