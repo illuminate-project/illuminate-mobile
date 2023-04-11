@@ -418,17 +418,6 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
       ambience = 1.0;
     } else {
       reduceBlur(20);
-
-      while (true) {
-        if (meshReady) {
-          _setLoadingBar(false);
-          _setMesh(true);
-          if (lightsButtons.isEmpty) {
-            _addLight();
-          }
-          break;
-        }
-      }
     }
   }
 
@@ -639,6 +628,14 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
     setState(() {
       meshReady = state;
     });
+
+    if (state == true) {
+      _setLoadingBar(false);
+      _setMesh(true);
+      if (lightsButtons.isEmpty) {
+        _addLight();
+      }
+    }
   }
 
   Widget getBody(BuildContext context) {
