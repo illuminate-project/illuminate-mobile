@@ -409,20 +409,26 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
 
     if (image == null) {
       _setMesh(false);
-      blur = 10;
+      blur = 20;
       lightScreens.removeRange(0, lightScreens.length);
       lightsButtons.removeRange(0, lightsButtons.length);
       ambienceColor = [Colors.white, Colors.white];
       ambience = 1.0;
     } else {
       reduceBlur(20);
-      Timer(
-          const Duration(seconds: 25),
-          () => {
-                _setLoadingBar(false),
-                _setMesh(true),
-                if (lightsButtons.isEmpty) {_addLight()}
-              });
+
+      final tempDir = await getTemporaryDirectory();
+      final path = await tempDir.path;
+
+      while (true) {
+        if (File('$path/mesh.obj').existsSync()) {
+          _setLoadingBar(false);
+          _setMesh(true);
+          if (lightsButtons.isEmpty) {
+            _addLight();
+          }
+        }
+      }
     }
   }
 
