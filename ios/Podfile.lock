@@ -3,20 +3,44 @@ PODS:
   - flutter_gl (0.0.3):
     - Flutter
     - three3d_egl (~> 0.1.3)
+  - flutter_image_compress (1.0.0):
+    - Flutter
+    - Mantle
+    - SDWebImage
+    - SDWebImageWebPCoder
   - gallery_saver (0.0.1):
     - Flutter
   - image_gallery_saver (1.5.0):
     - Flutter
   - image_picker_ios (0.0.1):
     - Flutter
+  - libwebp (1.2.4):
+    - libwebp/demux (= 1.2.4)
+    - libwebp/mux (= 1.2.4)
+    - libwebp/webp (= 1.2.4)
+  - libwebp/demux (1.2.4):
+    - libwebp/webp
+  - libwebp/mux (1.2.4):
+    - libwebp/demux
+  - libwebp/webp (1.2.4)
+  - Mantle (2.2.0):
+    - Mantle/extobjc (= 2.2.0)
+  - Mantle/extobjc (2.2.0)
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - SDWebImage (5.15.5):
+    - SDWebImage/Core (= 5.15.5)
+  - SDWebImage/Core (5.15.5)
+  - SDWebImageWebPCoder (0.10.1):
+    - libwebp (~> 1.0)
+    - SDWebImage/Core (~> 5.15)
   - three3d_egl (0.1.3)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_gl (from `.symlinks/plugins/flutter_gl/ios`)
+  - flutter_image_compress (from `.symlinks/plugins/flutter_image_compress/ios`)
   - gallery_saver (from `.symlinks/plugins/gallery_saver/ios`)
   - image_gallery_saver (from `.symlinks/plugins/image_gallery_saver/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
@@ -24,6 +48,10 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - libwebp
+    - Mantle
+    - SDWebImage
+    - SDWebImageWebPCoder
     - three3d_egl
 
 EXTERNAL SOURCES:
@@ -31,6 +59,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_gl:
     :path: ".symlinks/plugins/flutter_gl/ios"
+  flutter_image_compress:
+    :path: ".symlinks/plugins/flutter_image_compress/ios"
   gallery_saver:
     :path: ".symlinks/plugins/gallery_saver/ios"
   image_gallery_saver:
@@ -43,10 +73,15 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_gl: 5a5603f35db897697f064027864a32b15d0c421d
+  flutter_image_compress: 5a5e9aee05b6553048b8df1c3bc456d0afaac433
   gallery_saver: 9fc173c9f4fcc48af53b2a9ebea1b643255be542
   image_gallery_saver: 259eab68fb271cfd57d599904f7acdc7832e7ef2
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
+  libwebp: f62cb61d0a484ba548448a4bd52aabf150ff6eef
+  Mantle: c5aa8794a29a022dfbbfc9799af95f477a69b62d
   path_provider_foundation: c68054786f1b4f3343858c1e1d0caaded73f0be9
+  SDWebImage: fd7e1a22f00303e058058278639bf6196ee431fe
+  SDWebImageWebPCoder: 4851414d9f8894e328e8b97c93ea4f4f4e4418ae
   three3d_egl: de2cd4950ad2d5f2122166c36583bde4c812e7b5
 
 PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3

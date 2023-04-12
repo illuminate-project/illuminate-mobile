@@ -701,9 +701,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
       )));
     } else {
       return Column(children: [
-        _selectedImage != null
-            ? PictureContainer(_selectedImage, blur)
-            : StartScreen(
+        StartScreen(
                 selectedImage: _selectedImage,
                 changeOriginalImage: _setOriginalImage,
                 changePicture: _setImage,
