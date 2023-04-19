@@ -72,25 +72,19 @@ class _UploadPictureState extends State<UploadPicture> {
       result = await FlutterImageCompress.compressAndGetFile(
         imageFile.absolute.path,
         outPath,
-        quality: 40,
+        quality: 75,
       );
     } else if (size > 500000) {
       result = await FlutterImageCompress.compressAndGetFile(
         imageFile.absolute.path,
         outPath,
-        quality: 60,
-      );
-    } else if (size > 100000) {
-      result = await FlutterImageCompress.compressAndGetFile(
-        imageFile.absolute.path,
-        outPath,
-        quality: 80,
+        quality: 90,
       );
     } else {
       result = await FlutterImageCompress.compressAndGetFile(
         imageFile.absolute.path,
         outPath,
-        quality: 95,
+        quality: 100,
       );
     }
 
