@@ -72,6 +72,9 @@ class _TopAppBarState extends State<TopAppBar> {
                     if(widget.selectedScreen == 0) {
                       if(widget.lightScreens[widget._selectedLight].isMovableLightHidden) {
                         widget.toggleHideMovableLight(),
+                        setState(() {
+                          allLightsOn = !allLightsOn;
+                        }),
                         Navigator.pop(context, 'Cancel'),
                       }
                     }
@@ -90,18 +93,19 @@ class _TopAppBarState extends State<TopAppBar> {
                 else
                   {
                     imageInstance.saveImage(),
-                          ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
-                            backgroundColor: Color.fromARGB(255, 105, 241, 143),
-                            content: Text('Saved to Camera Roll!',
-                                style: TextStyle(
-                                    color: Color.fromARGB(255, 26, 47, 24))),
-                            behavior: SnackBarBehavior.floating,
-                            margin: EdgeInsets.only(
-                                bottom: MediaQuery.of(context).size.height - 193,
-                                right: 31.5,
-                                left: 31.5),
-                          ))
+                    ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+                      backgroundColor: Color.fromARGB(255, 105, 241, 143),
+                      content: Text('Saved to Camera Roll!',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 26, 47, 24))),
+                      behavior: SnackBarBehavior.floating,
+                      margin: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).size.height - 193,
+                          right: 31.5,
+                          left: 31.5),
+                    )),
                     
+                    widget.toggleHideMovableLight(),
                   }
               },
               child: const Text('Yes'),
@@ -121,7 +125,7 @@ class _TopAppBarState extends State<TopAppBar> {
               color: const Color.fromARGB(255, 255, 140, 140),
               onPressed: () => showModal('Remove Photo?', 1)),
           IconButton(
-            icon: allLightsOn
+            icon: allLightsOn == true
                 ? const Icon(CupertinoIcons.eye_fill)
                 : const Icon(CupertinoIcons.eye_slash_fill),
             color: Color.fromARGB(255, 255, 255, 255),
