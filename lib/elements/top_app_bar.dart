@@ -57,9 +57,12 @@ class _TopAppBarState extends State<TopAppBar> {
       final tempDir = await getTemporaryDirectory();
       tempDir.deleteSync(recursive: true);
       tempDir.create();
+      setState(() {}); // Add this line to refresh the UI
     }
 
-    void showModal(String title, int type) {
+    
+
+    void showModal(String title, int type, Function callback) {
       showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -112,8 +115,29 @@ class _TopAppBarState extends State<TopAppBar> {
             ),
           ],
         ),
-      );
+      ).then((_) {
+        callback(); // Call the callback function after the modal is closed
+      });
     }
+
+    void handleSaveButton() {
+      if (widget.selectedScreen == 0 || widget.selectedScreen == 1) {
+        if (widget.selectedScreen == 0) {
+          if (!widget.lightScreens[widget._selectedLight].isMovableLightHidden) {
+            widget.toggleHideMovableLight();
+            widget.sceneCapture();
+          }
+        }
+      } else {
+        widget.sceneCapture();
+      }
+      showModal('Save to Camera Roll?', 2, () {
+        setState(() {}); // Refresh the UI after the modal is closed
+      });
+    }
+
+
+
 
     return AppBar(
       backgroundColor: const Color.fromARGB(255, 31, 31, 31),
@@ -123,7 +147,7 @@ class _TopAppBarState extends State<TopAppBar> {
           IconButton(
               icon: const Icon(CupertinoIcons.xmark),
               color: const Color.fromARGB(255, 255, 140, 140),
-              onPressed: () => showModal('Remove Photo?', 1)),
+              onPressed: () => showModal('Remove Photo?', 1, () {})),
           IconButton(
             icon: allLightsOn == true
                 ? const Icon(CupertinoIcons.eye_fill)
@@ -151,21 +175,7 @@ class _TopAppBarState extends State<TopAppBar> {
           IconButton(
             icon: const Icon(CupertinoIcons.square_arrow_down),
             color: const Color.fromARGB(255, 227, 174, 111),
-            onPressed: () =>
-                {
-                  if(widget.selectedScreen == 0 || widget.selectedScreen == 1) {
-                      if(widget.selectedScreen == 0) {
-                        if(!widget.lightScreens[widget._selectedLight].isMovableLightHidden) {
-                          widget.toggleHideMovableLight(),
-                          widget.sceneCapture(),
-                        }
-                      }
-                  }
-                  else {
-                    widget.sceneCapture(),
-                  },
-                  showModal('Save to Camera Roll?', 2)
-                },
+            onPressed: handleSaveButton
           ),
         ],
       ),
