@@ -641,8 +641,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
   Widget getBody(BuildContext context) {
     if (_3DMesh != false) {
       return Center(
-          child: FittedBox(
-              child: Column(
+          child: Column(
         children: [
           Screenshot(
               controller: screenshotController,
@@ -675,8 +674,7 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
               selectedLight: _selectedLight,
               addLightButton: _addLight,
             ),
-            Transform.scale(
-              scale: 0.95,
+            FittedBox(
               child: ScreenSelector(
                 selectedScreen: _selectedScreen,
                 selectedLight: _selectedLight,
@@ -698,15 +696,15 @@ class HomePageState extends State<HomePage> with ChangeNotifier {
             )
           ])
         ],
-      )));
+      ));
     } else {
       return Column(children: [
         StartScreen(
-                selectedImage: _selectedImage,
-                changeOriginalImage: _setOriginalImage,
-                changePicture: _setImage,
-                setMeshReady: setMeshReady,
-              ),
+          selectedImage: _selectedImage,
+          changeOriginalImage: _setOriginalImage,
+          changePicture: _setImage,
+          setMeshReady: setMeshReady,
+        ),
         const SizedBox(height: 2.5),
         _showLoadingBar == true
             ? Column(children: [
